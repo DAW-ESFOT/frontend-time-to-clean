@@ -11,7 +11,7 @@ const Header = () => {
                 <Link href="/">Time to Clean</Link>
             </h2>
 
-            <p >
+            <p>
                 <Link href="/neighborhoods">Consultar horarios -- </Link>
                 <Link href="/login">Gestión -- </Link>
                 <Link href="/about">Acerca de </Link>
