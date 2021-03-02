@@ -8,7 +8,7 @@ import {useForm} from "react-hook-form";
 //
 // });
 
-const Home = () => {
+export default function Home() {
   const {register, handleSubmit} = useForm();
 
   const onSubmit = async (data) => {
@@ -40,5 +40,5 @@ const Home = () => {
       </>
   );
 }
-export default withoutAuth(Home);
+
 
