@@ -1,14 +1,14 @@
 import '../styles/globals.css'
-import Header from "../components/Header";
 
-function MyApp({ Component, pageProps }) {
+import {AuthProvider} from "../lib/auth";
+import Navigation from "../components/Navigation";
+function App({ Component, pageProps }) {
   return(
-      <>
-        <Header/>
+      <AuthProvider>
+          <Navigation/>
         <Component {...pageProps} />
-        </>
-  );
-
+      </AuthProvider>
+  )
 }
 
-export default MyApp
+export default App

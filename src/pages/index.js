@@ -1,8 +1,18 @@
+import React from "react";
 import Head from 'next/head';
+import {useForm} from "react-hook-form";
 import Link from "next/link";
-import styles from '../styles/Home.module.css';
+import styles from '@/styles/Home.module.css';
 
 export default function Home() {
+
+    const {register, handleSubmit} = useForm();
+
+    const onSubmit = async (data) => {
+        console.log("data", data);
+    };
+
+
     return (
         <div className={styles.container}>
             <Head>
@@ -28,6 +38,32 @@ export default function Home() {
                       <p>Si formas parte de la empresa de la EMASEO ingresa para encontrar información.</p>
                   </div>
               </div>
+
+            {/*//Añadir el formulario*/}
+
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div>
+                        <label htmlFor="username">Name</label>
+                    <input type="text" name="username" id="username" ref={register}/>
+                    </div>
+                    <div>
+                    <label htmlFor="email">Email</label>
+                    <input type="email" name="email" id="email" ref={register}/>
+                    </div>
+                    <div>
+                    <label htmlFor="neighborhood_id">Barrio(id)</label>
+                    <input name="neighborhood_id" id="neighborhood_id" ref={register}/>
+                    </div>
+                    <div>
+                    <label htmlFor="complaint">¿Cómo podemos ayudarte?</label>
+                    <textarea name="complaint" id="complaint" ref={register}/>
+                    </div>
+                    <div>
+                    <input type="submit"/>
+                    </div>
+                </form>
+
+
             </main>
 
           <footer className={styles.footer}>
