@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { useAuth } from "../lib/auth";
+import styles from "@/styles/Home.module.css";
 const Navigation = () => {
   const { user, logout, login } = useAuth();
   const handleLogout = async () => {
@@ -39,38 +40,43 @@ const Navigation = () => {
   };
   return (
     <div>
-      <ul>
-        <li>
-          <Link href="/">Inicio</Link>
-        </li>
-        <li>
-          <Link href="/about">About</Link>
-        </li>
-        <li>
-          <Link href="/privacity">Privacity</Link>
-        </li>
-        <li>
-          <Link href="/users">Usuarios</Link>
-        </li>
-        <li>
-          <Link href="/camiones">Camiones</Link>
-        </li>
-        <li>
-          <Link href="/login">Iniciar</Link>
-        </li>
-        <li>
-          {user === null ? (
-            "..."
-          ) : user === false ? (
-            <button onClick={handleLogin}>Login</button>
-          ) : (
-            <>
-              Hola {user.name}
-              <button onClick={handleLogout}>Logout</button>
-            </>
-          )}
-        </li>
-      </ul>
+      <div className={styles.menu}>
+
+        <h2>
+          <Link href="/">Time to Clean</Link>
+        </h2>
+
+        <p>
+          <Link href="/users">Usuarios -- </Link>
+          <Link href="/neighborhoods">Consultar horarios -- </Link>
+          <Link href="/login">Gestión de Camiones -- </Link>
+
+          <Link href="/about">Acerca de -- </Link>
+          <Link href="/privacity">Privacidad </Link>
+        </p>
+
+      </div>
+      <div >
+        <ul>
+          <li>
+            <Link href="/login">Iniciar</Link>
+          </li>
+          <li>
+            {user === null ? (
+                "..."
+            ) : user === false ? (
+                <button onClick={handleLogin}>Login</button>
+            ) : (
+                <>
+                  Hola {user.name}
+                  <button onClick={handleLogout}>Logout</button>
+                </>
+            )}
+          </li>
+        </ul>
+
+      </div>
+
     </div>
   );
 };
