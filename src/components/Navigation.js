@@ -203,7 +203,6 @@ export default function MainMenu(props) {
                 </AppBar>
             </HideOnScroll>
             {renderDrawerMenu}
-            <Toolbar/>
         </div>
     );
 }

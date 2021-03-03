@@ -1,5 +1,6 @@
 const publicRoutes = {
     LOGIN: "/login",
+    ACCOUNT: "/cuenta",
     // REGISTER: "/registro",
     // USERS: "/usuarios",
     // USERS_ID: `/usuario/:id`,

@@ -1,6 +1,20 @@
-import React from "react";
+import React from 'react';
 
-export default function OptionSection() {
+const OptionSection = () => {
+    const styles = {
+        Container: {
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center center",
+            backgroundSize: "cover",
+            backgroundAttachment: "fixed",
+            height: "450px",
+            backgroundColor: "#FFFFFF",
+        }
+    };
+    return (
+        <div style={styles.Container}>
 
-    return("");
+        </div>
+    )
 }
+export default OptionSection;
