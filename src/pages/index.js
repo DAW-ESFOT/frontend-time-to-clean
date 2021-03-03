@@ -2,6 +2,9 @@ import React from "react";
 import {Complaint} from "@/lib/complaints";
 import withoutAuth from "@/hocs/withoutAuth";
 import {useForm} from "react-hook-form";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import Footer from "@/components/Footer";
 
 
 const Home = () => {
@@ -35,9 +38,7 @@ const Home = () => {
         <>
             <CssBaseline/>
             <Container maxWidth="lg">
-
                 <main>
-
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div>
                             <label htmlFor="username">Name</label>
@@ -66,4 +67,3 @@ const Home = () => {
     );
 }
 export default withoutAuth(Home);
-
