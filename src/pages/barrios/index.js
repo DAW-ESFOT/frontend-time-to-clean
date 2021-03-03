@@ -4,7 +4,7 @@ import Link from "next/link";
 import {
     Avatar,
     Box,
-    Button, Divider,
+    Button, Card, CardActionArea, CardContent, CardMedia, Divider,
     FormControl,
     InputBase, ListItem, ListItemAvatar, ListItemText,
     MenuItem,
@@ -16,15 +16,20 @@ import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
+import {Image} from "@material-ui/icons";
+import Footer from "@/components/Footer";
+
 
 const Neighborhoods = ({neighborhoods}) => {
 
     const [name, setName] = useState("");
     const [neighborhoodID, setNeighborhoodID] = useState([{
+        id: "",
         name: "",
         start_time: "",
         end_time: "",
-        days: ""
+        days: "",
+        link: ""
     }]);
 
     const handleChange = event => {
@@ -96,13 +101,14 @@ const Neighborhoods = ({neighborhoods}) => {
         {
             neighborhoods.map((neighborhood, key) => {
                 if (neighborhood.name === name) {
-                    console.log(neighborhood);
                     setNeighborhoodID({
                         ...neighborhoodID,
+                        id: neighborhood.id,
                         name: neighborhood.name,
                         start_time: neighborhood.start_time,
                         end_time: neighborhood.end_time,
-                        days: neighborhood.days
+                        days: neighborhood.days,
+                        link: neighborhood.link
                     });
                 }
             })
@@ -143,75 +149,90 @@ const Neighborhoods = ({neighborhoods}) => {
 
                 {
                     name ?
-                        <List className={styles.root2}>
-                            <ListItem alignItems="flex-start">
-                                <ListItemAvatar>
-                                    <PlaceIcon />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary="Barrio"
-                                    secondary={
-                                        <React.Fragment>
-                                            <Typography
-                                                component="span"
-                                                variant="body2"
-                                                className={styles.inline}
-                                                color="textPrimary"
-                                            >
-                                                {neighborhoodID.name}
-                                            </Typography>
-                                        </React.Fragment>
-                                    }
-                                />
-                            </ListItem>
-                            <Divider variant="inset" component="li"/>
-                            <ListItem alignItems="flex-start">
-                                <ListItemAvatar>
-                                    <WatchLaterIcon />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary="Horario de recoleción"
-                                    secondary={
-                                        <React.Fragment>
-                                            <Typography
-                                                component="span"
-                                                variant="body2"
-                                                className={styles.inline}
-                                                color="textPrimary"
-                                            >
-                                                {neighborhoodID.start_time} - {neighborhoodID.end_time}
-                                            </Typography>
-                                        </React.Fragment>
-                                    }
-                                />
-                            </ListItem>
-                            <Divider variant="inset" component="li"/>
-                            <ListItem alignItems="flex-start">
-                                <ListItemAvatar>
-                                    <CalendarTodayIcon />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary="Días de recoleción"
-                                    secondary={
-                                        <React.Fragment>
-                                            <Typography
-                                                component="span"
-                                                variant="body2"
-                                                className={styles.inline}
-                                                color="textPrimary"
-                                            >
-                                                {neighborhoodID.days}
-                                            </Typography>
-                                        </React.Fragment>
-                                    }
-                                />
-                            </ListItem>
-                        </List>
+                        <div>
+                            <List className={styles.root2}>
+                                <ListItem alignItems="flex-start">
+                                    <ListItemAvatar>
+                                        <PlaceIcon />
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary="Barrio"
+                                        secondary={
+                                            <React.Fragment>
+
+                                                    <Link href={`/barrios/${neighborhoodID.id}`} passHref>
+                                                        <Typography
+                                                            component="span"
+                                                            variant="body2"
+                                                            className={styles.inline}
+                                                            color="textPrimary"
+                                                        >
+                                                            <a>
+                                                                {neighborhoodID.name}
+                                                            </a>
+
+
+                                                        </Typography>
+                                                    </Link>
+
+                                            </React.Fragment>
+                                        }
+                                    />
+                                </ListItem>
+                                <Divider variant="inset" component="li"/>
+                                <ListItem alignItems="flex-start">
+                                    <ListItemAvatar>
+                                        <WatchLaterIcon />
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary="Horario de recoleción"
+                                        secondary={
+                                            <React.Fragment>
+                                                <Typography
+                                                    component="span"
+                                                    variant="body2"
+                                                    className={styles.inline}
+                                                    color="textPrimary"
+                                                >
+                                                    {neighborhoodID.start_time} - {neighborhoodID.end_time}
+                                                </Typography>
+                                            </React.Fragment>
+                                        }
+                                    />
+                                </ListItem>
+                                <Divider variant="inset" component="li"/>
+                                <ListItem alignItems="flex-start">
+                                    <ListItemAvatar>
+                                        <CalendarTodayIcon />
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary="Días de recoleción"
+                                        secondary={
+                                            <React.Fragment>
+                                                <Typography
+                                                    component="span"
+                                                    variant="body2"
+                                                    className={styles.inline}
+                                                    color="textPrimary"
+                                                >
+                                                    {neighborhoodID.days}
+                                                </Typography>
+                                            </React.Fragment>
+                                        }
+                                    />
+                                </ListItem>
+                            </List>
+                            {neighborhoodID.link}
+                            Mapa
+                        </div>
+
                         :
-                        <div>Visualize su mapa </div>
+                        <div>
+                            <Box display="flex" justifyContent="center" m={1} p={1}>
+                                <img src="recoleccion.jpg" alt="recolector" />
+                            </Box>
+                        </div>
                 }
-
-
 
                 <div>
                     <Box display="flex" justifyContent="center" m={1} p={1}>
@@ -223,6 +244,7 @@ const Neighborhoods = ({neighborhoods}) => {
                     </Box>
                 </div>
 
+                <Footer/>
             </div>
         </>
     );
