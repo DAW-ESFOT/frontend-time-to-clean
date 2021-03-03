@@ -13,7 +13,7 @@ const Users =()=>{
     console.log(user);
     return (
         <ul>
-            {data.map((user)=>
+            {data.data.map((user)=>
                     <table>
                         <tr>
                             <td><Link href={`/users/${user.id}`}>{user.name}</Link>,</td>
