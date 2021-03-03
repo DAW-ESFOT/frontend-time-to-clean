@@ -2,9 +2,9 @@ import React from 'react';
 import Link from "next/link";
 import {useRouter} from "next/router";
 import useSWR from "swr";
-import {fetcher} from "../../lib/utils";
+import {fetcher} from "@/lib/utils";
 import Loading from "../../components/Loading";
-import {useAuth} from "../../lib/auth";
+import {useAuth} from "@/lib/auth";
 const Users =()=>{
     const {user}=useAuth();
     const {data,error}=useSWR(`/users`,fetcher);
@@ -25,7 +25,7 @@ const Users =()=>{
                             <td>{user.cellphone},</td>
                         </tr>
                     </table>
-                //<li>{users.name}</li>
+                //<li>{usuarios.name}</li>
             )}
         </ul>
     );
