@@ -7,7 +7,7 @@ import Loading from "../../components/Loading";
 import {useAuth} from "../../lib/auth";
 const Users =()=>{
     const {user}=useAuth();
-    const {data,error}=useSWR(`/users}`,fetcher);
+    const {data,error}=useSWR(`/users`,fetcher);
     if (error) return <div>No se pudo cargar la informacion de los usuarios</div>;
     if(!data) return <Loading />;
     console.log(user);
