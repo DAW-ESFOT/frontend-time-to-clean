@@ -60,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
     logo: {
         display: "none",
         padding: 8,
-        maxHeight: 64,
         [theme.breakpoints.up("sm")]: {
             display: "block",
         },
@@ -161,17 +160,6 @@ export default function MainMenu(props) {
                     </Link>
                 ))}
             </List>
-            {/*<Divider />*/}
-            {/*<List>*/}
-            {/*  {["All mail", "Trash", "Spam"].map((text, index) => (*/}
-            {/*    <ListItem button key={text}>*/}
-            {/*      <ListItemIcon>*/}
-            {/*        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}*/}
-            {/*      </ListItemIcon>*/}
-            {/*      <ListItemText primary={text} />*/}
-            {/*    </ListItem>*/}
-            {/*  ))}*/}
-            {/*</List>*/}
         </Drawer>
     );
 
@@ -195,7 +183,7 @@ export default function MainMenu(props) {
                         <Box className={classes.logo}>
                             <Link href={Routes.HOME} passHref>
                                 <MuiLink>
-                                    <img src="" alt=""/>
+                                    <Image src="/logo-oscuro.png" alt="" width={550} height={220}/>
                                 </MuiLink>
                             </Link>
                         </Box>
@@ -209,7 +197,6 @@ export default function MainMenu(props) {
                                 </Link>
                             ))}
                         </div>
-
                         <div className={classes.grow}/>
                         <IconsMenu/>
                     </Toolbar>

@@ -1,14 +1,14 @@
 import React from "react";
 import {Complaint} from "@/lib/complaints";
-import withoutAuth from "@/hocs/withoutAuth";
-import {useForm} from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Container from "@material-ui/core/Container";
-import Footer from "@/components/Footer";
-
+import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
 
 export default function Home() {
-    const {register, handleSubmit} = useForm();
+    const {handleSubmit, control} = useForm();
 
     const onSubmit = async (data) => {
         console.log("data", data);
@@ -37,32 +37,37 @@ export default function Home() {
     return (
         <>
             <CssBaseline/>
-            <Container maxWidth="lg">
-                <main>
+            <Grid container component="main">
+                <Grid item xs={12} elevation={2}>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div>
-                            <label htmlFor="username">Name</label>
-                            <input type="text" name="username" id="username" ref={register}/>
-                        </div>
-                        <div>
-                            <label htmlFor="email">Email</label>
-                            <input type="email" name="email" id="email" ref={register}/>
-                        </div>
-                        <div>
-                            <label htmlFor="neighborhood_id">Barrio(id)</label>
-                            <input name="neighborhood_id" id="neighborhood_id" ref={register}/>
-                        </div>
-                        <div>
-                            <label htmlFor="complaint">¿Cómo podemos ayudarte?</label>
-                            <textarea name="complaint" id="complaint" ref={register}/>
-                        </div>
-                        <div>
-                            <input type="submit"/>
-                        </div>
+                        <FormControl fullWidth variant="outlined">
+                            <Controller
+                                name="email"
+                                as={
+                                    <TextField
+                                        id="email"
+                                        labelWidth={40}
+                                        variant="outlined"
+                                        label="Email"
+                                    />
+                                }
+                                control={control}
+                                defaultValue=""
+                                rules={{
+                                    required: 'Required',
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                        message: 'invalid email address'
+                                    }
+                                }}
+                            />
+                        </FormControl>
+                        <Button variant="contained" color="primary" type="submit">
+                            ENVIAR
+                        </Button>
                     </form>
-                </main>
-            </Container>
-            <Footer/>
+                </Grid>
+            </Grid>
         </>
     );
 }

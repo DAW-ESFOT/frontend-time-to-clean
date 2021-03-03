@@ -13,19 +13,15 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "#262626",
         color: "#FFFFFF",
         alignItems: "center",
-    },
-    grow: {
-        flexGrow: 1,
+        padding: "40px",
     },
     logo: {
-        display: "none",
         padding: 8,
-        maxHeight: 64,
         [theme.breakpoints.up("sm")]: {
             display: "block",
         },
         "& a img": {
-            maxHeight: 45,
+            maxHeight: 55,
         },
     },
 }))
@@ -36,26 +32,29 @@ export default function Footer() {
         <div className={classes.grow}>
             <footer className={classes.footer}>
                 <Container>
-                    <Box className={classes.logo}>
+                    <Box className={classes.logo} align="center">
                         <Link href={Routes.HOME} passHref>
                             <MuiLink>
-                                <img src="" alt=""/>
+                                <Image src="/logo-claro.png" alt="" width={250} height={100}/>
                             </MuiLink>
                         </Link>
                     </Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
-                            <Typography align="center">Acerca de</Typography>
+                            <Link href={Routes.ABOUT} passHref>
+                                <Typography align="center">Acerca de</Typography>
+                            </Link>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <Typography align="center">Privacidad</Typography>
+                            <Link href={Routes.PRIVACY} passHref>
+                                <Typography align="center">Privacidad</Typography>
+                            </Link>
                         </Grid>
                     </Grid>
                     <div className={classes.grow}>
                         <Typography variant="body2" align="center">
                             Copyright ©
-                            <Link href="/"> TimeToClean</Link>
-                            {new Date().getFullYear()}
+                            <Link href="/"> TimeToClean {new Date().getFullYear()}</Link>
                         </Typography>
                     </div>
                 </Container>
