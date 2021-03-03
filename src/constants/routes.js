@@ -1,8 +1,8 @@
 const publicRoutes = {
     LOGIN: "/login",
-   // REGISTER: "/registro",
-   // USERS: "/usuarios",
-   // USERS_ID: `/usuario/:id`,
+    // REGISTER: "/registro",
+    // USERS: "/usuarios",
+    // USERS_ID: `/usuario/:id`,
     ABOUT: "/about",
     PRIVACY: "/privacy"
 };

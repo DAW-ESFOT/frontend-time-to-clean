@@ -1,72 +1,222 @@
-import React from 'react';
-import Link from 'next/link';
-import {useAuth} from "../lib/auth";
-const Navigation =()=>{
-    const {user,logout,login}=useAuth();
-    const handleLogout=async ()=>{
-        try {
-            await logout();
-        }catch (error) {
-            console.log("error",error);
-        }
+import {useState} from "react";
+import Image from "next/image";
+import {makeStyles, useTheme} from "@material-ui/core/styles";
+import Link from "next/link";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import {Link as MuiLink} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuIcon from "@material-ui/icons/Menu";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import {
+    Box,
+    Divider,
+    Drawer,
+    ListItem,
+    ListItemText,
+    useScrollTrigger,
+} from "@material-ui/core";
+import Slide from "@material-ui/core/Slide";
+import List from "@material-ui/core/List";
+import clsx from "clsx";
 
-    };
-    const handleLogin=async (data)=>{
-        try{
-            const userData=await login({
-                email:"admin@prueba.com",
-                password:"123123",
-            });
-            console.log('userdata',userData);
-            localStorage.setItem('Token',userData.data.token)
-        }catch (error) {
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);//d
-            } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-                console.log(error.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', error.message);
-            }
-            console.log(error.config);
-        }
-    };
+import Routes from "../constants/routes";
+import IconsMenu from "./IconsMenu";
+
+const drawerWidth = 240;
+const mainMenuItems = [
+    {
+        text: "Inicio",
+        to: Routes.HOME,
+    },
+    {
+        text: "Consultar horarios",
+        to: Routes.ABOUT,
+    },
+    {
+        text: "Gestión",
+        to: Routes.ABOUT,
+    },
+    {
+        text: "Acerca de",
+        to: Routes.ABOUT,
+    },
+    {
+        text: "Contacto",
+        to: Routes.ABOUT,
+    },
+];
+const useStyles = makeStyles((theme) => ({
+    appBar: {
+        maxHeight: 64,
+    },
+    grow: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    logo: {
+        display: "none",
+        padding: 8,
+        maxHeight: 64,
+        [theme.breakpoints.up("sm")]: {
+            display: "block",
+        },
+        "& a img": {
+            maxHeight: 45,
+        },
+    },
+    sectionDesktop: {
+        display: "none",
+        [theme.breakpoints.up("md")]: {
+            display: "flex",
+        },
+    },
+    sectionMobile: {
+        display: "flex",
+        [theme.breakpoints.up("md")]: {
+            display: "none",
+        },
+    },
+    appBarShift: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+        transition: theme.transitions.create(["margin", "width"], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    hide: {
+        display: "none",
+    },
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0,
+    },
+    drawerPaper: {
+        width: drawerWidth,
+    },
+    drawerHeader: {
+        display: "flex",
+        alignItems: "center",
+        padding: theme.spacing(0, 1),
+        // necessary for content to be below app bar
+        ...theme.mixins.toolbar,
+        justifyContent: "flex-end",
+    },
+}));
+
+function HideOnScroll(props) {
+    const {children} = props;
+    // Note that you normally won't need to set the window ref as useScrollTrigger
+    // will default to window.
+    // This is only being set here because the demo is in an iframe.
+    const trigger = useScrollTrigger();
+
     return (
-        <div>
-            <ul>
-                <li>
-                    <Link href='/'>Inicio</Link>
-                </li>
-                <li>
-                    <Link href='/about'>About</Link>
-                </li>
-                <li>
-                    <Link href='/privacity'>Privacity</Link>
-                </li>
-                <li>
-                    <Link href='/users'>Usuarios</Link>
-                </li>
-                <li>
-                    <Link href='/login'>Iniciar</Link>
-                </li>
-                <li>{user ===null ?('...') :user === false
-                    ? (<button onClick={handleLogin}>Login</button>)
-                    : ( <>
-                        Hola {user.name}
-                        <button onClick={handleLogout}>Logout</button>
-                    </>
-                    )}
+        <Slide appear={false} direction="down" in={!trigger}>
+            {children}
+        </Slide>
+    );
+}
 
-                </li>
-            </ul>
+export default function MainMenu(props) {
+    const classes = useStyles();
+    const [openDrawer, setOpenDrawer] = useState(false);
+    const theme = useTheme();
+
+    const handleDrawerOpen = () => {
+        setOpenDrawer(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpenDrawer(false);
+    };
+
+    const renderDrawerMenu = (
+        <Drawer
+            className={classes.drawer}
+            variant="temporary"
+            anchor="left"
+            open={openDrawer}
+            classes={{
+                paper: classes.drawerPaper,
+            }}
+            onClose={handleDrawerClose}
+        >
+            <div className={classes.drawerHeader}>
+                <IconButton onClick={handleDrawerClose}>
+                    <ChevronLeftIcon/>
+                </IconButton>
+            </div>
+            <Divider/>
+            <List>
+                {mainMenuItems.map((item, index) => (
+                    <Link href={item.to} key={item.text}>
+                        <ListItem button onClick={() => setOpenDrawer(false)}>
+                            <ListItemText>{item.text}</ListItemText>
+                        </ListItem>
+                    </Link>
+                ))}
+            </List>
+            {/*<Divider />*/}
+            {/*<List>*/}
+            {/*  {["All mail", "Trash", "Spam"].map((text, index) => (*/}
+            {/*    <ListItem button key={text}>*/}
+            {/*      <ListItemIcon>*/}
+            {/*        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}*/}
+            {/*      </ListItemIcon>*/}
+            {/*      <ListItemText primary={text} />*/}
+            {/*    </ListItem>*/}
+            {/*  ))}*/}
+            {/*</List>*/}
+        </Drawer>
+    );
+
+    return (
+        <div className={classes.grow}>
+            <HideOnScroll {...props}>
+                <AppBar position="sticky" className={classes.appBar}>
+                    <Toolbar>
+                        <div className={classes.sectionMobile}>
+                            <IconButton
+                                edge="start"
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={handleDrawerOpen}
+                                className={clsx(classes.menuButton, openDrawer && classes.hide)}
+                            >
+                                <MenuIcon/>
+                            </IconButton>
+                        </div>
+
+                        <Box className={classes.logo}>
+                            <Link href={Routes.HOME} passHref>
+                                <MuiLink>
+                                    <img src="" alt=""/>
+                                </MuiLink>
+                            </Link>
+                        </Box>
+
+                        <div className={classes.grow}/>
+
+                        <div className={classes.sectionDesktop}>
+                            {mainMenuItems.map((item) => (
+                                <Link href={item.to} key={item.text}>
+                                    <MenuItem>{item.text}</MenuItem>
+                                </Link>
+                            ))}
+                        </div>
+
+                        <div className={classes.grow}/>
+                        <IconsMenu/>
+                    </Toolbar>
+                </AppBar>
+            </HideOnScroll>
+            {renderDrawerMenu}
+            <Toolbar/>
         </div>
     );
-};
-export default Navigation;
+}
