@@ -76,6 +76,66 @@ const FormSection = () => {
                                 }
                             }}
                         />
+                        <Controller
+                            name="email"
+                            as={
+                                <TextField
+                                    id="email"
+                                    labelWidth={40}
+                                    variant="outlined"
+                                    label="Email"
+                                />
+                            }
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Required',
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                    message: 'invalid email address'
+                                }
+                            }}
+                        />
+                        <Controller
+                            name="email"
+                            as={
+                                <TextField
+                                    id="email"
+                                    labelWidth={40}
+                                    variant="outlined"
+                                    label="Email"
+                                />
+                            }
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Required',
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                    message: 'invalid email address'
+                                }
+                            }}
+                        />
+                        <Controller
+                            name="email"
+                            as={
+                                <TextField
+                                    id="email"
+                                    labelWidth={40}
+                                    variant="outlined"
+                                    label="Email"
+                                />
+                            }
+                            control={control}
+                            defaultValue=""
+                            rules={{
+                                required: 'Required',
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                    message: 'invalid email address'
+                                }
+                            }}
+                        />
                     </FormControl>
                     <Button variant="contained" color="primary" endIcon={<Icon>send</Icon>}>
                         ENVIAR
