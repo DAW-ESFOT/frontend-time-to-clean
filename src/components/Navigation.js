@@ -32,11 +32,11 @@ const mainMenuItems = [
     },
     {
         text: "Consultar horarios",
-        to: Routes.ABOUT,
+        to: Routes.NEIGHBORHOODS,
     },
     {
         text: "Gestión",
-        to: Routes.ABOUT,
+        to: Routes.CAMIONES,
     },
     {
         text: "Acerca de",

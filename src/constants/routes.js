@@ -3,8 +3,9 @@ const publicRoutes = {
     // REGISTER: "/registro",
     // USERS: "/usuarios",
     // USERS_ID: `/usuario/:id`,
-    NEIGHBORHOODS: "/neighborhoods",
-    NEIGHBORHOODS_ID: "/neighborhoods/:id",
+    CAMIONES: "/camiones",
+    NEIGHBORHOODS: "/barrios",
+    NEIGHBORHOODS_ID: "/barrios/:id",
     ABOUT: "/about",
     PRIVACY: "/privacy"
 };

@@ -7,7 +7,7 @@ import Container from "@material-ui/core/Container";
 import Footer from "@/components/Footer";
 
 
-const Home = () => {
+export default function Home() {
     const {register, handleSubmit} = useForm();
 
     const onSubmit = async (data) => {
@@ -66,4 +66,4 @@ const Home = () => {
         </>
     );
 }
-export default withoutAuth(Home);
+

@@ -10,7 +10,7 @@ const Articles = ({ neighborhoods }) => {
                 <ul>
                     {neighborhoods.map((neighborhood) => (
                         <li>
-                            <Link href={`/neighborhoods/${neighborhood.id}`}>{neighborhood.name}</Link>
+                            <Link href={`/barrios/${neighborhood.id}`}>{neighborhood.name}</Link>
                         </li>
                     ))}
                 </ul>

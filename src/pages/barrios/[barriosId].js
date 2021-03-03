@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import styles from '../../styles/Home.module.css';
+import Routes from "../../constants/routes";
+
 
 const NeighborhoodDetails = ({neighborhood}) =>{
     if (!neighborhood){
@@ -15,7 +16,7 @@ const NeighborhoodDetails = ({neighborhood}) =>{
                     <p>Hora de fin: {neighborhood.end_time}</p>
                     <p>{neighborhood.link}</p>
                 </div>
-                <Link href="/neighborhoods" >
+                <Link href={Routes.NEIGHBORHOODS} >
                     <button>Regresar a la lista de barrios</button>
                 </Link>
             </div>
