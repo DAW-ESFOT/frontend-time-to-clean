@@ -29,8 +29,8 @@ export default NeighborhoodDetails;
 export async function getStaticProps(context) {
 
     console.log('context',context)
-    const{neighborhoodId} = context.params
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/neighborhoods/${neighborhoodId}`)
+    const{barriosId} = context.params
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/neighborhoods/${barriosId}`)
     const data = await res.json()
 
     console.log("data",data)
@@ -55,7 +55,7 @@ export async function getStaticPaths() {
   const neighborhoods = data.data;
 
   const paths = neighborhoods.map((neighborhood) => {
-    return { params: { neighborhoodId: "" + neighborhood.id } };
+    return { params: { barriosId: "" + neighborhood.id } };
   });
 
   return {
