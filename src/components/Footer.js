@@ -33,7 +33,7 @@ export default function Footer() {
             <footer className={classes.footer}>
                 <Container>
                     <Box className={classes.logo} align="center">
-                        <Link href={Routes.HOME} passHref>
+                        <Link href={Routes.HOME}>
                             <MuiLink>
                                 <Image src="/logo-claro.png" alt="" width={250} height={100}/>
                             </MuiLink>
@@ -41,7 +41,7 @@ export default function Footer() {
                     </Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
-                            <Link href={Routes.ABOUT} passHref>
+                            <Link href={Routes.ABOUT}>
                                 <Typography align="center">Acerca de</Typography>
                             </Link>
                         </Grid>
