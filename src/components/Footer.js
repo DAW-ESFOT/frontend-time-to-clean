@@ -46,7 +46,7 @@ export default function Footer() {
                             </Link>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <Link href={Routes.PRIVACY} passHref>
+                            <Link href={Routes.PRIVACY}>
                                 <Typography align="center">Privacidad</Typography>
                             </Link>
                         </Grid>
