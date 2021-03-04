@@ -1,9 +1,6 @@
 import React from "react";
-import FormControl from "@material-ui/core/FormControl";
 import {Controller, useForm} from "react-hook-form";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import {Complaint} from "@/lib/complaints";
 import Icon from '@material-ui/core/Icon';
 
 const FormSection = () => {
@@ -17,7 +14,7 @@ const FormSection = () => {
             height: "450px",
             backgroundImage: `url(${"/fondo1.png"})`
         },
-        none:{
+        none: {
             opacity: null,
         }
     };
@@ -54,88 +51,6 @@ const FormSection = () => {
         <>
             <div style={styles.container}>
                 <form onSubmit={handleSubmit(onSubmit)} style={styles.none}>
-                    <FormControl fullWidth variant="outlined">
-                        <Controller
-                            name="email"
-                            as={
-                                <TextField
-                                    id="email"
-                                    labelWidth={40}
-                                    variant="outlined"
-                                    label="Email"
-                                />
-                            }
-                            control={control}
-                            defaultValue=""
-                            rules={{
-                                required: 'Required',
-                                pattern: {
-                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                    message: 'invalid email address'
-                                }
-                            }}
-                        />
-                        <Controller
-                            name="email"
-                            as={
-                                <TextField
-                                    id="email"
-                                    labelWidth={40}
-                                    variant="outlined"
-                                    label="Email"
-                                />
-                            }
-                            control={control}
-                            defaultValue=""
-                            rules={{
-                                required: 'Required',
-                                pattern: {
-                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                    message: 'invalid email address'
-                                }
-                            }}
-                        />
-                        <Controller
-                            name="email"
-                            as={
-                                <TextField
-                                    id="email"
-                                    labelWidth={40}
-                                    variant="outlined"
-                                    label="Email"
-                                />
-                            }
-                            control={control}
-                            defaultValue=""
-                            rules={{
-                                required: 'Required',
-                                pattern: {
-                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                    message: 'invalid email address'
-                                }
-                            }}
-                        />
-                        <Controller
-                            name="email"
-                            as={
-                                <TextField
-                                    id="email"
-                                    labelWidth={40}
-                                    variant="outlined"
-                                    label="Email"
-                                />
-                            }
-                            control={control}
-                            defaultValue=""
-                            rules={{
-                                required: 'Required',
-                                pattern: {
-                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                    message: 'invalid email address'
-                                }
-                            }}
-                        />
-                    </FormControl>
                     <Button variant="contained" color="primary" endIcon={<Icon>send</Icon>}>
                         ENVIAR
                     </Button>

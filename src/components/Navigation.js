@@ -36,7 +36,7 @@ const mainMenuItems = [
     },
     {
         text: "Gestión",
-        to: Routes.CAMIONES,
+        to: Routes.MANAGEMENT,
     },
     {
         text: "Acerca de",
@@ -162,7 +162,6 @@ export default function MainMenu(props) {
             </List>
         </Drawer>
     );
-
     return (
         <div className={classes.grow}>
             <HideOnScroll {...props}>
@@ -187,9 +186,7 @@ export default function MainMenu(props) {
                                 </MuiLink>
                             </Link>
                         </Box>
-
                         <div className={classes.grow}/>
-
                         <div className={classes.sectionDesktop}>
                             {mainMenuItems.map((item) => (
                                 <Link href={item.to} key={item.text}>
