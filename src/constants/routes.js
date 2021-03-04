@@ -1,24 +1,23 @@
 const publicRoutes = {
-    LOGIN: "/login",
-    // REGISTER: "/registro",
+  LOGIN: "/login",
+  NEIGHBORHOODS: "/barrios",
+  NEIGHBORHOODS_ID: "/barrios/:id",
+  ABOUT: "/about",
+  PRIVACY: "/privacy",
 
-    CAMIONES: "/camiones",
-    NEIGHBORHOODS: "/barrios",
-    NEIGHBORHOODS_ID: "/barrios/:id",
-    ABOUT: "/about",
-    PRIVACY: "/privacy"
 };
 
 const privateRoutes = {
-    HOME: "/",
+  HOME: "/",
+    REGISTER: "/registro",
     USERS: "/usuarios",
-     USERS_ID: `/usuario/:id`,
-    // ARTICLE_ID: "/articulo/:id",
+    USERS_ID: `/usuario/:id`,
+    MANAGEMENT: "/gestion",
 };
 
 const Routes = {
-    ...publicRoutes,
-    ...privateRoutes,
+  ...publicRoutes,
+  ...privateRoutes,
 };
 
 export default Routes;

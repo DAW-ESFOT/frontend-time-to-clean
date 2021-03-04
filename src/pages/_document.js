@@ -1,26 +1,29 @@
 import React from "react";
-import Document, { Html, Head, Main, NextScript } from "next/document";
-import { ServerStyleSheets } from "@material-ui/core/styles";
+import Document, {Html, Head, Main, NextScript} from "next/document";
+import {ServerStyleSheets} from "@material-ui/core/styles";
 
 class MyDocument extends Document {
     render() {
         return (
             <Html>
                 <Head>
-                    <link rel="preconnect" href="https://fonts.gstatic.com" />
+                    <link rel="preconnect" href="https://fonts.gstatic.com"/>
                     <link
                         href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Stick&display=swap"
                         rel="stylesheet"
                     />
-
                     <link
                         rel="stylesheet"
                         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
                     />
+                    <link
+                        rel="stylesheet"
+                        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+                    />
                 </Head>
                 <body>
-                <Main />
-                <NextScript />
+                <Main/>
+                <NextScript/>
                 </body>
             </Html>
         );

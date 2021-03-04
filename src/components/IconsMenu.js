@@ -1,6 +1,7 @@
 import React from "react";
 import IconButton from "@material-ui/core/IconButton";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MoreIcon from "@material-ui/icons/MoreVert";
 import {makeStyles} from "@material-ui/core/styles";
 import Menu from "@material-ui/core/Menu";
@@ -8,6 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {useAuth} from "@/lib/auth";
 import Link from "next/link";
 import Routes from "../constants/routes";
+import {AccessibilityOutlined} from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
     sectionDesktop: {
@@ -55,23 +57,6 @@ const IconsMenu = () => {
         handleMenuAccountClose();
     };
 
-    const menuId = "account-menu";
-    const renderMenuAccount = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{vertical: "top", horizontal: "right"}}
-            id={menuId}
-            keepMounted
-            transformOrigin={{vertical: "top", horizontal: "right"}}
-            open={isMenuOpen}
-            onClose={handleMenuAccountClose}
-        >
-            <MenuItem onClick={handleMenuAccountClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuAccountClose}>My account</MenuItem>
-            <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
-        </Menu>
-    );
-
     const mobileMenuId = "mobile-account-menu";
     const renderMobileMenu = (
         <Menu
@@ -83,17 +68,46 @@ const IconsMenu = () => {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem onClick={handleMenuAccountOpen}>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
-                    <AccountCircle/>
-                </IconButton>
-                <p>Profile</p>
-            </MenuItem>
+            {user ? (
+                <>
+                    <Link href={Routes.ACCOUNT}>
+                        <MenuItem>
+                            <IconButton
+                                aria-label="account of current user"
+                                aria-controls="primary-search-account-menu"
+                                aria-haspopup="true"
+                                color="inherit"
+                            >
+                                <AccountCircle/>
+                            </IconButton>
+                            <p>Mi cuenta</p>
+                        </MenuItem>
+                    </Link>
+                    <MenuItem onClick={handleLogout}>
+                        <IconButton
+                            aria-label="account of current user"
+                            aria-controls="primary-search-account-menu"
+                            aria-haspopup="true"
+                            color="inherit"
+                        >
+                            <ExitToAppIcon/>
+                        </IconButton>
+                        <p>Cerrar Sesión</p>
+                    </MenuItem>
+                </>
+            ) : (
+                <MenuItem>
+                    <IconButton
+                        aria-label="account of current user"
+                        aria-controls="primary-search-account-menu"
+                        aria-haspopup="true"
+                        color="inherit"
+                    >
+                        <AccountCircle/>
+                    </IconButton>
+                    <p>Iniciar Sesión</p>
+                </MenuItem>
+            )}
         </Menu>
     );
 
@@ -123,7 +137,6 @@ const IconsMenu = () => {
                     <MoreIcon/>
                 </IconButton>
             </div>
-            {renderMenuAccount}
             {renderMobileMenu}
         </>
     );
