@@ -22,6 +22,10 @@
     "react-material-ui-carousel": "^2.2.1",
     "react-responsive-carousel": "^3.2.13",
     "swr": "^0.4.2",
+    "url-loader": "^4.1.1",
     "yup": "^0.32.9"
+  },
+  "devDependencies": {
+    "clsx": "^1.1.1"
   }
 }

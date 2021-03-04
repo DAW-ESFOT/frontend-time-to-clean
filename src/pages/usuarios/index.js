@@ -2,18 +2,19 @@ import React from 'react';
 import Link from "next/link";
 import {useRouter} from "next/router";
 import useSWR from "swr";
-import {fetcher} from "../../lib/utils";
+import {fetcher} from "@/lib/utils";
 import Loading from "../../components/Loading";
-import {useAuth} from "../../lib/auth";
+import {useAuth} from "@/lib/auth";
 const Users =()=>{
     const {user}=useAuth();
-    const {data,error}=useSWR(`/users}`,fetcher);
+    const {data,error}=useSWR(`/users`,fetcher);
     if (error) return <div>No se pudo cargar la informacion de los usuarios</div>;
     if(!data) return <Loading />;
     console.log(user);
     return (
+
         <ul>
-            {data.map((user)=>
+            {data.data.map((user)=>
                     <table>
                         <tr>
                             <td><Link href={`/users/${user.id}`}>{user.name}</Link>,</td>
@@ -25,7 +26,6 @@ const Users =()=>{
                             <td>{user.cellphone},</td>
                         </tr>
                     </table>
-                //<li>{users.name}</li>
             )}
         </ul>
     );
