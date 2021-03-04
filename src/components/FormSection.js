@@ -1,5 +1,5 @@
 import React from "react";
-import {Controller, useForm} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import Button from "@material-ui/core/Button";
 import Icon from '@material-ui/core/Icon';
 
