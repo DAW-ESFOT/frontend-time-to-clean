@@ -16,8 +16,6 @@ import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
-import {Image} from "@material-ui/icons";
-import Footer from "@/components/Footer";
 
 
 const Neighborhoods = ({neighborhoods}) => {
@@ -159,22 +157,14 @@ const Neighborhoods = ({neighborhoods}) => {
                                         primary="Barrio"
                                         secondary={
                                             <React.Fragment>
-
-                                                <Link href={`/barrios/${neighborhoodID.id}`}>
                                                     <Typography
                                                         component="span"
                                                         variant="body2"
                                                         className={styles.inline}
                                                         color="textPrimary"
                                                     >
-                                                        <a>
-                                                            {neighborhoodID.name}
-                                                        </a>
-
-
+                                                        {neighborhoodID.name}
                                                     </Typography>
-                                                </Link>
-
                                             </React.Fragment>
                                         }
                                     />
@@ -243,8 +233,6 @@ const Neighborhoods = ({neighborhoods}) => {
                         </Link>
                     </Box>
                 </div>
-
-                <Footer/>
             </div>
         </>
     );

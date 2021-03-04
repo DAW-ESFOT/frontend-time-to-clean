@@ -21,14 +21,14 @@ const TableList = () => {
 
     console.log("data barrios", data);
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
+    // const handleChangePage = (event, newPage) => {
+    //     setPage(newPage);
+    // };
+    //
+    // const handleChangeRowsPerPage = (event) => {
+    //     setRowsPerPage(+event.target.value);
+    //     setPage(0);
+    // };
 
 
     const useStyles = makeStyles({
@@ -42,10 +42,8 @@ const TableList = () => {
 
     return (
         <>
-
-
-            <TableContainer className={useStyles.container}>
-                <Table stickyHeader aria-label="sticky table">
+            <TableContainer className={useStyles.container} key={"neighborhoodIdTable"}>
+                <Table stickyHeader aria-label="sticky table" >
                     <TableHead>
                         <TableRow>
                             <TableCell
@@ -56,21 +54,21 @@ const TableList = () => {
                                 id
                             </TableCell>
                             <TableCell
-                                key="id"
+                                key="name"
                                 align={"center"}
                                 style={{minWidth: 300}}
                             >
                                 name
                             </TableCell>
                             <TableCell
-                                key="id"
+                                key="days"
                                 align={"center"}
                                 style={{minWidth: 300}}
                             >
                                 days
                             </TableCell>
                             <TableCell
-                                key="id"
+                                key="schedule"
                                 align={"center"}
                                 style={{minWidth: 300}}
                             >
@@ -83,20 +81,19 @@ const TableList = () => {
 
                         {
                             data.data.map((column, key) => {
-                                const value = column.name;
                                 return (
                                     <>
                                         <TableRow hover role="checkbox" tabIndex={-1}>
-                                            <TableCell key={key + " - id"}>
+                                            <TableCell key={key + "id" }>
                                                 {column.id}
                                             </TableCell>
-                                            <TableCell key={key + "- name"}>
+                                            <TableCell key={key + "name"}>
                                                 {column.name}
                                             </TableCell>
-                                            <TableCell key={key + "- days"}>
+                                            <TableCell key={key + "days"}>
                                                 {column.days}
                                             </TableCell>
-                                            <TableCell key={key + "- days"}>
+                                            <TableCell key={key + "schedule"}>
                                                 {column.start_time } - {column.end_time}
                                             </TableCell>
                                         </TableRow>
@@ -107,15 +104,6 @@ const TableList = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[5, 10, 25, 100]}
-                component="div"
-                count={5}
-                rowsPerPage={5}
-                page={1}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
 
             <Link href="/">
                 <button>Volver</button>

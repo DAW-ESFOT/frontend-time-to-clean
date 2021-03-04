@@ -70,7 +70,7 @@ const IconsMenu = () => {
         >
             {user ? (
                 <>
-                    <Link href={Routes.ACCOUNT}>
+                    <Link href={Routes.ABOUT}>
                         <MenuItem>
                             <IconButton
                                 aria-label="account of current user"

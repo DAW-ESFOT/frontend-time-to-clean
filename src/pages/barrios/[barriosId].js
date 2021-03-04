@@ -1,8 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import Routes from "../../constants/routes";
-import TableList from "@/components/TableList";
-
 
 
 const NeighborhoodDetails = ({neighborhood}) => {
@@ -22,9 +20,6 @@ const NeighborhoodDetails = ({neighborhood}) => {
                     <button>Regresar a la lista de barrios</button>
                 </Link>
             </div>
-
-        <TableList />
-
 
         </>
     );

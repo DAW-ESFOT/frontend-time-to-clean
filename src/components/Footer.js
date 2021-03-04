@@ -2,7 +2,7 @@ import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import Link from 'next/link';
 import Grid from "@material-ui/core/Grid";
 import Image from "next/image";
 import Routes from "../constants/routes";
@@ -52,10 +52,11 @@ export default function Footer() {
                         </Grid>
                     </Grid>
                     <div className={classes.grow}>
-                        <Typography variant="body2" align="center">
-                            Copyright ©
-                            <Link href="/"> TimeToClean {new Date().getFullYear()}</Link>
-                        </Typography>
+                        <Link href="/">
+                            <Typography variant="body2" align="center">
+                                Copyright © TimeToClean {new Date().getFullYear()}
+                            </Typography>
+                        </Link>
                     </div>
                 </Container>
             </footer>
