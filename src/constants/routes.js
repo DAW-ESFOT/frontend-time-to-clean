@@ -1,8 +1,7 @@
 const publicRoutes = {
     LOGIN: "/login",
     // REGISTER: "/registro",
-    // USERS: "/usuarios",
-    // USERS_ID: `/usuario/:id`,
+
     CAMIONES: "/camiones",
     NEIGHBORHOODS: "/barrios",
     NEIGHBORHOODS_ID: "/barrios/:id",
@@ -12,6 +11,8 @@ const publicRoutes = {
 
 const privateRoutes = {
     HOME: "/",
+    USERS: "/usuarios",
+     USERS_ID: `/usuario/:id`,
     // ARTICLE_ID: "/articulo/:id",
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from "react-hook-form";
 import withAuth from "../hocs/withAuth";
 import {useAuth} from "../lib/auth";
-import Avatar from '@material-ui/core/Avatar';
+import Routes from "../constants/routes";
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -10,7 +10,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { Link as MuiLink} from "@material-ui/core";
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Register = ()=>{
-    const [type, setType] = React.useState('');
+    const [valSelect, setValSelect] = React.useState('');
     const {register: doRegister}=useAuth();
     const { register, handleSubmit, control, errors } = useForm({
         resolver: yupResolver(schema),
@@ -69,7 +69,7 @@ const Register = ()=>{
     const classes = useStyles();
     const onSubmit=async (data)=>{
         try{
-            const userData=await doRegister({...data,role:'ROLE_DRIVER'});
+            const userData=await doRegister({...data,type:valSelect,role:'ROLE_DRIVER'});
             console.log('userdata',userData);
         }catch (error) {
             if (error.response) {
@@ -91,7 +91,7 @@ const Register = ()=>{
         }
     };
     const handleChange = (event) => {
-        setType(event.target.value);
+        setValSelect(event.target.value);
         console.log("tipo",event);
     };
     return (
@@ -171,7 +171,7 @@ const Register = ()=>{
                                         labelId="type"
                                         id="type"
                                         inputRef={register}
-                                        value={type}
+                                        value={valSelect}
                                         onChange={handleChange}
                                     >
                                         <MenuItem value={'Principal'}>Principal</MenuItem>
@@ -226,8 +226,9 @@ const Register = ()=>{
                                 variant="contained"
                                 color="primary"
                                 className={classes.cancel}
+                                href={Routes.USERS}
                         >
-                            Cancelar
+                                Cancelar
                         </Button>
                         </Grid>
                         </Grid>

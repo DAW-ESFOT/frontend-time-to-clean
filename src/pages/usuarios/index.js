@@ -12,6 +12,7 @@ const Users =()=>{
     if(!data) return <Loading />;
     console.log(user);
     return (
+
         <ul>
             {data.data.map((user)=>
                     <table>
@@ -25,7 +26,6 @@ const Users =()=>{
                             <td>{user.cellphone},</td>
                         </tr>
                     </table>
-                //<li>{usuarios.name}</li>
             )}
         </ul>
     );
