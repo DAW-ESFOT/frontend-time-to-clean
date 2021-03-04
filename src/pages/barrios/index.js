@@ -153,27 +153,27 @@ const Neighborhoods = ({neighborhoods}) => {
                             <List className={styles.root2}>
                                 <ListItem alignItems="flex-start">
                                     <ListItemAvatar>
-                                        <PlaceIcon />
+                                        <PlaceIcon/>
                                     </ListItemAvatar>
                                     <ListItemText
                                         primary="Barrio"
                                         secondary={
                                             <React.Fragment>
 
-                                                    <Link href={`/barrios/${neighborhoodID.id}`} passHref>
-                                                        <Typography
-                                                            component="span"
-                                                            variant="body2"
-                                                            className={styles.inline}
-                                                            color="textPrimary"
-                                                        >
-                                                            <a>
-                                                                {neighborhoodID.name}
-                                                            </a>
+                                                <Link href={`/barrios/${neighborhoodID.id}`}>
+                                                    <Typography
+                                                        component="span"
+                                                        variant="body2"
+                                                        className={styles.inline}
+                                                        color="textPrimary"
+                                                    >
+                                                        <a>
+                                                            {neighborhoodID.name}
+                                                        </a>
 
 
-                                                        </Typography>
-                                                    </Link>
+                                                    </Typography>
+                                                </Link>
 
                                             </React.Fragment>
                                         }
@@ -182,7 +182,7 @@ const Neighborhoods = ({neighborhoods}) => {
                                 <Divider variant="inset" component="li"/>
                                 <ListItem alignItems="flex-start">
                                     <ListItemAvatar>
-                                        <WatchLaterIcon />
+                                        <WatchLaterIcon/>
                                     </ListItemAvatar>
                                     <ListItemText
                                         primary="Horario de recoleción"
@@ -203,7 +203,7 @@ const Neighborhoods = ({neighborhoods}) => {
                                 <Divider variant="inset" component="li"/>
                                 <ListItem alignItems="flex-start">
                                     <ListItemAvatar>
-                                        <CalendarTodayIcon />
+                                        <CalendarTodayIcon/>
                                     </ListItemAvatar>
                                     <ListItemText
                                         primary="Días de recoleción"
@@ -229,7 +229,7 @@ const Neighborhoods = ({neighborhoods}) => {
                         :
                         <div>
                             <Box display="flex" justifyContent="center" m={1} p={1}>
-                                <img src="recoleccion.jpg" alt="recolector" />
+                                <img src="recoleccion.jpg" alt="recolector"/>
                             </Box>
                         </div>
                 }

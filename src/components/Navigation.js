@@ -180,7 +180,7 @@ export default function MainMenu(props) {
                         </div>
 
                         <Box className={classes.logo}>
-                            <Link href={Routes.HOME} passHref>
+                            <Link href={Routes.HOME}>
                                 <MuiLink>
                                     <Image src="/logo-oscuro.png" alt="" width={550} height={220}/>
                                 </MuiLink>
