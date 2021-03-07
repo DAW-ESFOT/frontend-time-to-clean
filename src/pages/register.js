@@ -94,6 +94,7 @@ const Register = ()=>{
         setValSelect(event.target.value);
         console.log("tipo",event);
     };
+
     return (
         <>
             <Container component="main" maxWidth="xs">

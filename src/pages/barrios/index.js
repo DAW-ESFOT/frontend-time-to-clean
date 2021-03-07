@@ -6,7 +6,7 @@ import {
     Box,
     Button, Card, CardActionArea, CardContent, CardMedia, Divider,
     FormControl,
-    InputBase, ListItem, ListItemAvatar, ListItemText,
+    InputBase, ListItem, ListItemAvatar, ListItemText, makeStyles,
     MenuItem,
     Select,
     withStyles
@@ -18,8 +18,71 @@ import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 
 
+const BootstrapInput = withStyles(theme => ({
+    root: {
+        'label + &': {
+            marginTop: theme.spacing(3),
+        },
+    },
+    input: {
+        borderRadius: 4,
+        position: 'relative',
+        backgroundColor: theme.palette.background.paper,
+        border: '1px solid #ced4da',
+        fontSize: 16,
+        width: 200,
+        padding: '10px 26px 10px 12px',
+        transition: theme.transitions.create(['border-color', 'box-shadow']),
+        // Use the system font instead of the default Roboto font.
+        fontFamily: [
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+        ].join(','),
+        '&:focus': {
+            borderRadius: 4,
+            borderColor: '#80bdff',
+            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+        },
+    },
+}))(InputBase);
+
+const useStyles = makeStyles((theme) => ({
+    button: {
+        margin: theme.spacing.unit,
+    },
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    margin: {
+        margin: theme.spacing.unit,
+    },
+    bootstrapFormLabel: {
+        fontSize: 18,
+    },
+    root2: {
+        width: '100%',
+        maxWidth: '36ch',
+        backgroundColor: theme.palette.background.paper,
+    },
+    inline: {
+        display: 'inline',
+    },
+}));
+
+
+
 const Neighborhoods = ({neighborhoods}) => {
 
+    const classes = useStyles();
     const [name, setName] = useState("");
     const [neighborhoodID, setNeighborhoodID] = useState([{
         id: "",
@@ -34,66 +97,6 @@ const Neighborhoods = ({neighborhoods}) => {
         setName(event.target.value);
     };
 
-
-    const BootstrapInput = withStyles(theme => ({
-        root: {
-            'label + &': {
-                marginTop: theme.spacing(3),
-            },
-        },
-        input: {
-            borderRadius: 4,
-            position: 'relative',
-            backgroundColor: theme.palette.background.paper,
-            border: '1px solid #ced4da',
-            fontSize: 16,
-            width: 200,
-            padding: '10px 26px 10px 12px',
-            transition: theme.transitions.create(['border-color', 'box-shadow']),
-            // Use the system font instead of the default Roboto font.
-            fontFamily: [
-                '-apple-system',
-                'BlinkMacSystemFont',
-                '"Segoe UI"',
-                'Roboto',
-                '"Helvetica Neue"',
-                'Arial',
-                'sans-serif',
-                '"Apple Color Emoji"',
-                '"Segoe UI Emoji"',
-                '"Segoe UI Symbol"',
-            ].join(','),
-            '&:focus': {
-                borderRadius: 4,
-                borderColor: '#80bdff',
-                boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-            },
-        },
-    }))(InputBase);
-
-    const styles = theme => ({
-        button: {
-            margin: theme.spacing.unit,
-        },
-        root: {
-            display: 'flex',
-            flexWrap: 'wrap',
-        },
-        margin: {
-            margin: theme.spacing.unit,
-        },
-        bootstrapFormLabel: {
-            fontSize: 18,
-        },
-        root2: {
-            width: '100%',
-            maxWidth: '36ch',
-            backgroundColor: theme.palette.background.paper,
-        },
-        inline: {
-            display: 'inline',
-        },
-    });
 
     useEffect(() => {
         {
@@ -118,14 +121,15 @@ const Neighborhoods = ({neighborhoods}) => {
     return (
         <>
             <div>
-                <form className={styles.root} autoComplete="off">
-                    <div>
-                        <Box display="flex" justifyContent="center" m={1} p={1}>
-                            <h1>Encuentra Datos Sobre tu Sector de Manera Fácil y Sencilla</h1>
-                        </Box>
-                        <p>Seleccione el barrio que desee consultar sus horarios</p>
-                    </div>
-                    <FormControl className={styles.margin}>
+                <div>
+                    <Box display="flex" justifyContent="center" m={1} p={1}>
+                        <h1>Encuentra Datos Sobre tu Sector de Manera Fácil y Sencilla</h1>
+                    </Box>
+                    <p>Seleccione el barrio que desee consultar sus horarios</p>
+                </div>
+                <form className={classes.root} autoComplete="off">
+
+                    <FormControl className={classes.margin}>
                         <Select
                             value={name}
                             onChange={handleChange}
@@ -136,7 +140,6 @@ const Neighborhoods = ({neighborhoods}) => {
                             </MenuItem>
                             {neighborhoods.map((neighborhood) => (
                                 <MenuItem value={neighborhood.name} key={neighborhood.id}>
-                                    {/*<Link href={`/barrios/${neighborhood.id}`}>{neighborhood.name}</Link>*/}
                                     {neighborhood.name}
                                 </MenuItem>
                             ))}
@@ -148,7 +151,7 @@ const Neighborhoods = ({neighborhoods}) => {
                 {
                     name ?
                         <div>
-                            <List className={styles.root2}>
+                            <List className={classes.root2}>
                                 <ListItem alignItems="flex-start">
                                     <ListItemAvatar>
                                         <PlaceIcon/>
@@ -157,14 +160,14 @@ const Neighborhoods = ({neighborhoods}) => {
                                         primary="Barrio"
                                         secondary={
                                             <React.Fragment>
-                                                    <Typography
-                                                        component="span"
-                                                        variant="body2"
-                                                        className={styles.inline}
-                                                        color="textPrimary"
-                                                    >
-                                                        {neighborhoodID.name}
-                                                    </Typography>
+                                                <Typography
+                                                    component="span"
+                                                    variant="body2"
+                                                    className={classes.inline}
+                                                    color="textPrimary"
+                                                >
+                                                    {neighborhoodID.name}
+                                                </Typography>
                                             </React.Fragment>
                                         }
                                     />
@@ -181,7 +184,7 @@ const Neighborhoods = ({neighborhoods}) => {
                                                 <Typography
                                                     component="span"
                                                     variant="body2"
-                                                    className={styles.inline}
+                                                    className={classes.inline}
                                                     color="textPrimary"
                                                 >
                                                     {neighborhoodID.start_time} - {neighborhoodID.end_time}
@@ -202,7 +205,7 @@ const Neighborhoods = ({neighborhoods}) => {
                                                 <Typography
                                                     component="span"
                                                     variant="body2"
-                                                    className={styles.inline}
+                                                    className={classes.inline}
                                                     color="textPrimary"
                                                 >
                                                     {neighborhoodID.days}
@@ -212,8 +215,8 @@ const Neighborhoods = ({neighborhoods}) => {
                                     />
                                 </ListItem>
                             </List>
-                            {neighborhoodID.link}
-                            Mapa
+
+
                         </div>
 
                         :
@@ -227,7 +230,7 @@ const Neighborhoods = ({neighborhoods}) => {
                 <div>
                     <Box display="flex" justifyContent="center" m={1} p={1}>
                         <Link href={Routes.HOME}>
-                            <Button variant="contained" color="secondary" className={styles.button}>
+                            <Button variant="contained" color="secondary" className={classes.button}>
                                 Menú Principal
                             </Button>
                         </Link>

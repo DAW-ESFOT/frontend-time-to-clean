@@ -5,6 +5,8 @@ import withAuth from "@/hocs/withAuth";
 import { Grid, MenuList, MenuItem } from "@material-ui/core";
 import Footer from "@/components/Footer";
 import TableTrucks from "@/components/TableTrucks";
+import TableNeighborhoods from "@/components/TableNeighborhoods";
+import RegisterNeighborhood from "@/components/RegisterNeighborhood";
 
 const Management = () => {
   const [showTrucks, setShowTrucks] = useState(false);
@@ -73,7 +75,11 @@ const Management = () => {
             showDrivers === false &&
             showComplaints === false &&
             showNeighborhoods ? (
-            "Complemento Neigborhoods"
+            <>
+              <TableNeighborhoods />
+              <RegisterNeighborhood />
+            </>
+
           ) : (
             "Cargando"
           )}
