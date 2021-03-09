@@ -9,7 +9,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {useAuth} from "@/lib/auth";
 import Link from "next/link";
 import Routes from "../constants/routes";
-import {AccessibilityOutlined} from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
     sectionDesktop: {
@@ -57,6 +56,24 @@ const IconsMenu = () => {
         handleMenuAccountClose();
     };
 
+    const menuId = "account-menu";
+    const renderMenuAccount = (
+        <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{vertical: "top", horizontal: "right"}}
+            id={menuId}
+            keepMounted
+            transformOrigin={{vertical: "top", horizontal: "right"}}
+            open={isMenuOpen}
+            onClose={handleMenuAccountClose}
+        >
+            <Link href={Routes.MANAGEMENT}>
+                <MenuItem onClick={handleMenuAccountClose}>Mi cuenta</MenuItem>
+            </Link>
+            <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
+        </Menu>
+    );
+
     const mobileMenuId = "mobile-account-menu";
     const renderMobileMenu = (
         <Menu
@@ -70,7 +87,7 @@ const IconsMenu = () => {
         >
             {user ? (
                 <>
-                    <Link href={Routes.ABOUT}>
+                    <Link href={Routes.MANAGEMENT}>
                         <MenuItem>
                             <IconButton
                                 aria-label="account of current user"
@@ -137,6 +154,7 @@ const IconsMenu = () => {
                     <MoreIcon/>
                 </IconButton>
             </div>
+            {renderMenuAccount}
             {renderMobileMenu}
         </>
     );
