@@ -2,9 +2,8 @@ import React, {useEffect, useState} from "react";
 import Routes from "../../constants/routes";
 import Link from "next/link";
 import {
-    Avatar,
     Box,
-    Button, Card, CardActionArea, CardContent, CardMedia, Divider,
+    Button, Divider,
     FormControl,
     InputBase, ListItem, ListItemAvatar, ListItemText, makeStyles,
     MenuItem,
@@ -16,7 +15,6 @@ import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
-
 
 const BootstrapInput = withStyles(theme => ({
     root: {
@@ -52,11 +50,17 @@ const BootstrapInput = withStyles(theme => ({
             boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
         },
     },
+
 }))(InputBase);
 
 const useStyles = makeStyles((theme) => ({
     button: {
-        margin: theme.spacing.unit,
+        margin: theme.spacing(3, 2, 2),
+        backgroundColor: theme.palette.cancel.main,
+    },
+    button2: {
+        margin: theme.spacing(3, 2, 2),
+        backgroundColor: theme.palette.secondary.main,
     },
     root: {
         display: 'flex',
@@ -215,8 +219,9 @@ const Neighborhoods = ({neighborhoods}) => {
                                     />
                                 </ListItem>
                             </List>
-
-
+                            <Button className={classes.button2} href={neighborhoodID.link} target={"_blank"}>
+                                Ir a Google Maps
+                            </Button>
                         </div>
 
                         :

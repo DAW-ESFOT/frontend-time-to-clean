@@ -6,7 +6,7 @@ import { Grid, MenuList, MenuItem } from "@material-ui/core";
 import Footer from "@/components/Footer";
 import TableTrucks from "@/components/TableTrucks";
 import TableNeighborhoods from "@/components/TableNeighborhoods";
-import RegisterNeighborhood from "@/components/RegisterNeighborhood";
+import RegisterNeighborhood from "@/components/AddNeighborhood";
 
 const Management = () => {
   const [showTrucks, setShowTrucks] = useState(false);
@@ -77,7 +77,6 @@ const Management = () => {
             showNeighborhoods ? (
             <>
               <TableNeighborhoods />
-              <RegisterNeighborhood />
             </>
 
           ) : (

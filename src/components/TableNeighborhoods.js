@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from "react";
 import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
-import {useRouter} from "next/router";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
-import SaveIcon from '@material-ui/icons/Save';
 import {withStyles, makeStyles} from "@material-ui/core/styles";
-import {Link as MuiLink} from '@material-ui/core';
+import {Dialog, DialogContent, DialogTitle, Link as MuiLink, TextField} from '@material-ui/core';
 import {
     Paper,
     TableRow,
@@ -19,6 +17,8 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import PostAddIcon from '@material-ui/icons/PostAdd';
+import AddNeighborhood from "@/components/AddNeighborhood";
+import EditNeighborhood from "@/components/EditNeighborhood";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -38,11 +38,14 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme)=>({
     table: {
         minWidth: 600,
     },
-});
+    textField: {
+        width: '100%',
+    }
+}));
 
 
 const TableNeighborhoods = () => {
@@ -51,19 +54,32 @@ const TableNeighborhoods = () => {
     const [page, setPage] = useState(0);
     const {data, error} = useSWR(`/neighborhoods?page=${page + 1}`, fetcher);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [neighborhoodId, setNeighborhoodId] = useState(0);
+    const [openAddNeighborhood, setOpenAddNeighborhood] = useState(false);
+    const [openEditNeighborhood, setOpenEditNeighborhood] = useState(false);
 
 
+    console.log("data neighborhoods", data);
 
-    console.log("data camiones", data);
-
+    if (error) return <div>No se pudo cargar los barrios</div>;
+    if (!data) return <Loading/>;
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
 
+    const handleOpenNewNeigbhorhood = (  ) => {
+        setOpenAddNeighborhood(!openAddNeighborhood);
 
-    if (error) return <div>No se pudo cargar los barrios</div>;
-    if (!data) return <Loading/>;
+    };
+    const handleOpenEditNeigbhorhood = (id) => {
+        setOpenEditNeighborhood(!openEditNeighborhood);
+        setNeighborhoodId(id);
+    };
+    const handleCloseEditNeigbhorhood = () => {
+        setOpenEditNeighborhood(!openEditNeighborhood);
+    };
+
 
     return (
         <>
@@ -74,7 +90,8 @@ const TableNeighborhoods = () => {
                     variant="outlined"
                     size="large"
                     className={classes.margin}
-                    endIcon={<PostAddIcon/>}>
+                    endIcon={<PostAddIcon/>}
+                    onClick={ handleOpenNewNeigbhorhood }>
                     Agregar Barrio
                 </Button>
             </Box>
@@ -113,7 +130,10 @@ const TableNeighborhoods = () => {
                                                     {neighborhood.days}
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
-                                                    <IconButton color="secondary" aria-label="upload picture"
+                                                    <IconButton
+                                                         onClick={ ()=>handleOpenEditNeigbhorhood( neighborhood.id) }
+                                                        color="secondary"
+                                                        aria-label="upload picture"
                                                                 component="span">
                                                         <BorderColorIcon/>
                                                     </IconButton>
@@ -139,6 +159,22 @@ const TableNeighborhoods = () => {
                         :
                         <Loading/>
                 }
+
+
+                <div>
+                    <Dialog onClose={handleOpenNewNeigbhorhood}  open={openAddNeighborhood} >
+                        <DialogContent dividers>
+                            <AddNeighborhood onHandleCloseModal={ handleOpenNewNeigbhorhood }/>
+                        </DialogContent>
+                    </Dialog>
+                    <Dialog onClose={handleCloseEditNeigbhorhood}  open={openEditNeighborhood} >
+                        <DialogContent dividers>
+                            <EditNeighborhood
+                                id={neighborhoodId}
+                                onHandleCloseModal={ handleCloseEditNeigbhorhood }/>
+                        </DialogContent>
+                    </Dialog>
+                </div>
             </div>
         </>
     );
