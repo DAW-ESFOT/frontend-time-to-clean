@@ -5,6 +5,7 @@ import withAuth from "@/hocs/withAuth";
 import { Grid, MenuList, MenuItem } from "@material-ui/core";
 import Footer from "@/components/Footer";
 import TableTrucks from "@/components/TableTrucks";
+import TableUsers from "@/components/TableUsers";
 
 const Management = () => {
   const [showTrucks, setShowTrucks] = useState(false);
@@ -63,7 +64,7 @@ const Management = () => {
             showDrivers &&
             showComplaints === false &&
             showNeighborhoods === false ? (
-            "Poner sus componenetes de drivers"
+              <TableUsers />
           ) : showTrucks === false &&
             showDrivers === false &&
             showComplaints &&
@@ -79,7 +80,6 @@ const Management = () => {
           )}
         </Grid>
       </Grid>
-      <Footer />
     </>
   );
 };
