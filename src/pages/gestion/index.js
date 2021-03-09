@@ -55,28 +55,16 @@ const Management = () => {
           </MenuList>
         </Grid>
         <Grid xs={9}>
-          {showTrucks &&
-          showDrivers === false &&
-          showComplaints === false &&
-          showNeighborhoods === false ? (
+          {showTrucks ? (
             <TableTrucks />
-          ) : showTrucks === false &&
-            showDrivers &&
-            showComplaints === false &&
-            showNeighborhoods === false ? (
-              <TableUsers />
-          ) : showTrucks === false &&
-            showDrivers === false &&
-            showComplaints &&
-            showNeighborhoods === false ? (
+          ) : showDrivers ? (
+            <TableUsers />
+          ) : showComplaints ? (
             "Componenete complaint"
-          ) : showTrucks === false &&
-            showDrivers === false &&
-            showComplaints === false &&
-            showNeighborhoods ? (
+          ) : showNeighborhoods ? (
             "Complemento Neigborhoods"
           ) : (
-            "Cargando"
+            "cargando XD"
           )}
         </Grid>
       </Grid>
