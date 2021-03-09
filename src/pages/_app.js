@@ -27,18 +27,19 @@ function App({Component, pageProps}) {
                 />
                 {/* Import CSS for nprogress */}
                 <link rel="stylesheet" type="text/css" href="/nprogress.css"/>
+                <link rel="icon" type="image/png" href="/trash-truck.png" sizes="16x16"/>
             </Head>
             <AuthProvider>
                 <ThemeProvider theme={theme}>
                     <CssBaseline/>
                     <Navigation/>
-                    <Container maxWidth="lg">
+                    {/*<Container maxWidth="lg">*/}
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <Component {...pageProps} />
                             </Grid>
                         </Grid>
-                    </Container>
+                    {/*</Container>*/}
                     <Footer/>
                 </ThemeProvider>
             </AuthProvider>

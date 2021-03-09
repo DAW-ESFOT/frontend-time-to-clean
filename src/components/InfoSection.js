@@ -1,44 +1,80 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel'
+import Grid from "@material-ui/core/Grid";
+import {Paper} from "@material-ui/core";
+import Image from "next/image";
+import Typography from "@material-ui/core/Typography";
 
 const InfoSection = () => {
 
     const styles = {
         container: {
             backgroundRepeat: "no-repeat",
-            backgroundPosition: "center center",
+            backgroundPosition: "center top",
             backgroundSize: "cover",
             backgroundAttachment: "fixed",
-            height: "450px",
-            backgroundImage: `url(${"http://www.emaseo.gob.ec/wp-content/uploads/2016/07/camion.jpg"})`
+            backgroundImage: `url(${"/info-fondo.png"})`,
+            padding: '40px'
+        },
+        row: {
+            height: "400px",
+        },
+        paper: {
+            padding: '15px',
+            backgroundColor: 'rgba(0,0,0,0.05)',
+            color: 'white',
+            textShadow: '2px 2px #262626',
+        },
+        title: {
+            margin: '0'
         }
     };
 
-    function Item(props)
-    {
+    function Item(props) {
         return (
+
             <div style={styles.container} elevation={3}>
-                <h2>{props.item.name}</h2>
-                <p>{props.item.description}</p>
+                <Grid
+                    style={styles.row}
+                    container
+                    direction="row"
+                    justify="flex-end"
+                    alignItems="flex-end"
+                >
+
+                    <Grid container spacing={1} justify="flex-end" alignItems="flex-end">
+                        <Paper elevation={0} style={styles.paper}>
+                            <Grid>
+                                <h1 style={styles.title}>{props.item.name}</h1>
+                            </Grid>
+                        </Paper>
+                        <Grid>
+                            <Image src={props.item.icon} alt="" width="100" height="100"/>
+                        </Grid>
+                    </Grid>
+
+                </Grid>
             </div>
+
         )
     }
 
     const items = [
         {
-            name: "Random Name #1",
-            description: "Probably the most random thing you have ever seen!"
-        },
+            name: "Recolección de residuos sólidos en Quito",
+            icon: "/recycle-bin.png"
+        }
+        ,
         {
-            name: "Random Name #2",
-            description: "Hello World!"
+            name: "Reciclar es la forma más elevada de cultura",
+            icon: "/reuse.png"
         }
     ]
 
     return (
         <Carousel>
             {
-                items.map( (item, i) => <Item key={i} item={item} /> )
+                items.map((item, i) => <Item key={i} item={item}/>)
             }
         </Carousel>
     )
