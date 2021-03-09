@@ -4,16 +4,16 @@ import withoutAuth from "../hocs/withoutAuth";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {useForm} from "react-hook-form";
-import Footer from "@/components/Footer";
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import {black} from "colorette";
+
 const schema = yup.object().shape({
     email: yup.string().email("Ingrese un email válido").required("El campo email es obligatorio"),
     password:yup.string().required("Ingrese su clave").min(6, "La clave debe tener al menos 6 caracteres"),
@@ -24,11 +24,13 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        backgroundColor: black,
     },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1),
     },
+
     submit: {
         margin: theme.spacing(3, 0, 2),
         backgroundColor: theme.palette.secondary.main,
@@ -43,6 +45,7 @@ const login =()=>{
         try{
             const userData=await login(data);
             console.log('userdata',userData);
+
         }catch (error) {
             if (error.response) {
                 // The request was made and the server responded with a status code
@@ -90,7 +93,8 @@ const login =()=>{
         <>
             <Container component="main" maxWidth="xs" >
             <CssBaseline />
-            <div >
+            <div className={classes.paper}>
+                <Grid item xs={false} sm={4} md={7} className={classes.image} />
                 <Typography component="h1" variant="h5" align="center">
                     <strong>Inicie Sesión</strong>
                     <div>Solo personal autorizado</div>
@@ -106,7 +110,7 @@ const login =()=>{
                         required
                         fullWidth
                         autoComplete="email"
-                        autoFocus
+                        //autoFocus
                         error={!!errors.email}
                         helperText={errors.email?.message}
                     />
@@ -130,24 +134,19 @@ const login =()=>{
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-
                     >
                         Ingresar
                     </Button>
                     <Grid container>
                         <Grid item >
-                            <Link href="#"  color="dark">
+                            <Link href="/contrasenia"  color="dark">
                                 <strong>¿Olvidaste tu contraseña?</strong>
                             </Link>
                         </Grid>
                     </Grid>
                 </form>
             </div>
-            <Box mt={8}>
-
-            </Box>
         </Container>
-            <Footer/>
         </>
     );
 };

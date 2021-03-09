@@ -3,10 +3,10 @@ import { useRouter } from "next/router";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
 import { Grid, MenuList, MenuItem } from "@material-ui/core";
-import Footer from "@/components/Footer";
 import TableTrucks from "@/components/TableTrucks";
 import TableNeighborhoods from "@/components/TableNeighborhoods";
-import RegisterNeighborhood from "@/components/AddNeighborhood";
+import TableUsers from "@/components/TableUsers";
+
 
 const Management = () => {
   const [showTrucks, setShowTrucks] = useState(false);
@@ -56,35 +56,22 @@ const Management = () => {
           </MenuList>
         </Grid>
         <Grid xs={9}>
-          {showTrucks &&
-          showDrivers === false &&
-          showComplaints === false &&
-          showNeighborhoods === false ? (
+          {showTrucks ? (
             <TableTrucks />
-          ) : showTrucks === false &&
-            showDrivers &&
-            showComplaints === false &&
-            showNeighborhoods === false ? (
-            "Poner sus componenetes de drivers"
-          ) : showTrucks === false &&
-            showDrivers === false &&
-            showComplaints &&
-            showNeighborhoods === false ? (
+          ) : showDrivers ? (
+            <TableUsers />
+          ) : showComplaints ? (
             "Componenete complaint"
           ) : showTrucks === false &&
             showDrivers === false &&
             showComplaints === false &&
             showNeighborhoods ? (
-            <>
               <TableNeighborhoods />
-            </>
-
           ) : (
-            "Cargando"
+            "cargando XD"
           )}
         </Grid>
       </Grid>
-      <Footer />
     </>
   );
 };
