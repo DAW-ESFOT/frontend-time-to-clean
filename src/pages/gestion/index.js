@@ -3,9 +3,10 @@ import { useRouter } from "next/router";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
 import { Grid, MenuList, MenuItem } from "@material-ui/core";
-import Footer from "@/components/Footer";
 import TableTrucks from "@/components/TableTrucks";
+import TableNeighborhoods from "@/components/TableNeighborhoods";
 import TableUsers from "@/components/TableUsers";
+
 
 const Management = () => {
   const [showTrucks, setShowTrucks] = useState(false);
@@ -61,8 +62,11 @@ const Management = () => {
             <TableUsers />
           ) : showComplaints ? (
             "Componenete complaint"
-          ) : showNeighborhoods ? (
-            "Complemento Neigborhoods"
+          ) : showTrucks === false &&
+            showDrivers === false &&
+            showComplaints === false &&
+            showNeighborhoods ? (
+              <TableNeighborhoods />
           ) : (
             "cargando XD"
           )}
