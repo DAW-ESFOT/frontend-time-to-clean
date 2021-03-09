@@ -1,5 +1,5 @@
 const publicRoutes = {
-  LOGIN: "/login",
+  LOGIN: "/iniciar-sesion",
   NEIGHBORHOODS: "/barrios",
   NEIGHBORHOODS_ID: "/barrios/:id",
   ABOUT: "/about",
