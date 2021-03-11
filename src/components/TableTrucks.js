@@ -72,12 +72,20 @@ const TableTrucks = () => {
   const [isDialogsVisibleAddTruck, setIsDialogsVisibleAddTruck] = useState(
     false
   );
+  const [
+    isDialogsVisibleDeleteTruck,
+    setIsDialogsVisibleDeleteTruck,
+  ] = useState(false);
 
-  console.log("data camiones", trucksData);
-  console.log("data barrio", neighborhoodsData);
+  //console.log("data camiones", trucksData);
+  //console.log("data barrio", neighborhoodsData);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+  };
+
+  const handleClickOpenAddTruck = () => {
+    setIsDialogsVisibleAddTruck(true);
   };
 
   const handleClickOpenEditTruck = (id) => {
@@ -85,42 +93,15 @@ const TableTrucks = () => {
     setValueIdTruck(id);
   };
 
-  const handleClickOpenAddTruck = () => {
-    setIsDialogsVisibleAddTruck(true);
-  };
-
   const handleClickDeleteTruck = async (id) => {
-    console.log("id a borrar", id);
-    try {
-      const response = await api.delete(`/trucks/${id}`);
-      console.log("rersponse delete truck", response);
-      console.log("correcto delete camion");
-      mutate();
-      return response;
-    } catch (error) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        alert(translateMessage(error.response.data.error));
-        console.log(error.response.data);
-        return Promise.reject(error.response);
-        // return error.response;
-      } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        console.log(error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log("Error", error.message);
-      }
-      console.log(error.config);
-    }
+    setIsDialogsVisibleDeleteTruck(true);
+    setValueIdTruck(id);
   };
 
   const handleClose = () => {
     setIsDialogsVisibleAddTruck(false);
     setIsDialogsVisibleEditTruck(false);
+    setIsDialogsVisibleDeleteTruck(false);
     mutate();
   };
 
@@ -253,7 +234,7 @@ const TableTrucks = () => {
         </DialogContent>
       </Dialog>
       <Dialog
-        open={isDialogsVisibleEditTruck}
+        open={isDialogsVisibleDeleteTruck}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
         disableBackdropClick={true}
