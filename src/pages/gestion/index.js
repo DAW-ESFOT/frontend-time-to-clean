@@ -7,7 +7,6 @@ import TableTrucks from "@/components/TableTrucks";
 import TableNeighborhoods from "@/components/TableNeighborhoods";
 import TableUsers from "@/components/TableUsers";
 
-
 const Management = () => {
   const [showTrucks, setShowTrucks] = useState(false);
   const [showDrivers, setShowDrivers] = useState(false);
@@ -66,7 +65,7 @@ const Management = () => {
             showDrivers === false &&
             showComplaints === false &&
             showNeighborhoods ? (
-              <TableNeighborhoods />
+            <TableNeighborhoods />
           ) : (
             "cargando XD"
           )}
