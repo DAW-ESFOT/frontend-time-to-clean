@@ -4,7 +4,6 @@ import {
     Grid,
     ListItem,
     ListItemAvatar,
-    Avatar,
     ListItemText,
     Divider,
     makeStyles
@@ -105,7 +104,6 @@ const Management = () => {
                             <ListItemText primary="Registro de Barrios y Frecuencias"/>
                         </ListItem>
                     </List>
-
                 </Grid>
                 <Grid xs={9} style={styles.container}>
                     {showTrucks ? (
