@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
-import { useRouter } from "next/router";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
-import SaveIcon from "@material-ui/icons/Save";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import { Link as MuiLink } from "@material-ui/core";
 import {
   Paper,
   TableRow,
@@ -19,20 +16,16 @@ import {
   Box,
   TablePagination,
   IconButton,
-  DialogActions,
   DialogTitle,
-  DialogContentText,
   DialogContent,
   Dialog,
-  TextField,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
 import PostAddIcon from "@material-ui/icons/PostAdd";
-import CancelIcon from "@material-ui/icons/Cancel";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import AddTruck from "@/components/AddTruck";
 import EditTruck from "@/components/EditTruck";
+import DeleteTruck from "@/components/DeleteTruck";
 import api from "@/lib/api";
 import translateMessage from "../constants/messages";
 
@@ -63,9 +56,15 @@ const useStyles = makeStyles({
 const TableTrucks = () => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
-  const { data, error } = useSWR(`/trucks?page=${page + 1}`, fetcher);
+  const { data: trucksData, error: error1, mutate } = useSWR(
+    `/trucks?page=${page + 1}`,
+    fetcher
+  );
+  const { data: neighborhoodsData, error: error2 } = useSWR(
+    `/neighborhoods/all`,
+    fetcher
+  );
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [changeData, setChangeData] = useState(false);
   const [valueIdTruck, setValueIdTruck] = useState(null);
   const [isDialogsVisibleEditTruck, setIsDialogsVisibleEditTruck] = useState(
     false
@@ -73,11 +72,20 @@ const TableTrucks = () => {
   const [isDialogsVisibleAddTruck, setIsDialogsVisibleAddTruck] = useState(
     false
   );
+  const [
+    isDialogsVisibleDeleteTruck,
+    setIsDialogsVisibleDeleteTruck,
+  ] = useState(false);
 
-  console.log("data camiones", data);
+  //console.log("data camiones", trucksData);
+  //console.log("data barrio", neighborhoodsData);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+  };
+
+  const handleClickOpenAddTruck = () => {
+    setIsDialogsVisibleAddTruck(true);
   };
 
   const handleClickOpenEditTruck = (id) => {
@@ -85,51 +93,20 @@ const TableTrucks = () => {
     setValueIdTruck(id);
   };
 
-  const handleClickOpenAddTruck = () => {
-    setIsDialogsVisibleAddTruck(true);
-  };
-
   const handleClickDeleteTruck = async (id) => {
-    console.log("id a borrar", id);
-    try {
-      const response = await api.delete(`/trucks/${id}`);
-      console.log("rersponse delete truck", response);
-      console.log("correcto delete camion");
-      return response;
-    } catch (error) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        alert(translateMessage(error.response.data.error));
-        console.log(error.response.data);
-        return Promise.reject(error.response);
-        // return error.response;
-      } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        console.log(error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log("Error", error.message);
-      }
-      console.log(error.config);
-    }
+    setIsDialogsVisibleDeleteTruck(true);
+    setValueIdTruck(id);
   };
 
   const handleClose = () => {
     setIsDialogsVisibleAddTruck(false);
     setIsDialogsVisibleEditTruck(false);
+    setIsDialogsVisibleDeleteTruck(false);
+    mutate();
   };
 
-  const handleChangeData = (id) => {
-    console.log("idcamion", id);
-    changeData ? setChangeData(false) : setChangeData(true);
-    3;
-  };
-
-  if (error) return <div>No se pudo cargar los camiones</div>;
-  if (!data) return <Loading />;
+  if (error1) return <div>No se pudo cargar los camiones</div>;
+  if (!trucksData) return <Loading />;
 
   return (
     <>
@@ -146,7 +123,7 @@ const TableTrucks = () => {
         </Button>
       </Box>
       <div>
-        {data ? (
+        {trucksData ? (
           <div>
             <TableContainer component={Paper}>
               <Table aria-label="customized table">
@@ -161,7 +138,7 @@ const TableTrucks = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data.data.map((truck) => (
+                  {trucksData.data.map((truck) => (
                     <StyledTableRow key={truck.id}>
                       <StyledTableCell align="center">
                         {truck.license_plate}
@@ -173,34 +150,27 @@ const TableTrucks = () => {
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         {truck.type}
-                        {changeData ? (
-                          <IconButton
-                            color="dark"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <ArrowDropDownIcon style={{ color: "black" }} />
-                          </IconButton>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {neighborhoodsData ? (
+                          <ul>
+                            {neighborhoodsData.data.map((neighborhood) =>
+                              neighborhood.truck === null ? (
+                                ""
+                              ) : neighborhood.truck.id === truck.id ? (
+                                <li>{neighborhood.name}</li>
+                              ) : (
+                                ""
+                              )
+                            )}
+                          </ul>
                         ) : (
-                          ""
+                          "Sin barrios"
                         )}
                       </StyledTableCell>
-                      <StyledTableCell align="center">barrios</StyledTableCell>
                       <StyledTableCell align="center">
                         {truck.working ? "Disponible" : "No Disponible"}
-                        {changeData ? (
-                          <IconButton
-                            color="dark"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <ArrowDropDownIcon style={{ color: "black" }} />
-                          </IconButton>
-                        ) : (
-                          ""
-                        )}
                       </StyledTableCell>
-
                       <StyledTableCell align="center">
                         <IconButton
                           color="secondary"
@@ -210,10 +180,12 @@ const TableTrucks = () => {
                         >
                           <BorderColorIcon />
                         </IconButton>
+
                         <IconButton
                           color="dark"
                           aria-label="upload picture"
                           component="span"
+                          disabled={truck.working}
                           onClick={() => handleClickDeleteTruck(truck.id)}
                         >
                           <DeleteIcon style={{ color: "black" }} />
@@ -227,7 +199,7 @@ const TableTrucks = () => {
             <TablePagination
               rowsPerPageOptions={[10]}
               component="div"
-              count={data.meta.total}
+              count={trucksData.meta.total}
               rowsPerPage={rowsPerPage}
               page={page}
               onChangePage={handleChangePage}
@@ -259,6 +231,17 @@ const TableTrucks = () => {
         </DialogTitle>
         <DialogContent>
           <EditTruck id={valueIdTruck} onCancel={handleClose} />
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={isDialogsVisibleDeleteTruck}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+        disableBackdropClick={true}
+      >
+        <DialogTitle id="form-dialog-title">Eliminar camión</DialogTitle>
+        <DialogContent>
+          <DeleteTruck id={valueIdTruck} onCancel={handleClose} />
         </DialogContent>
       </Dialog>
     </>
