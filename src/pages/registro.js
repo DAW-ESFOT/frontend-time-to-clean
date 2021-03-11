@@ -155,7 +155,6 @@ const Register = ()=>{
                                     inputRef={register}
                                     id="birthdate"
                                     label="Fecha de Nacimiento dd/mm/aa"
-                                    autoFocus
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
