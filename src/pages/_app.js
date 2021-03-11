@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import {AuthProvider} from "@/lib/auth";
 import Navigation from "@/components/Navigation";
 import Head from "next/head";
-import {Container, CssBaseline, Grid, ThemeProvider} from "@material-ui/core";
+import {CssBaseline, Grid, ThemeProvider} from "@material-ui/core";
 import theme from "@/styles/theme";
 import {Router} from "next/router";
 import NProgress from "nprogress";
