@@ -30,7 +30,7 @@ function App({Component, pageProps}) {
                 <link rel="icon" type="image/png" href="/trash-truck.png" sizes="16x16"/>
             </Head>
             <AuthProvider>
-                <ThemeProvider theme={theme}>
+                <ThemeProvider theme={theme} styl>
                     <CssBaseline/>
                     <Navigation/>
                     {/*<Container maxWidth="lg">*/}

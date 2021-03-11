@@ -4,7 +4,7 @@ import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
 import {withStyles, makeStyles} from "@material-ui/core/styles";
-import {Dialog, DialogContent, Link as MuiLink} from '@material-ui/core';
+import {Dialog, DialogContent} from '@material-ui/core';
 import {
     Paper,
     TableRow,
@@ -12,9 +12,10 @@ import {
     TableContainer,
     TableCell,
     TableBody,
-    Table, Button, Box, TablePagination, IconButton,
+    Table,
+    TablePagination,
+    IconButton,
 } from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import EditComplaint from "@/components/EditComplaint";
 
@@ -24,7 +25,7 @@ const StyledTableCell = withStyles((theme) => ({
         color: theme.palette.common.white,
     },
     body: {
-        fontSize: 14,
+        fontSize: 13,
     },
 }))(TableCell);
 
@@ -36,7 +37,7 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-const useStyles = makeStyles((theme)=>({
+const useStyles = makeStyles((theme) => ({
     table: {
         minWidth: 600,
     },
@@ -76,8 +77,7 @@ const TableComplaints = () => {
 
     return (
         <>
-            <h1 align="center">Gestión de quejas</h1>
-            <p>Registro de quejas</p>
+            <h1> Gestión de quejas</h1>
             <div>
                 {
                     data ?
@@ -111,10 +111,10 @@ const TableComplaints = () => {
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
                                                     <IconButton
-                                                         onClick={ ()=>handleOpenEditComplaint( Complaint.id) }
+                                                        onClick={() => handleOpenEditComplaint(Complaint.id)}
                                                         color="secondary"
                                                         aria-label="upload picture"
-                                                                component="span">
+                                                        component="span">
                                                         <BorderColorIcon/>
                                                     </IconButton>
                                                 </StyledTableCell>
@@ -138,11 +138,11 @@ const TableComplaints = () => {
 
 
                 <div>
-                    <Dialog onClose={handleCloseEditComplaint}  open={openEditComplaint} >
+                    <Dialog onClose={handleCloseEditComplaint} open={openEditComplaint}>
                         <DialogContent dividers>
                             <EditComplaint
                                 id={ComplaintId}
-                                onHandleCloseModal={ handleCloseEditComplaint }/>
+                                onHandleCloseModal={handleCloseEditComplaint}/>
                         </DialogContent>
                     </Dialog>
                 </div>
