@@ -2,7 +2,6 @@ import React from 'react';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
 import Routes from "../constants/routes";
 import {ButtonBase, Icon, Paper} from "@material-ui/core";
 
@@ -14,7 +13,7 @@ const styles = {
         flexDirection: 'column',
         alignItems: 'center',
         color: 'white'
-    }
+    },
 };
 
 const useStyles = makeStyles((theme) => ({
