@@ -86,10 +86,10 @@ const TableComplaints = () => {
                                 <Table aria-label="customized table">
                                     <TableHead>
                                         <TableRow>
-                                            <StyledTableCell align="center">Barrio</StyledTableCell>
-                                            <StyledTableCell align="center">Ubicación en mapa</StyledTableCell>
-                                            <StyledTableCell align="center">horario</StyledTableCell>
-                                            <StyledTableCell align="center">Dias asignados</StyledTableCell>
+                                            <StyledTableCell align="center">Queja</StyledTableCell>
+                                            <StyledTableCell align="center">Remitente</StyledTableCell>
+                                            <StyledTableCell align="center">Estado</StyledTableCell>
+                                            <StyledTableCell align="center">Observación</StyledTableCell>
                                             <StyledTableCell align="center">Opción</StyledTableCell>
                                         </TableRow>
                                     </TableHead>
@@ -97,20 +97,17 @@ const TableComplaints = () => {
                                         {data.data.map((Complaint) => (
                                             <StyledTableRow key={Complaint.id}>
                                                 <StyledTableCell align="center">
-                                                    {Complaint.name}
+                                                    {Complaint.complaint}
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
-                                                    <MuiLink href={Complaint.link}
-                                                             target={"_blank"}
-                                                             color="secondary">
-                                                        Ver mapa
-                                                    </MuiLink>
+                                                    {Complaint.username}
+                                                    {Complaint.email}
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
-                                                    {Complaint.start_time} - {Complaint.end_time}
+                                                    {Complaint.state}
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
-                                                    {Complaint.days}
+                                                    {Complaint.observation}
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
                                                     <IconButton
@@ -119,10 +116,6 @@ const TableComplaints = () => {
                                                         aria-label="upload picture"
                                                                 component="span">
                                                         <BorderColorIcon/>
-                                                    </IconButton>
-                                                    <IconButton color="dark" aria-label="upload picture"
-                                                                component="span">
-                                                        <DeleteIcon style={{color: "black"}}/>
                                                     </IconButton>
                                                 </StyledTableCell>
                                             </StyledTableRow>

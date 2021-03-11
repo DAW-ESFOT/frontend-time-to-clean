@@ -61,10 +61,11 @@ const Management = () => {
     const styles = {
         container: {
             backgroundRepeat: "no-repeat",
-            backgroundPosition: "center top",
+            backgroundPosition: "center center",
             backgroundSize: "cover",
             backgroundAttachment: "fixed",
             backgroundImage: `url(${"/fondo-gestion.png"})`,
+            backgroundColor: 'rgba(35,96,132,0.8)',
             padding: '40px'
         }
     };
