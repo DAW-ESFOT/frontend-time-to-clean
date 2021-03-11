@@ -13,17 +13,15 @@ import {
     TableContainer,
     TableCell,
     TableBody,
-    Table,
+    Table, TablePagination,
 } from "@material-ui/core";
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import DeleteIcon from '@material-ui/icons/Delete';
-import TableUsersTrucks from "@/components/TableUsersTrucks";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-
 import Routes from "../constants/routes";
-import Modal from '@material-ui/core/Modal';
+
 
 function rand() {
     return Math.round(Math.random() * 20) - 10;
@@ -54,9 +52,10 @@ const StyledTableRow = withStyles((theme) => ({
 const TableUsers = () => {
     const router = useRouter();
     const classes = useStyles();
-    const { data, error } = useSWR(`/trucks/filter/with-drivers`, fetcher);
+    const { data, error } = useSWR(`/users?page=${page + 1}`, fetcher);
     const [modalStyle] = React.useState(getModalStyle);
-    const [open, setOpen] = React.useState(false);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
     if (error) return <div>No se pudo cargar los conductores</div>;
     if (!data) return <Loading />;
     function getModalStyle() {
@@ -78,12 +77,9 @@ const TableUsers = () => {
         </div>
     );
     console.log("data usuarios",data);
-    const handleOpen = () => {
-        setOpen(true);
-    };
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
     };
 
     return (
@@ -113,40 +109,39 @@ const TableUsers = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.data.map((truck) => (
-                            <StyledTableRow key={truck.user.id}>
+                        {data.data.map((user) => (
+                            <StyledTableRow key={user.id}>
                                 <StyledTableCell align="center">
-                                    {truck.user.name} {truck.user.lastname}
+                                    {user.name} {user.lastname}
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    {truck.user.email}
+                                    {user.email}
                                 </StyledTableCell>
-                                <StyledTableCell align="center">{truck.user.cellphone}</StyledTableCell>
+                                <StyledTableCell align="center">{user.cellphone}</StyledTableCell>
                                 <StyledTableCell align="center">
-                                    {truck.license_plate === null ? "Sin camion" : truck.license_plate}
-                                </StyledTableCell>
-                                <StyledTableCell align="center">
-                                    {truck.user.type}
+                                    {user.truck === null ? "Sin camion" : user.truck}
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    <BorderColorIcon  style={{ color: cyan[700] }} onClick={handleOpen}/>
-
+                                    {user.type}
+                                </StyledTableCell>
+                                <StyledTableCell align="center">
+                                    <BorderColorIcon  style={{ color: cyan[700] }}/>
                                     <DeleteIcon />
                                 </StyledTableCell>
                             </StyledTableRow>
                         ))}
                     </TableBody>
-                    <TableUsersTrucks/>
                 </Table>
             </TableContainer>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-                {body}
-            </Modal>
+            <TablePagination
+                rowsPerPageOptions={[10]}
+                component="div"
+                count={data.meta.total}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onChangePage={handleChangePage}
+            />
+
         </>
     );
 };
