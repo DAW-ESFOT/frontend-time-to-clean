@@ -112,6 +112,7 @@ const Register = ()=>{
                                     name="name"
                                     variant="outlined"
                                     required
+                                    color="secondary"
                                     inputRef={register}
                                     fullWidth
                                     id="firstName"
@@ -125,6 +126,7 @@ const Register = ()=>{
                                     required
                                     fullWidth
                                     id="lastname"
+                                    color="secondary"
                                     inputRef={register}
                                     label="Apellido"
                                     name="lastname"
@@ -136,6 +138,7 @@ const Register = ()=>{
                                     required
                                     fullWidth
                                     id="email"
+                                    color="secondary"
                                     inputRef={register}
                                     label="Correo Electronico"
                                     name="email"
@@ -148,10 +151,10 @@ const Register = ()=>{
                                     variant="outlined"
                                     required
                                     fullWidth
+                                    color="secondary"
                                     inputRef={register}
                                     id="birthdate"
-                                    label="Fecha de Nacimiento"
-                                    type="date"
+                                    label="Fecha de Nacimiento dd/mm/aa"
                                     autoFocus
                                 />
                             </Grid>
@@ -160,6 +163,7 @@ const Register = ()=>{
                                     variant="outlined"
                                     required
                                     fullWidth
+                                    color="secondary"
                                     inputRef={register}
                                     id="cellphone"
                                     label="Celular"
@@ -189,6 +193,7 @@ const Register = ()=>{
                                     name="password"
                                     inputRef={register}
                                     label="Contraseña"
+                                    color="secondary"
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
@@ -202,6 +207,7 @@ const Register = ()=>{
                                     name="password_confirmation"
                                     type="password"
                                     label="Confirmar clave"
+                                    color="secondary"
                                     inputRef={register}
                                     autoComplete="current-password"
                                     error={!!errors.password_confirmation}
