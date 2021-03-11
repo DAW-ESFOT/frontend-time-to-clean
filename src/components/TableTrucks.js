@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 import Loading from "@/components/Loading";
@@ -26,8 +26,6 @@ import PostAddIcon from "@material-ui/icons/PostAdd";
 import AddTruck from "@/components/AddTruck";
 import EditTruck from "@/components/EditTruck";
 import DeleteTruck from "@/components/DeleteTruck";
-import api from "@/lib/api";
-import translateMessage from "../constants/messages";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -165,7 +163,7 @@ const TableTrucks = () => {
                             )}
                           </ul>
                         ) : (
-                          "Sin barrios"
+                          ""
                         )}
                       </StyledTableCell>
                       <StyledTableCell align="center">
@@ -188,7 +186,9 @@ const TableTrucks = () => {
                           disabled={truck.working}
                           onClick={() => handleClickDeleteTruck(truck.id)}
                         >
-                          <DeleteIcon style={{ color: "black" }} />
+                          <DeleteIcon
+                            style={{ color: truck.working ? "black" : "red" }}
+                          />
                         </IconButton>
                       </StyledTableCell>
                     </StyledTableRow>
@@ -209,6 +209,7 @@ const TableTrucks = () => {
           <Loading />
         )}
       </div>
+
       <Dialog
         open={isDialogsVisibleAddTruck}
         onClose={handleClose}
@@ -220,6 +221,7 @@ const TableTrucks = () => {
           <AddTruck onCancel={handleClose} />
         </DialogContent>
       </Dialog>
+
       <Dialog
         open={isDialogsVisibleEditTruck}
         onClose={handleClose}
@@ -233,6 +235,7 @@ const TableTrucks = () => {
           <EditTruck id={valueIdTruck} onCancel={handleClose} />
         </DialogContent>
       </Dialog>
+
       <Dialog
         open={isDialogsVisibleDeleteTruck}
         onClose={handleClose}

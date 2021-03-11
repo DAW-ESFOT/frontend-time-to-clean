@@ -15,7 +15,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import api from "@/lib/api";
 import translateMessage from "../constants/messages";
-import { Alert, AlertTitle } from "@material-ui/lab";
 import Box from "@material-ui/core/Box";
 
 const BootstrapInput = withStyles((theme) => ({
@@ -97,17 +96,17 @@ const schema = yup.object().shape({});
 
 const AddTruck = (props) => {
   const classes = useStyles();
-  const { register, handleSubmit, control, errors } = useForm();
+  const { register, handleSubmit } = useForm();
   const [name, setName] = useState("");
 
   const onSubmit = async (data) => {
-    console.log("data enviar", data);
+    //console.log("data enviar", data);
     const truckData = { ...data, working: true, user_id: null, type: name };
-    console.log("truckData", truckData);
+    //console.log("truckData", truckData);
     try {
       const response = await api.post("/trucks", truckData);
-      console.log("rersponse post truck", response);
-      console.log("correcto post camion");
+      //console.log("rersponse post truck", response);
+      //console.log("correcto post camion");
       props.onCancel();
       return response;
     } catch (error) {
