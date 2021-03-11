@@ -1,29 +1,12 @@
-import React, { useEffect, useState } from "react";
-import useSWR from "swr";
-import { fetcher } from "@/lib/utils";
-import { useRouter } from "next/router";
-import Loading from "@/components/Loading";
+import React, { useState } from "react";
 import withAuth from "@/hocs/withAuth";
-import { useAuth } from "@/lib/auth";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import {
-  Paper,
   Button,
   Grid,
-  Card,
-  CardActions,
-  Checkbox,
-  Divider,
-  FormControlLabel,
-  FormGroup,
-  FormHelperText,
-  FormLabel,
-  Radio,
-  RadioGroup,
   TextField,
   FormControl,
   MenuItem,
-  select,
   Select,
   InputBase,
 } from "@material-ui/core";
@@ -33,6 +16,43 @@ import * as yup from "yup";
 import api from "@/lib/api";
 import translateMessage from "../constants/messages";
 import { Alert, AlertTitle } from "@material-ui/lab";
+import Box from "@material-ui/core/Box";
+
+const BootstrapInput = withStyles((theme) => ({
+  root: {
+    "label + &": {
+      marginTop: theme.spacing(3),
+    },
+  },
+  input: {
+    borderRadius: 4,
+    position: "relative",
+    backgroundColor: theme.palette.background.paper,
+    border: "1px solid #ced4da",
+    fontSize: 16,
+    width: 200,
+    padding: "10px 26px 10px 12px",
+    transition: theme.transitions.create(["border-color", "box-shadow"]),
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+    "&:focus": {
+      borderRadius: 4,
+      borderColor: "#80bdff",
+      boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
+    },
+  },
+}))(InputBase);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,8 +84,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(3, 2, 2),
     backgroundColor: theme.palette.secondary.main,
+  },
+  button: {
+    margin: theme.spacing(3, 2, 2),
+    backgroundColor: theme.palette.cancel.main,
   },
 }));
 
@@ -78,12 +102,13 @@ const AddTruck = (props) => {
 
   const onSubmit = async (data) => {
     console.log("data enviar", data);
-    const truckData = { ...data, working: true, user_id: null };
+    const truckData = { ...data, working: true, user_id: null, type: name };
     console.log("truckData", truckData);
     try {
       const response = await api.post("/trucks", truckData);
       console.log("rersponse post truck", response);
       console.log("correcto post camion");
+      props.onCancel();
       return response;
     } catch (error) {
       if (error.response) {
@@ -106,6 +131,10 @@ const AddTruck = (props) => {
     }
   };
 
+  const handleChange = (event) => {
+    setName(event.target.value);
+  };
+
   return (
     <>
       <div>
@@ -120,22 +149,38 @@ const AddTruck = (props) => {
               <TextField
                 id="license_plate"
                 name="license_plate"
-                label="Placa del Camión"
+                label="Placa del Camión (???-####)"
                 variant="outlined"
                 color="secondary"
                 margin="normal"
                 inputRef={register}
               />
-
-              <select id="type" name="type" ref={register}>
-                <option value="Automático">Automático</option>
-                <option value="Manual">Manual</option>
-              </select>
+              <div>Escoja el tipo de camión</div>
+              <FormControl className={classes.margin}>
+                <Select
+                  value={name}
+                  onChange={handleChange}
+                  input={
+                    <BootstrapInput
+                      name="neighborhood"
+                      id="age-customized-select"
+                    />
+                  }
+                >
+                  <MenuItem value="">Seleccione el Barrio</MenuItem>
+                  <MenuItem value="Manual" key={1}>
+                    Manual
+                  </MenuItem>
+                  <MenuItem value="Automático" key={2}>
+                    Automático
+                  </MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
-            <Grid xs={6} spacing={2}>
+            <Box display="flex" justifyContent="center" m={1} p={1}>
               <Button
-                onSubmit={handleSubmit(onSubmit)}
-                onClick={props.onCancel}
+                //onSubmit={handleSubmit(onSubmit)}
+                //onClick={props.onCancel}
                 type="submit"
                 variant="contained"
                 color="primary"
@@ -143,12 +188,14 @@ const AddTruck = (props) => {
               >
                 Crear
               </Button>
-            </Grid>
-            <Grid xs={6} spacing={2}>
-              <Button onClick={props.onCancel} variant="contained">
+              <Button
+                onClick={props.onCancel}
+                variant="contained"
+                className={classes.button}
+              >
                 Cancelar
               </Button>
-            </Grid>
+            </Box>
           </Grid>
         </form>
       </div>
