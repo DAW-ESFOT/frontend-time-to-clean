@@ -2,13 +2,13 @@ import "@/styles/globals.css";
 import {AuthProvider} from "@/lib/auth";
 import Navigation from "@/components/Navigation";
 import Head from "next/head";
-import {Container, CssBaseline, Grid, ThemeProvider} from "@material-ui/core";
+import {CssBaseline, Grid, ThemeProvider} from "@material-ui/core";
 import theme from "@/styles/theme";
 import {Router} from "next/router";
 import NProgress from "nprogress";
 import Footer from "@/components/Footer";
 import React from "react";
-import { SnackbarProvider } from 'notistack';
+import {SnackbarProvider} from 'notistack';
 
 Router.events.on("routeChangeStart", (url) => {
     console.log(`Loading: ${url}`);

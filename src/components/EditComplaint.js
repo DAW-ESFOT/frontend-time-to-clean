@@ -18,16 +18,16 @@ const useStyles = makeStyles({
 
 const EditComplaint = ( props ) => {
 
-    const { data, error } = useSWR(`/Complaints/${props.id}`, fetcher);
+    const { data, error } = useSWR(`/complaints/${props.id}`, fetcher);
 
-    if (error) return <div>No se pudo cargar el barrio</div>;
+    if (error) return <div>No se pudo cargar queja</div>;
     if (!data) return <Loading />;
 
     console.log("Id del barrio", props.id);
 
     return (
         <>
-            <div>Edición de un barrio</div>
+            <div>Edición</div>
             <Button color="secondary">Agregar</Button>
             <Button onClick={props.onHandleCloseModal } color="secondary">
                 Cancelar
