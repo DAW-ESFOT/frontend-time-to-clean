@@ -1,20 +1,26 @@
-import React, {useEffect, useState} from "react";
-import Routes from "../../constants/routes";
-import Link from "next/link";
+import React, {useState} from 'react';
+import useSWR from "swr";
+import {fetcher} from "@/lib/utils";
+import Loading from "../../components/Loading";
+import FormControl from "@material-ui/core/FormControl";
 import {
-    Box,
-    Button, Divider,
-    FormControl,
-    InputBase, ListItem, ListItemAvatar, ListItemText, makeStyles,
+    Box, Divider,
+    InputBase,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    makeStyles,
     MenuItem,
-    Select,
-    withStyles
+    Select, Typography, withStyles
 } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Link from "next/link";
 import PlaceIcon from '@material-ui/icons/Place';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
+import Routes from "../../constants/routes";
+
 
 const BootstrapInput = withStyles(theme => ({
     root: {
@@ -31,7 +37,7 @@ const BootstrapInput = withStyles(theme => ({
         width: 200,
         padding: '10px 26px 10px 12px',
         transition: theme.transitions.create(['border-color', 'box-shadow']),
-        // Use the system font instead of the default Roboto font.
+
         fontFamily: [
             '-apple-system',
             'BlinkMacSystemFont',
@@ -67,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
         flexWrap: 'wrap',
     },
     margin: {
-        margin: theme.spacing.unit,
+        margin: theme.spacing(1),
     },
     bootstrapFormLabel: {
         fontSize: 18,
@@ -83,10 +89,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
-const Neighborhoods = ({neighborhoods}) => {
+const Neighborhoods = () => {
 
     const classes = useStyles();
+    const {data, error} = useSWR(`/neighborhoods/all`, fetcher);
     const [name, setName] = useState("");
     const [neighborhoodID, setNeighborhoodID] = useState([{
         id: "",
@@ -97,29 +103,21 @@ const Neighborhoods = ({neighborhoods}) => {
         link: ""
     }]);
 
+    if (error) return <div>No se pudo cargar la informacion de los usuarios</div>;
+    if (!data) return <Loading/>;
+
     const handleChange = event => {
         setName(event.target.value);
+        setNeighborhoodID({
+            ...neighborhoodID,
+            id: event.target.value.id,
+            name: event.target.value.name,
+            start_time: event.target.value.start_time,
+            end_time: event.target.value.end_time,
+            days: event.target.value.days,
+            link: event.target.value.link
+        });
     };
-
-
-    useEffect(() => {
-        {
-            neighborhoods.map((neighborhood, key) => {
-                if (neighborhood.name === name) {
-                    setNeighborhoodID({
-                        ...neighborhoodID,
-                        id: neighborhood.id,
-                        name: neighborhood.name,
-                        start_time: neighborhood.start_time,
-                        end_time: neighborhood.end_time,
-                        days: neighborhood.days,
-                        link: neighborhood.link
-                    });
-                }
-            })
-        }
-        ;
-    }, [name]);
 
 
     return (
@@ -131,8 +129,8 @@ const Neighborhoods = ({neighborhoods}) => {
                     </Box>
                     <p>Seleccione el barrio que desee consultar sus horarios</p>
                 </div>
-                <form className={classes.root} autoComplete="off">
 
+                <form className={classes.root} autoComplete="off">
                     <FormControl className={classes.margin}>
                         <Select
                             value={name}
@@ -142,11 +140,16 @@ const Neighborhoods = ({neighborhoods}) => {
                             <MenuItem value="">
                                 Seleccione el Barrio
                             </MenuItem>
-                            {neighborhoods.map((neighborhood) => (
-                                <MenuItem value={neighborhood.name} key={neighborhood.id}>
-                                    {neighborhood.name}
-                                </MenuItem>
-                            ))}
+                            {
+                                data.data.map((neighborhood) => {
+                                        return (
+                                            <MenuItem value={neighborhood} key={neighborhood.id}>
+                                                {neighborhood.name}
+                                            </MenuItem>
+                                        )
+                                    }
+                                )
+                            }
                         </Select>
                     </FormControl>
                 </form>
@@ -223,7 +226,6 @@ const Neighborhoods = ({neighborhoods}) => {
                                 Ir a Google Maps
                             </Button>
                         </div>
-
                         :
                         <div>
                             <Box display="flex" justifyContent="center" m={1} p={1}>
@@ -232,6 +234,7 @@ const Neighborhoods = ({neighborhoods}) => {
                         </div>
                 }
 
+
                 <div>
                     <Box display="flex" justifyContent="center" m={1} p={1}>
                         <Link href={Routes.HOME}>
@@ -239,24 +242,15 @@ const Neighborhoods = ({neighborhoods}) => {
                                 Menú Principal
                             </Button>
                         </Link>
+
                     </Box>
                 </div>
+
+
             </div>
         </>
+
     );
 };
 
 export default Neighborhoods;
-
-export async function getStaticProps() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/neighborhoods`);
-    const data = await res.json();
-
-    const neighborhoods = data.data;
-
-    return {
-        props: {
-            neighborhoods,
-        },
-    };
-}

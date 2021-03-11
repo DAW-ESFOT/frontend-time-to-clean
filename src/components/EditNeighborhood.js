@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import useSWR from "swr";
-import { fetcher } from "@/lib/utils";
+import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import {withStyles, makeStyles} from "@material-ui/core/styles";
 
 import {
     Button,
@@ -16,20 +16,25 @@ const useStyles = makeStyles({
     },
 });
 
-const EditNeighborhood = ( props ) => {
+const EditNeighborhood = (props) => {
 
-    const { data, error } = useSWR(`/neighborhoods/${props.id}`, fetcher);
+    const {data, error} = useSWR(`/neighborhoods/${props.id}`, fetcher);
 
     if (error) return <div>No se pudo cargar el barrio</div>;
-    if (!data) return <Loading />;
+    if (!data) return <Loading/>;
 
     console.log("Id del barrio", props.id);
+    console.log("data", data);
 
     return (
         <>
-            <div>Edición de un barrio</div>
+            <div>
+                <h1>
+                    Edición del barrio {data.name}
+                </h1>
+            </div>
             <Button color="secondary">Agregar</Button>
-            <Button onClick={props.onHandleCloseModal } color="secondary">
+            <Button onClick={props.onHandleCloseModal} color="secondary">
                 Cancelar
             </Button>
         </>
