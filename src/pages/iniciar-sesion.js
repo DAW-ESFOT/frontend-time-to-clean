@@ -116,7 +116,8 @@ const login = () => {
                                 required
                                 fullWidth
                                 autoComplete="email"
-                                //autoFocus
+                                color="secondary"
+                                autoFocus
                                 error={!!errors.email}
                                 helperText={errors.email?.message}
                             />
@@ -128,6 +129,7 @@ const login = () => {
                                 fullWidth
                                 name="password"
                                 label="Contraseña"
+                                color="secondary"
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
