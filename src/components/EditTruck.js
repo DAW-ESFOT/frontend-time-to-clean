@@ -118,7 +118,7 @@ const EditTruck = (props) => {
   const classes = useStyles();
 
   const [name, setName] = useState("");
-  const { register, handleSubmit, control, errors } = useForm();
+  const { register, handleSubmit } = useForm();
   const { data: truckData, error: error1 } = useSWR(
     `/trucks/${props.id}`,
     fetcher
