@@ -7,9 +7,10 @@ import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
+import process from "process";
 import Image from "next/image";
-import {InputBase, MenuItem, Select, withStyles} from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
+import api from "@/lib/api";
+import translateMessage from "../constants/messages";
 import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
@@ -21,43 +22,6 @@ const schema = yup.object().shape({
         .required("Ingresa tu correo electrónico"),
 });
 
-
-const BootstrapInput = withStyles(theme => ({
-    root: {
-        'label + &': {
-            marginTop: theme.spacing(3),
-        },
-    },
-    input: {
-        borderRadius: 4,
-        position: 'relative',
-        backgroundColor: theme.palette.background.paper,
-        border: '1px solid #ced4da',
-        fontSize: 14,
-        width: 400,
-        padding: '10px 26px 10px 12px',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-
-        fontFamily: [
-            '-apple-system',
-            'BlinkMacSystemFont',
-            '"Segoe UI"',
-            'Roboto',
-            '"Helvetica Neue"',
-            'Arial',
-            'sans-serif',
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"',
-        ].join(','),
-        '&:focus': {
-            borderRadius: 4,
-            borderColor: '#80bdff',
-            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-        },
-    },
-
-}))(InputBase);
 const useStyles = makeStyles((theme) => ({
 
     container: {
@@ -87,18 +51,39 @@ const FormSection = () => {
         resolver: yupResolver(schema),
     });
     const classes = useStyles();
-    const {data, error} = useSWR(`/neighborhoods/all`, fetcher);
-    const [name, setName] = useState("");
 
-    if (error) return <div>No se pudieron cargar</div>;
+    const [neighborhood, setNeighborhood] = useState("");
+    const [id, setId] = useState("");
+    const {data, error} = useSWR(`/neighborhoods/all`, fetcher);
+    if (error) return <div>No se pudieron cargar los barrios</div>;
     if (!data) return <Loading/>;
 
+    console.log("data", data)
+
     const onSubmit = async (data) => {
-        console.log("data", data);
+        const complaintData = {...data, neighborhood_id: id}
+        console.log("Data para enviar:", complaintData);
+        try {
+            const response = await api.post(`/complaints`, complaintData);
+            console.log("Response postComplaint:", response);
+            return response;
+        } catch (error) {
+            if (error.response) {
+                console.log("error", error.response.data.errors);
+                Error(error.response.data.errors)
+                return Promise.reject(error.response);
+            } else if (error.request) {
+                console.log(error.request);
+            } else {
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
+        }
     };
-    const handleChange = event => {
-        setName(event.target.value);
-    }
+
+    const handleChange = (event) => {
+        setId(event.target.value);
+    };
 
     return (
         <>
@@ -118,12 +103,12 @@ const FormSection = () => {
                                     <TextField
                                         className={classes.margin}
                                         autoComplete="name"
-                                        name="name"
+                                        name="username"
                                         variant="outlined"
                                         required
                                         inputRef={register}
                                         fullWidth
-                                        id="firstName"
+                                        id="name"
                                         label="Nombre"
                                         autoFocus
                                     />
@@ -142,27 +127,29 @@ const FormSection = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <FormControl className={classes.margin}>
-                                        <Select
-                                            value={name}
-                                            onChange={handleChange}
-                                            input={<BootstrapInput name="neighborhood" id="age-customized-select"/>}
-                                        >
-                                            <MenuItem value="">
-                                                Seleccione el Barrio
-                                            </MenuItem>
-                                            {
-                                                data.data.map((neighborhood) => {
-                                                        return (
-                                                            <MenuItem value={neighborhood} key={neighborhood.id}>
-                                                                {neighborhood.name}
-                                                            </MenuItem>
-                                                        )
-                                                    }
-                                                )
-                                            }
-                                        </Select>
-                                    </FormControl>
+                                    <TextField
+                                        id="outlined-select-currency-native"
+                                        select
+                                        label="Barrio"
+                                        required
+                                        value={neighborhood}
+                                        onChange={handleChange}
+                                        SelectProps={{
+                                            native: true,
+                                        }}
+                                        helperText="Por favor selecciona un barrio de la lista"
+                                        variant="outlined"
+                                    >
+                                        {
+                                            data.data.map((neighborhood) => {
+                                                return (
+                                                    <option key={neighborhood.id} value={neighborhood.id}>
+                                                        {neighborhood.name}
+                                                    </option>
+                                                );
+                                            })
+                                        }
+                                    </TextField>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
@@ -198,7 +185,6 @@ const FormSection = () => {
         </>
     );
 }
-
 
 export default FormSection;
 
