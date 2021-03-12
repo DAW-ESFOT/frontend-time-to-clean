@@ -5,6 +5,7 @@ import { fetcher } from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
 import {  makeStyles } from "@material-ui/core/styles";
+import {useSnackbar} from "notistack";
 import {
     FormControl,
     Button,
@@ -29,23 +30,10 @@ const useStyles = makeStyles((theme) => ({
         height: 140,
         width: 100,
     },
-    control: {
-        padding: theme.spacing(2),
-    },
     root2: {
         minWidth: 275,
     },
-    bullet: {
-        display: "inline-block",
-        margin: "0 2px",
-        transform: "scale(0.8)",
-    },
-    title: {
-        fontSize: 14,
-    },
-    pos: {
-        marginBottom: 12,
-    },
+
     form: {
         width: "100%", // Fix IE 11 issue.
         marginTop: theme.spacing(1),
@@ -112,7 +100,6 @@ function StyledRadio(props) {
 
 const EditUser = (props) => {
     const classes = useStyles();
-    const [name, setName] = useState("");
     const { register, handleSubmit} = useForm();
     const { data: userData, error: error1 } = useSWR(
         `/users/${props.id}`,
@@ -126,7 +113,16 @@ const EditUser = (props) => {
 
     if (error1) return <div>No se pudo cargar el usuario</div>;
     if (!userData) return <Loading />;
-
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const handleClick = (message, variant) => {
+        enqueueSnackbar(message, {
+            variant: variant,
+            anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'center',
+            },
+        });
+    }
     const onSubmit = async (data) => {
         console.log("data enviar", data);
 
@@ -140,6 +136,7 @@ const EditUser = (props) => {
         console.log("userData1", userData1);
         try {
             const response = await api.put(`/users/${userData.id}`, userData1);
+            handleClick("Se ha actualizado con éxito el usuario", "success");
             console.log("rersponse put usuario", response);
             console.log("correcto put usuario");
             props.onCancel();

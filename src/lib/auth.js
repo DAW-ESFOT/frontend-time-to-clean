@@ -97,15 +97,10 @@ function useAuthProvider() {
         } catch (error) {}
     }
 
-    // const sendPasswordResetEmail = (email) => {
-    //   return firebase
-    //     .auth()
-    //     .sendPasswordResetEmail(email)
-    //     .then(() => {
-    //       return true;
-    //     });
-    // };
-    //
+     const sendPasswordResetEmail = async (email) => {
+        await api.post("forgot-password",{email});
+     };
+
     // const confirmPasswordReset = (password, code) => {
     //   const resetCode = code || getFromQueryString('oobCode');
     //

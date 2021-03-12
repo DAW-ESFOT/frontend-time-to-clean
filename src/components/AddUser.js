@@ -1,7 +1,6 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
 import withAuth from "../hocs/withAuth";
-import {useAuth} from "../lib/auth";
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -15,6 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import api from "@/lib/api";
+import {useSnackbar} from "notistack";
 const schema = yup.object().shape({
     email: yup
         .string()
@@ -39,10 +39,6 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         minWidth: 220,
     },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
@@ -59,10 +55,20 @@ const useStyles = makeStyles((theme) => ({
 
 const Register = (props)=>{
     const [valSelect, setValSelect] = React.useState('');
-    const {register: doRegister}=useAuth();
     const { register, handleSubmit, errors } = useForm({
         resolver: yupResolver(schema),
     });
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const handleClick = (message, variant) => {
+        enqueueSnackbar(message, {
+            variant: variant,
+            anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'center',
+            },
+        });
+    }
+
     const classes = useStyles();
     const onSubmit=async (data)=>{
         console.log("data enviar", data);
@@ -70,6 +76,7 @@ const Register = (props)=>{
         console.log("userData", userData);
         try {
             const response = await api.post("/register", userData);
+            handleClick("Se ha registrado con éxito el usuario", "success");
             console.log("rersponse post users", response);
             console.log("correcto post usuarios");
             props.onCancel();
@@ -80,6 +87,7 @@ const Register = (props)=>{
                 // that falls out of the range of 2xx
                 alert(error.response.data.error);
                 console.log(error.response.data);
+                Error(error.response.data.errors)
                 //d
             } else if (error.request) {
                 // The request was made but no response was received

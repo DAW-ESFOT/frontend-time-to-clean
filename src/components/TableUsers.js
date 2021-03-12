@@ -4,7 +4,6 @@ import { fetcher } from "@/lib/utils";
 import { useRouter } from "next/router";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
-import { cyan } from '@material-ui/core/colors';
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import {
     Paper,
@@ -20,10 +19,6 @@ import BorderColorIcon from '@material-ui/icons/BorderColor';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import Routes from "../constants/routes";
-import AddTruck from "@/components/AddTruck";
-import EditTruck from "@/components/EditTruck";
-import DeleteTruck from "@/components/DeleteTruck";
 import AddUser from "@/components/AddUser";
 import EditUser from "@/components/EditUser";
 import DeleteUser from "@/components/DeleteUser";
@@ -35,6 +30,9 @@ function rand() {
 const useStyles = makeStyles({
     table: {
         minWidth: 600,
+    },
+    margin: {
+        backgroundColor: "#F5F5F5",
     },
 });
 const StyledTableCell = withStyles((theme) => ({
@@ -172,6 +170,7 @@ const TableUsers = () => {
                         count={data.meta.total}
                         rowsPerPage={rowsPerPage}
                         page={page}
+                        className={classes.margin}
                         onChangePage={handleChangePage}
                     />
             <Dialog
