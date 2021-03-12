@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
 import {withStyles, makeStyles} from "@material-ui/core/styles";
-import {Dialog, DialogContent, DialogTitle, Link as MuiLink, TextField} from '@material-ui/core';
+import {Dialog, DialogContent, Link as MuiLink} from '@material-ui/core';
 import {
     Paper,
     TableRow,
@@ -20,7 +20,7 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import AddNeighborhood from "@/components/AddNeighborhood";
 import EditNeighborhood from "@/components/EditNeighborhood";
 import api from "@/lib/api";
-import translateMessage from "../constants/messages";
+import {useSnackbar} from "notistack";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -40,19 +40,9 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-const useStyles = makeStyles((theme)=>({
-    table: {
-        minWidth: 600,
-    },
-    textField: {
-        width: '100%',
-    }
-}));
-
 
 const TableNeighborhoods = () => {
 
-    const classes = useStyles();
     const [page, setPage] = useState(0);
     const {data, error, mutate} = useSWR(`/neighborhoods?page=${page + 1}`, fetcher);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -61,16 +51,11 @@ const TableNeighborhoods = () => {
     const [openEditNeighborhood, setOpenEditNeighborhood] = useState(false);
 
 
-    console.log("data neighborhoods", data);
-
-    if (error) return <div>No se pudo cargar los barrios</div>;
-    if (!data) return <Loading/>;
-
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
 
-    const handleOpenNewNeigbhorhood = (  ) => {
+    const handleOpenNewNeigbhorhood = () => {
         setOpenAddNeighborhood(!openAddNeighborhood);
         mutate();
 
@@ -84,20 +69,40 @@ const TableNeighborhoods = () => {
         mutate();
     };
 
+
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+    const handleClick = (message, variant) => {
+        enqueueSnackbar(message, {
+            variant: variant,
+            anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'center',
+            },
+        });
+    }
+
+    const Error = (errorCode) => {
+        if (errorCode) {
+            if (errorCode.message.includes("SQLSTATE[23000]: Integrity constraint violation:")) {
+                handleClick("Se han registrado quejas en este barrio, no se puede eliminar", "warning");
+            }
+        } else {
+            handleClick(errorCode, "error");
+        }
+    }
+
     const handleDeleteNeighborhood = async (id) => {
-        console.log("id a borrar", id);
         try {
             const response = await api.delete(`/neighborhoods/${id}`);
-            console.log("response delete neighborhood", response);
-            console.log("correcto delete barrio");
+            handleClick("Se ha eliminado el barrio con éxito", "success");
             mutate();
             return response;
         } catch (error) {
             if (error.response) {
                 // The request was made and the server responded with a status code
                 // that falls out of the range of 2xx
-                alert(translateMessage(error.response.data.error));
                 console.log(error.response.data);
+                Error(error.response.data)
                 return Promise.reject(error.response);
                 // return error.response;
             } else if (error.request) {
@@ -113,6 +118,10 @@ const TableNeighborhoods = () => {
         }
     };
 
+
+    if (error) return <div>No se pudo cargar los barrios</div>;
+    if (!data) return <Loading/>;
+
     return (
         <>
             <h1 align="center">Gestión y asignación de barrios y frecuencias</h1>
@@ -121,9 +130,8 @@ const TableNeighborhoods = () => {
                 <Button
                     variant="outlined"
                     size="large"
-                    className={classes.margin}
                     endIcon={<PostAddIcon/>}
-                    onClick={ handleOpenNewNeigbhorhood }>
+                    onClick={handleOpenNewNeigbhorhood}>
                     Agregar Barrio
                 </Button>
             </Box>
@@ -163,17 +171,17 @@ const TableNeighborhoods = () => {
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
                                                     <IconButton
-                                                         onClick={ ()=>handleOpenEditNeigbhorhood( neighborhood.id) }
+                                                        onClick={() => handleOpenEditNeigbhorhood(neighborhood.id)}
                                                         color="secondary"
                                                         aria-label="upload picture"
-                                                                component="span">
+                                                        component="span">
                                                         <BorderColorIcon/>
                                                     </IconButton>
                                                     <IconButton
-                                                        onClick={()=>handleDeleteNeighborhood(neighborhood.id)}
-                                                        color="dark" aria-label="upload picture"
+                                                        onClick={() => handleDeleteNeighborhood(neighborhood.id)}
+                                                        aria-label="upload picture"
                                                         component="span">
-                                                        <DeleteIcon style={{color: "black"}}/>
+                                                        <DeleteIcon />
                                                     </IconButton>
                                                 </StyledTableCell>
                                             </StyledTableRow>
@@ -196,16 +204,16 @@ const TableNeighborhoods = () => {
 
 
                 <div>
-                    <Dialog onClose={handleOpenNewNeigbhorhood}  open={openAddNeighborhood} >
+                    <Dialog onClose={handleOpenNewNeigbhorhood} open={openAddNeighborhood}>
                         <DialogContent dividers>
-                            <AddNeighborhood onHandleCloseModal={ handleOpenNewNeigbhorhood }/>
+                            <AddNeighborhood onHandleCloseModal={handleOpenNewNeigbhorhood}/>
                         </DialogContent>
                     </Dialog>
-                    <Dialog onClose={handleCloseEditNeigbhorhood}  open={openEditNeighborhood} >
+                    <Dialog onClose={handleCloseEditNeigbhorhood} open={openEditNeighborhood}>
                         <DialogContent dividers>
                             <EditNeighborhood
                                 id={neighborhoodId}
-                                onHandleCloseModal={ handleCloseEditNeigbhorhood }/>
+                                onHandleCloseModal={handleCloseEditNeigbhorhood}/>
                         </DialogContent>
                     </Dialog>
                 </div>

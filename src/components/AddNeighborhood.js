@@ -11,7 +11,7 @@ import {
     FormLabel,
     TextField,
     FormControl,
-    createMuiTheme, Divider,
+    createMuiTheme, Divider, Select, MenuItem, InputBase,
 } from "@material-ui/core";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -19,14 +19,13 @@ import * as yup from "yup";
 import api from "@/lib/api";
 import translateMessage from "../constants/messages";
 import Box from "@material-ui/core/Box";
-import {
-    MuiPickersUtilsProvider, TimePicker, DateTimePicker,
-    KeyboardTimePicker,
-    KeyboardDatePicker,
-} from "@material-ui/pickers";
+import { MuiPickersUtilsProvider, TimePicker } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
 import Typography from "@material-ui/core/Typography";
 import {useSnackbar} from "notistack";
+import useSWR from "swr";
+import {fetcher} from "@/lib/utils";
+import Loading from "@/components/Loading";
 
 const defaultMaterialTheme = createMuiTheme({
     palette: {
@@ -36,31 +35,42 @@ const defaultMaterialTheme = createMuiTheme({
     },
 });
 
+const BootstrapInput = withStyles(theme => ({
+    root: {
+        'label + &': {
+            marginTop: theme.spacing(3),
+        },
+    },
+    input: {
+        borderRadius: 4,
+        position: 'relative',
+        backgroundColor: theme.palette.background.paper,
+        border: '1px solid #19857b',
+        fontSize: 16,
+        width: 250,
+        padding: '10px 26px 10px 12px',
+        transition: theme.transitions.create(['border-color', 'box-shadow']),
+
+        fontFamily: [
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+        ].join(','),
+        '&:focus': {
+            borderRadius: 4,
+            borderColor: '#19857b',
+            boxShadow: '0 0 0 0.2rem rgba(25,133,123,.25)',
+        },
+    },
+
+}))(InputBase);
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-    },
-    paper: {
-        height: 140,
-        width: 100,
-    },
-    control: {
-        padding: theme.spacing(2),
-    },
-    root2: {
-        minWidth: 275,
-    },
-    bullet: {
-        display: "inline-block",
-        margin: "0 2px",
-        transform: "scale(0.8)",
-    },
-    title: {
-        fontSize: 14,
-    },
-    pos: {
-        marginBottom: 12,
     },
     form: {
         width: "100%", // Fix IE 11 issue.
@@ -88,11 +98,8 @@ const schema = yup.object().shape({
 
 const AddNeighborhood = (props) => {
     const classes = useStyles();
-    const {register, handleSubmit, control, errors} = useForm({
-            resolver: yupResolver(schema),
-        }
-    );
-
+    const {data: trucksData, error } = useSWR(`/trucks/filter/working`, fetcher);
+    const [truck, setTruck] = useState("");
     const [checkValidate, setCheckValidate] = useState(true);
     const [selectedStartDate, handleStartDateChange] = useState(new Date());
     const [selectedEndDate, handleEndDateChange] = useState(new Date());
@@ -105,9 +112,12 @@ const AddNeighborhood = (props) => {
         Sabado: false,
         Domingo: false
     });
-
+    const {register, handleSubmit, control, errors} = useForm({
+            resolver: yupResolver(schema),
+        }
+    );
     const {Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo} = state;
-    const error = [Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo].filter((v) => v).length < 1;
+    const errorCheck = [Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo].filter((v) => v).length < 1;
 
     useEffect(() => {
         let check = false;
@@ -128,12 +138,18 @@ const AddNeighborhood = (props) => {
         }
     }, [state, selectedStartDate, selectedEndDate]);
 
+
+
     const handleChange = (event) => {
         setState({...state, [event.target.name]: event.target.checked});
     };
 
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const handleChangeSelect = event => {
+        setTruck(event.target.value);
 
+    };
+
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const handleClick = (message, variant) => {
         enqueueSnackbar(message, {
             variant: variant,
@@ -145,9 +161,10 @@ const AddNeighborhood = (props) => {
     }
 
     const Error = (errorCode) => {
-        console.log("code", errorCode.name);
-        if(errorCode.name[0] === "validation.unique"){
-            handleClick("Ya existe un barrio registrado con este nombre", "error");
+        if(errorCode){
+            if(errorCode.name[0] === "validation.unique"){
+                handleClick("Ya existe un barrio registrado con este nombre", "error");
+            }
         }else{
             handleClick(errorCode, "error");
         }
@@ -160,12 +177,18 @@ const AddNeighborhood = (props) => {
                 day += $i + " ";
             }
         }
+        let id = "";
+        if(truck === ""){
+            id = null;
+        }else{
+            id = truck;
+        }
         const neighborhoodData = {
             ...data,
             start_time: selectedStartDate.toString().substr(16, 8),
             end_time: selectedEndDate.toString().substr(16, 8),
             days: day,
-            user_id: null
+            truck_id: id
         };
         console.log("truckData", neighborhoodData);
         try {
@@ -189,13 +212,19 @@ const AddNeighborhood = (props) => {
         }
     };
 
+
+
+    if (error) return <div>algo ha ocurrido</div>;
+    if (!trucksData) return <Loading/>;
+
     return (
         <>
             <div>
-
-                <Box display="flex" justifyContent="center" m={1} p={1}>
-                    <h1>Creación de un Barrio </h1>
-                </Box>
+                <Typography component={'span'} color={"secondary"}>
+                    <Box display="flex" justifyContent="center" m={1} p={1}>
+                        <h1>Creación de un Barrio </h1>
+                    </Box>
+                </Typography>
 
                 <form
                     className={classes.root}
@@ -203,8 +232,8 @@ const AddNeighborhood = (props) => {
                     autoComplete="off"
                     onSubmit={handleSubmit(onSubmit)}
                 >
-                    <Grid container>
-                        <Grid xs={12} spacing={2}>
+                    <Grid container >
+                        <Grid xs={12} >
                             <TextField
                                 id="name"
                                 name="name"
@@ -229,12 +258,10 @@ const AddNeighborhood = (props) => {
                                 error={!!errors.link}
                                 helperText={errors.link?.message}
                             />
-
                         </Grid>
 
-
                         <FormControl
-                            required error={error}
+                            required error={errorCheck}
                             component="fieldset"
                             className={classes.formControl}>
                             <FormLabel component="legend">Escoga los días ha asignar</FormLabel>
@@ -292,7 +319,6 @@ const AddNeighborhood = (props) => {
                                             views={["hours", "minutes", "seconds"]}
                                             format="HH:mm:ss"
                                             label="Hora fin"
-                                            input
                                             value={selectedEndDate}
                                             onChange={handleEndDateChange}
                                         />
@@ -303,19 +329,41 @@ const AddNeighborhood = (props) => {
                     </Grid>
                     {
                         !checkValidate ?
-                            <div>
-                                <Typography component="div" >
+                                <Typography component={'span'} color={"secondary"}>
                                     <Box fontWeight="fontWeightLight" m={1} textAlign="center">
                                         La hora de fin debe ser posterior la hora de inicio
                                     </Box>
-
                                 </Typography>
-                            </div>
                             :
-                            <div>
                                 <Divider />
-                            </div>
                     }
+
+                        <FormControl className={classes.margin}>
+                            <Typography component={'span'}>
+                                <Box fontWeight="fontWeightLight" m={1} textAlign="center">
+                                    Seleccione un camión ha asignar o puede editarlo despues
+                                </Box>
+                            </Typography>
+                            <Select
+                                value={truck}
+                                onChange={handleChangeSelect}
+                                input={<BootstrapInput name="neighborhood" id="age-customized-select"/>}
+                            >
+                                <MenuItem value={""}>
+                                    Cambiar de camión
+                                </MenuItem>
+                                {
+                                    trucksData ?
+                                        trucksData.data.map((truck) => (
+                                            <MenuItem value={truck.id} key={truck.id}>
+                                                {truck.license_plate}
+                                            </MenuItem>
+                                        ))
+                                        :
+                                        <Typography> No hay camiones disponibles </Typography>
+                                }
+                            </Select>
+                        </FormControl>
 
                     <Box display="flex" justifyContent="center" m={1} p={1}>
 
