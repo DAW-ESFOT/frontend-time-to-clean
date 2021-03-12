@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
 import {withStyles, makeStyles} from "@material-ui/core/styles";
-import {Dialog, DialogContent, DialogTitle, Link as MuiLink, TextField} from '@material-ui/core';
+import {Dialog, DialogContent, Link as MuiLink} from '@material-ui/core';
 import {
     Paper,
     TableRow,
@@ -20,7 +20,8 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import AddNeighborhood from "@/components/AddNeighborhood";
 import EditNeighborhood from "@/components/EditNeighborhood";
 import api from "@/lib/api";
-import translateMessage from "../constants/messages";
+import {useSnackbar} from "notistack";
+import DeleteNeighborhood from "@/components/DeleteNeighborhood";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -29,7 +30,7 @@ const StyledTableCell = withStyles((theme) => ({
     },
     body: {
         fontSize: 14,
-    },
+    }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
@@ -40,12 +41,12 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-const useStyles = makeStyles((theme)=>({
+const useStyles = makeStyles((theme) => ({
     table: {
         minWidth: 600,
     },
-    textField: {
-        width: '100%',
+    margin: {
+        backgroundColor: "#F5F5F5",
     }
 }));
 
@@ -59,71 +60,50 @@ const TableNeighborhoods = () => {
     const [neighborhoodId, setNeighborhoodId] = useState(0);
     const [openAddNeighborhood, setOpenAddNeighborhood] = useState(false);
     const [openEditNeighborhood, setOpenEditNeighborhood] = useState(false);
+    const [openDeleteNeighborhood, setOpenDeleteNeighborhood] = useState(false);
 
-
-    console.log("data neighborhoods", data);
-
-    if (error) return <div>No se pudo cargar los barrios</div>;
-    if (!data) return <Loading/>;
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
 
-    const handleOpenNewNeigbhorhood = (  ) => {
+    const handleOpenNewNeigbhorhood = () => {
         setOpenAddNeighborhood(!openAddNeighborhood);
         mutate();
-
     };
+
     const handleOpenEditNeigbhorhood = (id) => {
         setOpenEditNeighborhood(!openEditNeighborhood);
         setNeighborhoodId(id);
     };
     const handleCloseEditNeigbhorhood = () => {
-        setOpenEditNeighborhood(!openEditNeighborhood);
+        setOpenEditNeighborhood(false);
+        mutate();
+    };
+    const handleOpenDeleteNeigbhorhood = (id) => {
+        setOpenDeleteNeighborhood(!openDeleteNeighborhood);
+        setNeighborhoodId(id);
+    };
+    const handleCloseDeleteNeigbhorhood = () => {
+        setOpenDeleteNeighborhood(!openDeleteNeighborhood);
         mutate();
     };
 
-    const handleDeleteNeighborhood = async (id) => {
-        console.log("id a borrar", id);
-        try {
-            const response = await api.delete(`/neighborhoods/${id}`);
-            console.log("response delete neighborhood", response);
-            console.log("correcto delete barrio");
-            mutate();
-            return response;
-        } catch (error) {
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                alert(translateMessage(error.response.data.error));
-                console.log(error.response.data);
-                return Promise.reject(error.response);
-                // return error.response;
-            } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-                console.log(error.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log("Error", error.message);
-            }
-            console.log(error.config);
-        }
-    };
+
+
+    if (error) return <div>No se pudo cargar los barrios</div>;
+    if (!data) return <Loading/>;
 
     return (
         <>
             <h1 align="center">Gestión y asignación de barrios y frecuencias</h1>
-            <p>Lista de Barrios</p>
             <Box display="flex" justifyContent="flex-end" m={1} p={1}>
                 <Button
                     variant="outlined"
                     size="large"
                     className={classes.margin}
                     endIcon={<PostAddIcon/>}
-                    onClick={ handleOpenNewNeigbhorhood }>
+                    onClick={handleOpenNewNeigbhorhood}>
                     Agregar Barrio
                 </Button>
             </Box>
@@ -163,17 +143,17 @@ const TableNeighborhoods = () => {
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
                                                     <IconButton
-                                                         onClick={ ()=>handleOpenEditNeigbhorhood( neighborhood.id) }
+                                                        onClick={() => handleOpenEditNeigbhorhood(neighborhood.id)}
                                                         color="secondary"
                                                         aria-label="upload picture"
-                                                                component="span">
+                                                        component="span">
                                                         <BorderColorIcon/>
                                                     </IconButton>
                                                     <IconButton
-                                                        onClick={()=>handleDeleteNeighborhood(neighborhood.id)}
-                                                        color="dark" aria-label="upload picture"
+                                                        onClick={() => handleOpenDeleteNeigbhorhood(neighborhood.id)}
+                                                        aria-label="upload picture"
                                                         component="span">
-                                                        <DeleteIcon style={{color: "black"}}/>
+                                                        <DeleteIcon  style={{ color: "black" }}/>
                                                     </IconButton>
                                                 </StyledTableCell>
                                             </StyledTableRow>
@@ -187,6 +167,7 @@ const TableNeighborhoods = () => {
                                 count={data.meta.total}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
+                                className={classes.margin}
                                 onChangePage={handleChangePage}
                             />
                         </div>
@@ -196,16 +177,23 @@ const TableNeighborhoods = () => {
 
 
                 <div>
-                    <Dialog onClose={handleOpenNewNeigbhorhood}  open={openAddNeighborhood} >
+                    <Dialog onClose={handleOpenNewNeigbhorhood} open={openAddNeighborhood}>
                         <DialogContent dividers>
-                            <AddNeighborhood onHandleCloseModal={ handleOpenNewNeigbhorhood }/>
+                            <AddNeighborhood onHandleCloseModal={handleOpenNewNeigbhorhood}/>
                         </DialogContent>
                     </Dialog>
-                    <Dialog onClose={handleCloseEditNeigbhorhood}  open={openEditNeighborhood} >
+                    <Dialog onClose={handleCloseEditNeigbhorhood} open={openEditNeighborhood}>
                         <DialogContent dividers>
                             <EditNeighborhood
                                 id={neighborhoodId}
-                                onHandleCloseModal={ handleCloseEditNeigbhorhood }/>
+                                onHandleCloseModal={handleCloseEditNeigbhorhood}/>
+                        </DialogContent>
+                    </Dialog>
+                    <Dialog onClose={handleCloseDeleteNeigbhorhood} open={openDeleteNeighborhood}>
+                        <DialogContent dividers>
+                            <DeleteNeighborhood
+                                id={neighborhoodId}
+                                onHandleCloseModal={handleCloseDeleteNeigbhorhood}/>
                         </DialogContent>
                     </Dialog>
                 </div>

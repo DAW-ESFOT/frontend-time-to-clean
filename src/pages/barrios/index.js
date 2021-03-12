@@ -75,9 +75,6 @@ const useStyles = makeStyles((theme) => ({
     margin: {
         margin: theme.spacing(1),
     },
-    bootstrapFormLabel: {
-        fontSize: 18,
-    },
     root2: {
         width: '100%',
         maxWidth: '36ch',
@@ -233,7 +230,6 @@ const Neighborhoods = () => {
                             </Box>
                         </div>
                 }
-
 
                 <div>
                     <Box display="flex" justifyContent="center" m={1} p={1}>
