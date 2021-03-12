@@ -14,6 +14,7 @@ import TableUsers from "@/components/TableUsers";
 import TableComplaints from "@/components/TableComplaints";
 import List from "@material-ui/core/List";
 import Image from "next/image";
+import Box from "@material-ui/core/Box";
 
 const Management = () => {
     const [showTrucks, setShowTrucks] = useState(false);
@@ -103,6 +104,7 @@ const Management = () => {
                             </ListItemAvatar>
                             <ListItemText primary="Registro de Barrios y Frecuencias"/>
                         </ListItem>
+                        <Box p={13} bgcolor="background.paper"/>
                     </List>
                 </Grid>
                 <Grid xs={9} style={styles.container}>

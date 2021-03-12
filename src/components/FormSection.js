@@ -7,8 +7,12 @@ import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import process from "process";
 import Image from "next/image";
+import {InputBase, MenuItem, Select, withStyles} from "@material-ui/core";
+import FormControl from "@material-ui/core/FormControl";
+import useSWR from "swr";
+import {fetcher} from "@/lib/utils";
+import Loading from "@/components/Loading";
 
 const schema = yup.object().shape({
     email: yup
@@ -17,6 +21,43 @@ const schema = yup.object().shape({
         .required("Ingresa tu correo electrónico"),
 });
 
+
+const BootstrapInput = withStyles(theme => ({
+    root: {
+        'label + &': {
+            marginTop: theme.spacing(3),
+        },
+    },
+    input: {
+        borderRadius: 4,
+        position: 'relative',
+        backgroundColor: theme.palette.background.paper,
+        border: '1px solid #ced4da',
+        fontSize: 14,
+        width: 400,
+        padding: '10px 26px 10px 12px',
+        transition: theme.transitions.create(['border-color', 'box-shadow']),
+
+        fontFamily: [
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+        ].join(','),
+        '&:focus': {
+            borderRadius: 4,
+            borderColor: '#80bdff',
+            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+        },
+    },
+
+}))(InputBase);
 const useStyles = makeStyles((theme) => ({
 
     container: {
@@ -40,26 +81,24 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const FormSection = ({neighborhoods}) => {
-
-    console.log("BARRIOS: ", neighborhoods);
+const FormSection = () => {
 
     const {register, handleSubmit, control, errors} = useForm({
         resolver: yupResolver(schema),
     });
     const classes = useStyles();
+    const {data, error} = useSWR(`/neighborhoods/all`, fetcher);
+    const [name, setName] = useState("");
+
+    if (error) return <div>No se pudieron cargar</div>;
+    if (!data) return <Loading/>;
 
     const onSubmit = async (data) => {
         console.log("data", data);
     };
-
-    const [neighborhood, setNeighborhood] = useState("");
-    const [id, setId] = useState("");
-
-    const handleChange = (event) => {
-        console.log("Barrio selec.", event.target.value)
-        setId(event.target.id);
-    };
+    const handleChange = event => {
+        setName(event.target.value);
+    }
 
     return (
         <>
@@ -103,25 +142,27 @@ const FormSection = ({neighborhoods}) => {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField
-                                        id="outlined-select-currency-native"
-                                        select
-                                        label="Barrio"
-                                        required
-                                        // value={neighborhood}
-                                        onChange={handleChange}
-                                        SelectProps={{
-                                            native: true,
-                                        }}
-                                        helperText="Por favor selecciona un barrio de la lista"
-                                        variant="outlined"
-                                    >
-                                        {/*{neighborhoods.map((value) => (*/}
-                                        {/*    <option key={value.id} value={value.id}>*/}
-                                        {/*        {value.name}*/}
-                                        {/*    </option>*/}
-                                        {/*))}*/}
-                                    </TextField>
+                                    <FormControl className={classes.margin}>
+                                        <Select
+                                            value={name}
+                                            onChange={handleChange}
+                                            input={<BootstrapInput name="neighborhood" id="age-customized-select"/>}
+                                        >
+                                            <MenuItem value="">
+                                                Seleccione el Barrio
+                                            </MenuItem>
+                                            {
+                                                data.data.map((neighborhood) => {
+                                                        return (
+                                                            <MenuItem value={neighborhood} key={neighborhood.id}>
+                                                                {neighborhood.name}
+                                                            </MenuItem>
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        </Select>
+                                    </FormControl>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
@@ -158,16 +199,6 @@ const FormSection = ({neighborhoods}) => {
     );
 }
 
-export async function getStaticProps() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/neighborhoods`);
-    const data = await res.json();
-    const neighborhoods = data.data;
-    return {
-        props: {
-            neighborhoods,
-        },
-    };
-}
 
 export default FormSection;
 
