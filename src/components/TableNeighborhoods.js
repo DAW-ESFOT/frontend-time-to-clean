@@ -21,6 +21,7 @@ import AddNeighborhood from "@/components/AddNeighborhood";
 import EditNeighborhood from "@/components/EditNeighborhood";
 import api from "@/lib/api";
 import {useSnackbar} from "notistack";
+import DeleteNeighborhood from "@/components/DeleteNeighborhood";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -29,7 +30,7 @@ const StyledTableCell = withStyles((theme) => ({
     },
     body: {
         fontSize: 14,
-    },
+    }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
@@ -40,15 +41,26 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
+const useStyles = makeStyles((theme) => ({
+    table: {
+        minWidth: 600,
+    },
+    margin: {
+        backgroundColor: "#F5F5F5",
+    }
+}));
+
 
 const TableNeighborhoods = () => {
 
+    const classes = useStyles();
     const [page, setPage] = useState(0);
     const {data, error, mutate} = useSWR(`/neighborhoods?page=${page + 1}`, fetcher);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [neighborhoodId, setNeighborhoodId] = useState(0);
     const [openAddNeighborhood, setOpenAddNeighborhood] = useState(false);
     const [openEditNeighborhood, setOpenEditNeighborhood] = useState(false);
+    const [openDeleteNeighborhood, setOpenDeleteNeighborhood] = useState(false);
 
 
     const handleChangePage = (event, newPage) => {
@@ -58,65 +70,25 @@ const TableNeighborhoods = () => {
     const handleOpenNewNeigbhorhood = () => {
         setOpenAddNeighborhood(!openAddNeighborhood);
         mutate();
-
     };
+
     const handleOpenEditNeigbhorhood = (id) => {
         setOpenEditNeighborhood(!openEditNeighborhood);
         setNeighborhoodId(id);
     };
     const handleCloseEditNeigbhorhood = () => {
-        setOpenEditNeighborhood(!openEditNeighborhood);
+        setOpenEditNeighborhood(false);
+        mutate();
+    };
+    const handleOpenDeleteNeigbhorhood = (id) => {
+        setOpenDeleteNeighborhood(!openDeleteNeighborhood);
+        setNeighborhoodId(id);
+    };
+    const handleCloseDeleteNeigbhorhood = () => {
+        setOpenDeleteNeighborhood(!openDeleteNeighborhood);
         mutate();
     };
 
-
-    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
-    const handleClick = (message, variant) => {
-        enqueueSnackbar(message, {
-            variant: variant,
-            anchorOrigin: {
-                vertical: 'top',
-                horizontal: 'center',
-            },
-        });
-    }
-
-    const Error = (errorCode) => {
-        if (errorCode) {
-            if (errorCode.message.includes("SQLSTATE[23000]: Integrity constraint violation:")) {
-                handleClick("Se han registrado quejas en este barrio, no se puede eliminar", "warning");
-            }
-        } else {
-            handleClick(errorCode, "error");
-        }
-    }
-
-    const handleDeleteNeighborhood = async (id) => {
-        try {
-            const response = await api.delete(`/neighborhoods/${id}`);
-            handleClick("Se ha eliminado el barrio con éxito", "success");
-            mutate();
-            return response;
-        } catch (error) {
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log(error.response.data);
-                Error(error.response.data)
-                return Promise.reject(error.response);
-                // return error.response;
-            } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-                console.log(error.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log("Error", error.message);
-            }
-            console.log(error.config);
-        }
-    };
 
 
     if (error) return <div>No se pudo cargar los barrios</div>;
@@ -125,11 +97,11 @@ const TableNeighborhoods = () => {
     return (
         <>
             <h1 align="center">Gestión y asignación de barrios y frecuencias</h1>
-            <p>Lista de Barrios</p>
             <Box display="flex" justifyContent="flex-end" m={1} p={1}>
                 <Button
                     variant="outlined"
                     size="large"
+                    className={classes.margin}
                     endIcon={<PostAddIcon/>}
                     onClick={handleOpenNewNeigbhorhood}>
                     Agregar Barrio
@@ -178,10 +150,10 @@ const TableNeighborhoods = () => {
                                                         <BorderColorIcon/>
                                                     </IconButton>
                                                     <IconButton
-                                                        onClick={() => handleDeleteNeighborhood(neighborhood.id)}
+                                                        onClick={() => handleOpenDeleteNeigbhorhood(neighborhood.id)}
                                                         aria-label="upload picture"
                                                         component="span">
-                                                        <DeleteIcon />
+                                                        <DeleteIcon  style={{ color: "black" }}/>
                                                     </IconButton>
                                                 </StyledTableCell>
                                             </StyledTableRow>
@@ -195,6 +167,7 @@ const TableNeighborhoods = () => {
                                 count={data.meta.total}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
+                                className={classes.margin}
                                 onChangePage={handleChangePage}
                             />
                         </div>
@@ -214,6 +187,13 @@ const TableNeighborhoods = () => {
                             <EditNeighborhood
                                 id={neighborhoodId}
                                 onHandleCloseModal={handleCloseEditNeigbhorhood}/>
+                        </DialogContent>
+                    </Dialog>
+                    <Dialog onClose={handleCloseDeleteNeigbhorhood} open={openDeleteNeighborhood}>
+                        <DialogContent dividers>
+                            <DeleteNeighborhood
+                                id={neighborhoodId}
+                                onHandleCloseModal={handleCloseDeleteNeigbhorhood}/>
                         </DialogContent>
                     </Dialog>
                 </div>
