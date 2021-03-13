@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EditComplaint = (props) => {
-
+    console.log("props", props)
     const classes = useStyles();
     const {data, error} = useSWR(`/complaints/${props.id}`, fetcher);
     console.log("Data:", data)
