@@ -67,8 +67,6 @@ const DriverInfoJob = ({user}) => {
                         <h1> Bienvenido {user.name} </h1>
                     </Box>
                 </Typography>
-
-
                 <Grid container>
                     <Grid>
                         <Typography component={'span'} color={"textPrimary"}>
@@ -76,8 +74,6 @@ const DriverInfoJob = ({user}) => {
                                 <h2> Información del camión </h2>
                             </Box>
                         </Typography>
-
-
                         {
                             truckUser ?
                                 <List className={classes.root2}>

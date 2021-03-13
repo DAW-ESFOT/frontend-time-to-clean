@@ -37,6 +37,14 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
+const styles={
+    title:{
+        textAlign:'center',
+        color:'white',
+        textShadow: '2px 2px #262626',
+    }
+};
+
 const TableComplaints = () => {
     const [page, setPage] = useState(0);
     const {data, error} = useSWR(`/complaints?page=${page + 1}`, fetcher);
@@ -63,7 +71,7 @@ const TableComplaints = () => {
 
     return (
         <>
-            <h1> Gestión de quejas</h1>
+            <h1 style={styles.title}> Gestión de quejas</h1>
             <div>
                 {
                     data ?
