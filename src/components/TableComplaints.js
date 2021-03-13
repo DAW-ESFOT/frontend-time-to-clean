@@ -3,8 +3,8 @@ import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
-import {withStyles, makeStyles} from "@material-ui/core/styles";
-import {Dialog, DialogContent, FormControlLabel, FormHelperText, FormLabel, RadioGroup} from '@material-ui/core';
+import {withStyles} from "@material-ui/core/styles";
+import {Dialog, DialogContent} from '@material-ui/core';
 import {
     Paper,
     TableRow,
@@ -18,8 +18,6 @@ import {
 } from "@material-ui/core";
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import EditComplaint from "@/components/EditComplaint";
-import Button from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -39,28 +37,24 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-const useStyles = makeStyles((theme) => ({
-    table: {
-        minWidth: 600,
-    },
-    textField: {
-        width: '100%',
+const styles={
+    title:{
+        textAlign:'center',
+        color:'white',
+        textShadow: '2px 2px #262626',
     }
-}));
+};
 
 const TableComplaints = () => {
-
-    const classes = useStyles();
     const [page, setPage] = useState(0);
     const {data, error} = useSWR(`/complaints?page=${page + 1}`, fetcher);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [ComplaintId, setComplaintId] = useState(0);
     const [openEditComplaint, setOpenEditComplaint] = useState(false);
 
+    console.log("Complaints", data);
 
-    console.log("data Complaints", data);
-
-    if (error) return <div>No se pudo cargar los quejas</div>;
+    if (error) return <div>No se pudieron cargar las quejas</div>;
     if (!data) return <Loading/>;
 
     const handleChangePage = (event, newPage) => {
@@ -77,7 +71,7 @@ const TableComplaints = () => {
 
     return (
         <>
-            <h1> Gestión de quejas</h1>
+            <h1 style={styles.title}> Gestión de quejas</h1>
             <div>
                 {
                     data ?

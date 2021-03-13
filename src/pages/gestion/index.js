@@ -6,7 +6,7 @@ import {
     ListItemAvatar,
     ListItemText,
     Divider,
-    makeStyles,
+    makeStyles, ButtonBase,
 } from "@material-ui/core";
 import TableTrucks from "@/components/TableTrucks";
 import TableNeighborhoods from "@/components/TableNeighborhoods";
@@ -65,8 +65,8 @@ const Management = () => {
 
     const styles = {
         container: {
-            background: 'linear-gradient(0deg, rgba(168,254,216,1) 0%, rgba(96,149,176,1) 100%)',
-            padding: "40px",
+            background: 'linear-gradient(0deg, rgba(168,304,216,1) 0%, rgba(96,149,176,1) 100%)',
+            padding: "35px",
         },
     };
     const classes = useStyles();
@@ -79,54 +79,51 @@ const Management = () => {
                 <Grid container>
                     <Grid xs={3}>
                         <List className={classes.root}>
-                            <ListItem onClick={onVisibleDriver}>
+                            <ListItem onClick={onVisibleDriver}button divider>
                                 <ListItemAvatar>
                                     <Image
                                         src="/volante-de-coche.png"
                                         alt=""
-                                        width={35}
-                                        height={35}
+                                        width={30}
+                                        height={30}
                                     />
                                 </ListItemAvatar>
                                 <ListItemText primary="Gestión de Conductores"/>
                             </ListItem>
-                            <Divider variant="inset" component="li"/>
-                            <ListItem onClick={onVisibleTruck}>
+                            <ListItem onClick={onVisibleTruck} button divider>
                                 <ListItemAvatar>
                                     <Image
                                         src="/delivery-truck.png"
                                         alt=""
-                                        width={35}
-                                        height={35}
+                                        width={30}
+                                        height={30}
                                     />
                                 </ListItemAvatar>
                                 <ListItemText primary="Gestión de Camiones"/>
                             </ListItem>
-                            <Divider variant="inset" component="li"/>
-                            <ListItem onClick={onVisibleComplaints}>
-                                <ListItemAvatar>
-                                    <Image
-                                        src="/customer-satisfaction.png"
-                                        alt=""
-                                        width={35}
-                                        height={35}
-                                    />
-                                </ListItemAvatar>
-                                <ListItemText primary="Gestión de Quejas"/>
-                            </ListItem>
-                            <Divider variant="inset" component="li"/>
-                            <ListItem onClick={onVisibleNeighborhoods}>
+                            <ListItem onClick={onVisibleNeighborhoods} button divider>
                                 <ListItemAvatar>
                                     <Image
                                         src="/maps-and-flags.png"
                                         alt=""
-                                        width={35}
-                                        height={35}
+                                        width={30}
+                                        height={30}
                                     />
                                 </ListItemAvatar>
                                 <ListItemText primary="Registro de Barrios y Frecuencias"/>
                             </ListItem>
-                            <Box p={13} bgcolor="background.paper"/>
+                            <ListItem onClick={onVisibleComplaints} button divider>
+                                <ListItemAvatar>
+                                    <Image
+                                        src="/customer-satisfaction.png"
+                                        alt=""
+                                        width={30}
+                                        height={30}
+                                    />
+                                </ListItemAvatar>
+                                <ListItemText primary="Gestión de Quejas"/>
+                            </ListItem>
+                            <Box p={14} bgcolor="background.paper"/>
                         </List>
                     </Grid>
                     <Grid xs={9} style={styles.container}>
@@ -142,42 +139,40 @@ const Management = () => {
                         showNeighborhoods ? (
                             <TableNeighborhoods/>
                         ) : (
-                            "cargando XD"
+                            "Cargando tablas"
                         )}
                     </Grid>
                 </Grid>
             ) : (
                 <Grid container>
-                    <Grid xs={2} md={2} xl={2} lg={2}>
+                    <Grid xs={3}>
                         <List className={classes.root}>
                             <ListItemAvatar>
                                 <Image src="/reuse.png" alt="" width={100} height={100}/>
                             </ListItemAvatar>
-                            <ListItem onClick={onVisibleDriver}>
+                            <ListItem onClick={onVisibleDriver} button divider>
                                 <ListItemAvatar>
                                     <Image
                                         src="/volante-de-coche.png"
                                         alt=""
-                                        width={35}
-                                        height={35}
+                                        width={30}
+                                        height={30}
                                     />
                                 </ListItemAvatar>
                                 <ListItemText primary="DATOS DE PERFIL"/>
                             </ListItem>
-                            <Divider variant="inset" component="li"/>
-                            <ListItem onClick={onVisibleTruck}>
+                            <ListItem onClick={onVisibleTruck} button divider>
                                 <ListItemAvatar>
                                     <Image
                                         src="/delivery-truck.png"
                                         alt=""
-                                        width={35}
-                                        height={35}
+                                        width={30}
+                                        height={30}
                                     />
                                 </ListItemAvatar>
                                 <ListItemText primary="INFORMACIÓN DE TRABAJO"/>
                             </ListItem>
-                            <Divider variant="inset" component="li"/>
-                            <Box p={13} bgcolor="background.paper"/>
+                            <Box p={20} bgcolor="background.paper"/>
                         </List>
                     </Grid>
                     <Grid xs={9}>
