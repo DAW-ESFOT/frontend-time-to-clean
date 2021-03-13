@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import withAuth from "@/hocs/withAuth";
-import {withStyles, makeStyles, ThemeProvider} from "@material-ui/core/styles";
+import { makeStyles, ThemeProvider} from "@material-ui/core/styles";
 import {
     Button,
     Grid,
@@ -11,7 +11,7 @@ import {
     FormLabel,
     TextField,
     FormControl,
-    createMuiTheme, Divider, Select, MenuItem, InputBase,
+    createMuiTheme, Divider
 } from "@material-ui/core";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -34,39 +34,6 @@ const defaultMaterialTheme = createMuiTheme({
         },
     },
 });
-
-const BootstrapInput = withStyles(theme => ({
-    root: {
-        'label + &': {
-            marginTop: theme.spacing(3),
-        },
-    },
-    input: {
-        borderRadius: 4,
-        position: 'relative',
-        backgroundColor: theme.palette.background.paper,
-        border: '1px solid #19857b',
-        fontSize: 16,
-        width: 250,
-        padding: '10px 26px 10px 12px',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-
-        fontFamily: [
-            'Arial',
-            'sans-serif',
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"',
-        ].join(','),
-        '&:focus': {
-            borderRadius: 4,
-            borderColor: '#19857b',
-            boxShadow: '0 0 0 0.2rem rgba(25,133,123,.25)',
-        },
-    },
-
-}))(InputBase);
-
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -338,32 +305,32 @@ const AddNeighborhood = (props) => {
                                 <Divider />
                     }
 
-                        <FormControl className={classes.margin}>
-                            <Typography component={'span'}>
-                                <Box fontWeight="fontWeightLight" m={1} textAlign="center">
-                                    Seleccione un camión ha asignar o puede editarlo despues
-                                </Box>
-                            </Typography>
-                            <Select
-                                value={truck}
-                                onChange={handleChangeSelect}
-                                input={<BootstrapInput name="neighborhood" id="age-customized-select"/>}
-                            >
-                                <MenuItem value={""}>
-                                    Cambiar de camión
-                                </MenuItem>
-                                {
-                                    trucksData ?
-                                        trucksData.data.map((truck) => (
-                                            <MenuItem value={truck.id} key={truck.id}>
-                                                {truck.license_plate}
-                                            </MenuItem>
-                                        ))
-                                        :
-                                        <Typography> No hay camiones disponibles </Typography>
-                                }
-                            </Select>
-                        </FormControl>
+
+                    <Grid item xs={12} >
+                        <TextField
+                            id="outlined-select-currency-native"
+                            select
+                            label="Camion"
+                            value={truck}
+                            onChange={handleChangeSelect}
+                            SelectProps={{
+                                native: true,
+                            }}
+                            helperText="Seleccione un camión ha asignar o puede editarlo despues"
+                        >
+                            <option aria-label="None" value=""/>
+                            {
+                                trucksData ?
+                                    trucksData.data.map((truck) => (
+                                    <option value={truck.id} key={truck.id}>
+                                        {truck.license_plate}
+                                    </option>
+                                    ))
+                                    :
+                                    <Typography> No hay camiones disponibles </Typography>
+                            }
+                        </TextField>
+                    </Grid>
 
                     <Box display="flex" justifyContent="center" m={1} p={1}>
 

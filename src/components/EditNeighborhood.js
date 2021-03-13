@@ -3,7 +3,7 @@ import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
-import {makeStyles, MuiThemeProvider, ThemeProvider} from "@material-ui/core/styles";
+import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
 
 import {
     Button,
@@ -15,8 +15,8 @@ import {
     FormGroup,
     FormHelperText,
     FormLabel,
-    Grid, InputBase, MenuItem, Select,
-    TextField, withStyles,
+    Grid,
+    TextField
 } from "@material-ui/core";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -35,38 +35,6 @@ const defaultMaterialTheme = createMuiTheme({
         },
     },
 });
-
-const BootstrapInput = withStyles(theme => ({
-    root: {
-        'label + &': {
-            marginTop: theme.spacing(3),
-        },
-    },
-    input: {
-        borderRadius: 4,
-        position: 'relative',
-        backgroundColor: theme.palette.background.paper,
-        border: '1px solid #236084',
-        fontSize: 16,
-        width: 200,
-        padding: '10px 26px 10px 12px',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-
-        fontFamily: [
-            'Arial',
-            'sans-serif',
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"',
-        ].join(','),
-        '&:focus': {
-            borderRadius: 4,
-            borderColor: '#236084',
-            boxShadow: '0 0 0 0.2rem rgba(35,96,132,.25)',
-        },
-    },
-
-}))(InputBase);
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -352,35 +320,38 @@ const EditNeighborhood = (props) => {
                 }
 
 
-                <FormControl className={classes.margin}>
-                    {
-                        truck === "" ?
-                            <p>Camión asignado: N° - {neighborhoodData.truck.id};
-                                Placa: {neighborhoodData.truck.license_plate}</p>
-                            :
-                            <p>Camión ha asignar: N° - {truck} </p>
-                    }
-                    <Select
+                {
+                    truck === "" ?
+                        <p>Camión asignado: N° - {neighborhoodData.truck !== null ? neighborhoodData.truck.id : "No tiene" };
+                            Placa: {neighborhoodData.truck !== null ? neighborhoodData.truck.license_plate : "---"}</p>
+                        :
+                        <p>Camión ha asignar: N° - {truck} </p>
+                }
+                <Grid item xs={12}>
+                    <TextField
+                        id="outlined-select-currency-native"
+                        select
+                        label="Camion"
                         value={truck}
                         onChange={handleChangeSelect}
-                        input={<BootstrapInput name="neighborhood" id="age-customized-select"/>}
+                        SelectProps={{
+                            native: true,
+                        }}
+                        helperText="Cambiar de camión"
                     >
-                        <MenuItem value={""}>
-                            Cambiar de camión
-                        </MenuItem>
+                        <option aria-label="None" value=""/>
                         {
                             trucksData ?
                                 trucksData.data.map((truck) => (
-                                    <MenuItem value={truck.id} key={truck.id}>
+                                    <option value={truck.id} key={truck.id}>
                                         {truck.license_plate}
-                                    </MenuItem>
+                                    </option>
                                 ))
                                 :
-                                <div> No hay camiones disponibles </div>
+                                <Typography> No hay camiones disponibles </Typography>
                         }
-                    </Select>
-                </FormControl>
-
+                    </TextField>
+                </Grid>
 
                 <Box display="flex" justifyContent="center" m={1} p={1}>
 

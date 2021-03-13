@@ -2,17 +2,14 @@ import React, {useState} from 'react';
 import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "../../components/Loading";
-import FormControl from "@material-ui/core/FormControl";
 import {
     Box, Divider,
-    InputBase,
     List,
     ListItem,
     ListItemAvatar,
     ListItemText,
     makeStyles,
-    MenuItem,
-    Select, Typography, withStyles
+    Typography
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Link from "next/link";
@@ -20,44 +17,9 @@ import PlaceIcon from '@material-ui/icons/Place';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import Routes from "../../constants/routes";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
 
-
-const BootstrapInput = withStyles(theme => ({
-    root: {
-        'label + &': {
-            marginTop: theme.spacing(3),
-        },
-    },
-    input: {
-        borderRadius: 4,
-        position: 'relative',
-        backgroundColor: theme.palette.background.paper,
-        border: '1px solid #ced4da',
-        fontSize: 16,
-        width: 200,
-        padding: '10px 26px 10px 12px',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-
-        fontFamily: [
-            '-apple-system',
-            'BlinkMacSystemFont',
-            '"Segoe UI"',
-            'Roboto',
-            '"Helvetica Neue"',
-            'Arial',
-            'sans-serif',
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"',
-        ].join(','),
-        '&:focus': {
-            borderRadius: 4,
-            borderColor: '#80bdff',
-            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-        },
-    },
-
-}))(InputBase);
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -83,6 +45,10 @@ const useStyles = makeStyles((theme) => ({
     inline: {
         display: 'inline',
     },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+    },
 }));
 
 
@@ -90,7 +56,10 @@ const Neighborhoods = () => {
 
     const classes = useStyles();
     const {data, error} = useSWR(`/neighborhoods/all`, fetcher);
-    const [name, setName] = useState("");
+    const [name, setName] = useState({
+        id: "",
+        neighborhood: ""
+    });
     const [neighborhoodID, setNeighborhoodID] = useState([{
         id: "",
         name: "",
@@ -104,16 +73,23 @@ const Neighborhoods = () => {
     if (!data) return <Loading/>;
 
     const handleChange = event => {
-        setName(event.target.value);
-        setNeighborhoodID({
-            ...neighborhoodID,
-            id: event.target.value.id,
-            name: event.target.value.name,
-            start_time: event.target.value.start_time,
-            end_time: event.target.value.end_time,
-            days: event.target.value.days,
-            link: event.target.value.link
+        const number = event.target.value;
+        setName({
+            ...name,
+            id: number ? number : "",
+            neighborhood: number ? data.data[number].name : "",
         });
+        number ?
+            setNeighborhoodID({
+                ...neighborhoodID,
+                id: data.data[number].id,
+                name: data.data[number].name,
+                start_time: data.data[number].start_time,
+                end_time: data.data[number].end_time,
+                days: data.data[number].days,
+                link: data.data[number].link
+            })
+            : setNeighborhoodID("");
     };
 
 
@@ -127,33 +103,36 @@ const Neighborhoods = () => {
                     <p>Seleccione el barrio que desee consultar sus horarios</p>
                 </div>
 
-                <form className={classes.root} autoComplete="off">
-                    <FormControl className={classes.margin}>
-                        <Select
-                            value={name}
-                            onChange={handleChange}
-                            input={<BootstrapInput name="neighborhood" id="age-customized-select"/>}
-                        >
-                            <MenuItem value="">
-                                Seleccione el Barrio
-                            </MenuItem>
-                            {
-                                data.data.map((neighborhood) => {
-                                        return (
-                                            <MenuItem value={neighborhood} key={neighborhood.id}>
-                                                {neighborhood.name}
-                                            </MenuItem>
-                                        )
-                                    }
-                                )
-                            }
-                        </Select>
-                    </FormControl>
-                </form>
+                <Grid item xs={12} md={6} lg={4} >
+                    <TextField
+                        id="outlined-select-currency-native"
+                        select
+                        label="Barrio"
+                        value={name.id}
+                        onChange={handleChange}
+                        SelectProps={{
+                            native: true,
+                        }}
+                        helperText="Por favor selecciona un barrio de la lista"
+
+                    >
+                        <option aria-label="None" value=""/>
+                        {
+                            data.data.map((neighborhood, index) => {
+                                    return (
+                                        <option value={index}>
+                                            {neighborhood.name}
+                                        </option>
+                                    )
+                                }
+                            )
+                        }
+                    </TextField>
+                </Grid>
 
 
                 {
-                    name ?
+                    name.neighborhood !== "" ?
                         <div>
                             <List className={classes.root2}>
                                 <ListItem alignItems="flex-start">
@@ -230,6 +209,7 @@ const Neighborhoods = () => {
                             </Box>
                         </div>
                 }
+
 
                 <div>
                     <Box display="flex" justifyContent="center" m={1} p={1}>

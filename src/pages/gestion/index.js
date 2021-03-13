@@ -15,8 +15,14 @@ import TableComplaints from "@/components/TableComplaints";
 import List from "@material-ui/core/List";
 import Image from "next/image";
 import Box from "@material-ui/core/Box";
+import {useAuth} from "@/lib/auth";
+import DriverInfoProfile from "@/components/DriverInfoProfile";
+import DriverInfoJob from "@/components/DriverInfoJob";
 
 const Management = () => {
+
+    const {user} = useAuth();
+
     const [showTrucks, setShowTrucks] = useState(false);
     const [showDrivers, setShowDrivers] = useState(true);
     const [showComplaints, setShowComplaints] = useState(false);
@@ -74,56 +80,97 @@ const Management = () => {
 
     return (
         <>
-            <Grid container>
-                <Grid xs={3}>
-                    <List className={classes.root}>
-                        <ListItem onClick={onVisibleDriver}>
-                            <ListItemAvatar>
-                                <Image src="/volante-de-coche.png" alt="" width={35} height={35}/>
-                            </ListItemAvatar>
-                            <ListItemText primary="Gestión de Conductores"/>
-                        </ListItem>
-                        <Divider variant="inset" component="li"/>
-                        <ListItem onClick={onVisibleTruck}>
-                            <ListItemAvatar>
-                                <Image src="/delivery-truck.png" alt="" width={35} height={35}/>
-                            </ListItemAvatar>
-                            <ListItemText primary="Gestión de Camiones"/>
-                        </ListItem>
-                        <Divider variant="inset" component="li"/>
-                        <ListItem onClick={onVisibleComplaints}>
-                            <ListItemAvatar>
-                                <Image src="/customer-satisfaction.png" alt="" width={35} height={35}/>
-                            </ListItemAvatar>
-                            <ListItemText primary="Gestión de Quejas"/>
-                        </ListItem>
-                        <Divider variant="inset" component="li"/>
-                        <ListItem onClick={onVisibleNeighborhoods}>
-                            <ListItemAvatar>
-                                <Image src="/maps-and-flags.png" alt="" width={35} height={35}/>
-                            </ListItemAvatar>
-                            <ListItemText primary="Registro de Barrios y Frecuencias"/>
-                        </ListItem>
-                        <Box p={13} bgcolor="background.paper"/>
-                    </List>
-                </Grid>
-                <Grid xs={9} style={styles.container}>
-                    {showTrucks ? (
-                        <TableTrucks/>
-                    ) : showDrivers ? (
-                        <TableUsers/>
-                    ) : showComplaints ? (
-                        <TableComplaints/>
-                    ) : showTrucks === false &&
-                    showDrivers === false &&
-                    showComplaints === false &&
-                    showNeighborhoods ? (
-                        <TableNeighborhoods/>
-                    ) : (
-                        "cargando XD"
-                    )}
-                </Grid>
-            </Grid>
+            {
+                user.role === "ROLE_SUPERADMIIN" ?
+                    <Grid container>
+                        <Grid xs={3}>
+                            <List className={classes.root}>
+                                <ListItem onClick={onVisibleDriver}>
+                                    <ListItemAvatar>
+                                        <Image src="/volante-de-coche.png" alt="" width={35} height={35}/>
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Gestión de Conductores"/>
+                                </ListItem>
+                                <Divider variant="inset" component="li"/>
+                                <ListItem onClick={onVisibleTruck}>
+                                    <ListItemAvatar>
+                                        <Image src="/delivery-truck.png" alt="" width={35} height={35}/>
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Gestión de Camiones"/>
+                                </ListItem>
+                                <Divider variant="inset" component="li"/>
+                                <ListItem onClick={onVisibleComplaints}>
+                                    <ListItemAvatar>
+                                        <Image src="/customer-satisfaction.png" alt="" width={35} height={35}/>
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Gestión de Quejas"/>
+                                </ListItem>
+                                <Divider variant="inset" component="li"/>
+                                <ListItem onClick={onVisibleNeighborhoods}>
+                                    <ListItemAvatar>
+                                        <Image src="/maps-and-flags.png" alt="" width={35} height={35}/>
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Registro de Barrios y Frecuencias"/>
+                                </ListItem>
+                                <Box p={13} bgcolor="background.paper"/>
+                            </List>
+                        </Grid>
+                        <Grid xs={9} style={styles.container}>
+                            {showTrucks ? (
+                                <TableTrucks/>
+                            ) : showDrivers ? (
+                                <TableUsers/>
+                            ) : showComplaints ? (
+                                <TableComplaints/>
+                            ) : showTrucks === false &&
+                            showDrivers === false &&
+                            showComplaints === false &&
+                            showNeighborhoods ? (
+                                <TableNeighborhoods/>
+                            ) : (
+                                "cargando XD"
+                            )}
+                        </Grid>
+                    </Grid>
+                    :
+                    <Grid container>
+                        <Grid xs={2} md={2} xl={2} lg={2}>
+                            <List className={classes.root}>
+                                <ListItemAvatar>
+                                    <Image src="/reuse.png" alt="" width={100} height={100}/>
+                                </ListItemAvatar>
+                                <ListItem onClick={onVisibleDriver}>
+                                    <ListItemAvatar>
+                                        <Image src="/volante-de-coche.png" alt="" width={35} height={35}/>
+                                    </ListItemAvatar>
+                                    <ListItemText primary="DATOS DE PERFIL"/>
+                                </ListItem>
+                                <Divider variant="inset" component="li"/>
+                                <ListItem onClick={onVisibleTruck}>
+                                    <ListItemAvatar>
+                                        <Image src="/delivery-truck.png" alt="" width={35} height={35}/>
+                                    </ListItemAvatar>
+                                    <ListItemText primary="INFORMACIÓN DE TRABAJO"/>
+                                </ListItem>
+                                <Divider variant="inset" component="li"/>
+                                <Box p={13} bgcolor="background.paper"/>
+                            </List>
+                        </Grid>
+                        <Grid xs={9}  >
+                            {
+                                showTrucks ? (
+                                    <DriverInfoProfile user={user}/>
+                                ) : showDrivers ? (
+                                    <DriverInfoJob user={user}/>
+                                ) : (
+                                    <DriverInfoProfile user={user}/>
+                                )
+                            }
+                        </Grid>
+                    </Grid>
+
+            }
+
         </>
     );
 };
