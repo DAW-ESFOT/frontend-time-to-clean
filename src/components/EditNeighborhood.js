@@ -352,35 +352,38 @@ const EditNeighborhood = (props) => {
                 }
 
 
-                <FormControl className={classes.margin}>
-                    {
-                        truck === "" ?
-                            <p>Camión asignado: N° - {neighborhoodData.truck.id};
-                                Placa: {neighborhoodData.truck.license_plate}</p>
-                            :
-                            <p>Camión ha asignar: N° - {truck} </p>
-                    }
-                    <Select
+                {
+                    truck === "" ?
+                        <p>Camión asignado: N° - {neighborhoodData.truck.id};
+                            Placa: {neighborhoodData.truck.license_plate}</p>
+                        :
+                        <p>Camión ha asignar: N° - {truck} </p>
+                }
+                <Grid item xs={12}>
+                    <TextField
+                        id="outlined-select-currency-native"
+                        select
+                        label="Camion"
                         value={truck}
                         onChange={handleChangeSelect}
-                        input={<BootstrapInput name="neighborhood" id="age-customized-select"/>}
+                        SelectProps={{
+                            native: true,
+                        }}
+                        helperText="Cambiar de camión"
                     >
-                        <MenuItem value={""}>
-                            Cambiar de camión
-                        </MenuItem>
+                        <option aria-label="None" value=""/>
                         {
                             trucksData ?
                                 trucksData.data.map((truck) => (
-                                    <MenuItem value={truck.id} key={truck.id}>
+                                    <option value={truck.id} key={truck.id}>
                                         {truck.license_plate}
-                                    </MenuItem>
+                                    </option>
                                 ))
                                 :
-                                <div> No hay camiones disponibles </div>
+                                <Typography> No hay camiones disponibles </Typography>
                         }
-                    </Select>
-                </FormControl>
-
+                    </TextField>
+                </Grid>
 
                 <Box display="flex" justifyContent="center" m={1} p={1}>
 

@@ -338,32 +338,32 @@ const AddNeighborhood = (props) => {
                                 <Divider />
                     }
 
-                        <FormControl className={classes.margin}>
-                            <Typography component={'span'}>
-                                <Box fontWeight="fontWeightLight" m={1} textAlign="center">
-                                    Seleccione un camión ha asignar o puede editarlo despues
-                                </Box>
-                            </Typography>
-                            <Select
-                                value={truck}
-                                onChange={handleChangeSelect}
-                                input={<BootstrapInput name="neighborhood" id="age-customized-select"/>}
-                            >
-                                <MenuItem value={""}>
-                                    Cambiar de camión
-                                </MenuItem>
-                                {
-                                    trucksData ?
-                                        trucksData.data.map((truck) => (
-                                            <MenuItem value={truck.id} key={truck.id}>
-                                                {truck.license_plate}
-                                            </MenuItem>
-                                        ))
-                                        :
-                                        <Typography> No hay camiones disponibles </Typography>
-                                }
-                            </Select>
-                        </FormControl>
+
+                    <Grid item xs={12} >
+                        <TextField
+                            id="outlined-select-currency-native"
+                            select
+                            label="Camion"
+                            value={truck}
+                            onChange={handleChangeSelect}
+                            SelectProps={{
+                                native: true,
+                            }}
+                            helperText="Seleccione un camión ha asignar o puede editarlo despues"
+                        >
+                            <option aria-label="None" value=""/>
+                            {
+                                trucksData ?
+                                    trucksData.data.map((truck) => (
+                                    <option value={truck.id} key={truck.id}>
+                                        {truck.license_plate}
+                                    </option>
+                                    ))
+                                    :
+                                    <Typography> No hay camiones disponibles </Typography>
+                            }
+                        </TextField>
+                    </Grid>
 
                     <Box display="flex" justifyContent="center" m={1} p={1}>
 

@@ -20,6 +20,8 @@ import PlaceIcon from '@material-ui/icons/Place';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import Routes from "../../constants/routes";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
 
 
 const BootstrapInput = withStyles(theme => ({
@@ -141,13 +143,18 @@ const Neighborhoods = () => {
                     <p>Seleccione el barrio que desee consultar sus horarios</p>
                 </div>
 
-                <FormControl variant="outlined" className={classes.formControl}>
-                    <InputLabel htmlFor="outlined-age-native-simple">Barrio</InputLabel>
-                    <Select
-                        native
+                <Grid item xs={12} md={6} lg={4} >
+                    <TextField
+                        id="outlined-select-currency-native"
+                        select
+                        label="Barrio"
                         value={name.id}
                         onChange={handleChange}
-                        label="Barrio"
+                        SelectProps={{
+                            native: true,
+                        }}
+                        helperText="Por favor selecciona un barrio de la lista"
+
                     >
                         <option aria-label="None" value=""/>
                         {
@@ -160,8 +167,9 @@ const Neighborhoods = () => {
                                 }
                             )
                         }
-                    </Select>
-                </FormControl>
+                    </TextField>
+                </Grid>
+
 
                 {
                     name.neighborhood !== "" ?

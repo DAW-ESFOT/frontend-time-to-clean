@@ -1,10 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
 import {withStyles, makeStyles} from "@material-ui/core/styles";
-import {Dialog, DialogContent, Link as MuiLink} from '@material-ui/core';
+import {Dialog, DialogContent, Divider, InputBase, Link as MuiLink} from '@material-ui/core';
 import {
     Paper,
     TableRow,
@@ -22,6 +22,8 @@ import EditNeighborhood from "@/components/EditNeighborhood";
 import api from "@/lib/api";
 import {useSnackbar} from "notistack";
 import DeleteNeighborhood from "@/components/DeleteNeighborhood";
+import BackspaceIcon from "@material-ui/icons/Backspace";
+import SearchIcon from "@material-ui/icons/Search";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -47,7 +49,20 @@ const useStyles = makeStyles((theme) => ({
     },
     margin: {
         backgroundColor: "#F5F5F5",
-    }
+    },
+    root3: {
+        padding: "2px 4px",
+        display: "flex",
+        alignItems: "center",
+        width: 400,
+    },
+    input: {
+        marginLeft: theme.spacing(1),
+        flex: 1,
+    },
+    iconButton: {
+        padding: 10,
+    },
 }));
 
 
@@ -55,17 +70,39 @@ const TableNeighborhoods = () => {
 
     const classes = useStyles();
     const [page, setPage] = useState(0);
-    const {data, error, mutate} = useSWR(`/neighborhoods?page=${page + 1}`, fetcher);
+    const {data: neighborhoodsPaginated, error, mutate} = useSWR(`/neighborhoods?page=${page + 1}`, fetcher);
+    const { data: neighborhoodsAllData, error: error2, mutate: mutate2 } = useSWR(`/neighborhoods/all`, fetcher);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [neighborhoodId, setNeighborhoodId] = useState(0);
     const [openAddNeighborhood, setOpenAddNeighborhood] = useState(false);
     const [openEditNeighborhood, setOpenEditNeighborhood] = useState(false);
     const [openDeleteNeighborhood, setOpenDeleteNeighborhood] = useState(false);
 
+    const [wordSearch, setWordSearch] = useState("");
+    const [dataSearchNeighborhood, setDataSearchNeighborhood] = useState([]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
+
+    const handleChange = (event) => {
+        setWordSearch(event.target.value);
+    };
+    const handleClickDeleteSearch = ()=>{
+        setWordSearch("");
+    };
+
+    useEffect(() => {
+        if(neighborhoodsAllData){
+            const listTrucksData = [];
+            neighborhoodsAllData.data.map((neighborhood) => {
+                neighborhood.name.toUpperCase().includes(wordSearch.toUpperCase())
+                    ? listTrucksData.push(neighborhood)
+                    : "";
+            });
+            setDataSearchNeighborhood(listTrucksData);
+        }
+    }, [wordSearch]);
 
     const handleOpenNewNeigbhorhood = () => {
         setOpenAddNeighborhood(!openAddNeighborhood);
@@ -91,8 +128,8 @@ const TableNeighborhoods = () => {
 
 
 
-    if (error) return <div>No se pudo cargar los barrios</div>;
-    if (!data) return <Loading/>;
+    if (error || error2) return <div>No se pudo cargar los barrios</div>;
+    if (!neighborhoodsPaginated) return <Loading/>;
 
     return (
         <>
@@ -107,74 +144,159 @@ const TableNeighborhoods = () => {
                     Agregar Barrio
                 </Button>
             </Box>
+
+            <Box display="flex" justifyContent="flex" m={1} p={1}>
+                <Paper className={classes.root3}>
+                    <InputBase
+                        id="wordToSearch"
+                        name="wordToSearch"
+                        value={wordSearch}
+                        className={classes.input}
+                        placeholder="Placa a buscar"
+                        onChange={handleChange}
+                    />
+                    <Divider className={classes.divider} orientation="vertical" />
+                    <IconButton
+                        onClick={handleClickDeleteSearch}
+                        className={classes.iconButton}
+                        aria-label="search"
+                    >
+                        <BackspaceIcon />
+                    </IconButton>
+                </Paper>
+            </Box>
+
             <div>
                 {
-                    data ?
-                        <div>
-                            <TableContainer component={Paper}>
-                                <Table aria-label="customized table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <StyledTableCell align="center">Barrio</StyledTableCell>
-                                            <StyledTableCell align="center">Ubicación en mapa</StyledTableCell>
-                                            <StyledTableCell align="center">horario</StyledTableCell>
-                                            <StyledTableCell align="center">Dias asignados</StyledTableCell>
-                                            <StyledTableCell align="center">Opción</StyledTableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {data.data.map((neighborhood) => (
-                                            <StyledTableRow key={neighborhood.id}>
-                                                <StyledTableCell align="center">
-                                                    {neighborhood.name}
-                                                </StyledTableCell>
-                                                <StyledTableCell align="center">
-                                                    <MuiLink href={neighborhood.link}
-                                                             target={"_blank"}
-                                                             color="secondary">
-                                                        Ver mapa
-                                                    </MuiLink>
-                                                </StyledTableCell>
-                                                <StyledTableCell align="center">
-                                                    {neighborhood.start_time} - {neighborhood.end_time}
-                                                </StyledTableCell>
-                                                <StyledTableCell align="center">
-                                                    {neighborhood.days}
-                                                </StyledTableCell>
-                                                <StyledTableCell align="center">
-                                                    <IconButton
-                                                        onClick={() => handleOpenEditNeigbhorhood(neighborhood.id)}
-                                                        color="secondary"
-                                                        aria-label="upload picture"
-                                                        component="span">
-                                                        <BorderColorIcon/>
-                                                    </IconButton>
-                                                    <IconButton
-                                                        onClick={() => handleOpenDeleteNeigbhorhood(neighborhood.id)}
-                                                        aria-label="upload picture"
-                                                        component="span">
-                                                        <DeleteIcon  style={{ color: "black" }}/>
-                                                    </IconButton>
-                                                </StyledTableCell>
-                                            </StyledTableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                            <TablePagination
-                                rowsPerPageOptions={[10]}
-                                component="div"
-                                count={data.meta.total}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                className={classes.margin}
-                                onChangePage={handleChangePage}
-                            />
-                        </div>
-                        :
-                        <Loading/>
-                }
+                    wordSearch === "" ?
+                        (
+                            neighborhoodsPaginated ?
+                                <div>
+                                    <TableContainer component={Paper}>
+                                        <Table aria-label="customized table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <StyledTableCell align="center">Barrio</StyledTableCell>
+                                                    <StyledTableCell align="center">Ubicación en mapa</StyledTableCell>
+                                                    <StyledTableCell align="center">horario</StyledTableCell>
+                                                    <StyledTableCell align="center">Dias asignados</StyledTableCell>
+                                                    <StyledTableCell align="center">Opción</StyledTableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {neighborhoodsPaginated.data.map((neighborhood) => (
+                                                    <StyledTableRow key={neighborhood.id}>
+                                                        <StyledTableCell align="center">
+                                                            {neighborhood.name}
+                                                        </StyledTableCell>
+                                                        <StyledTableCell align="center">
+                                                            <MuiLink href={neighborhood.link}
+                                                                     target={"_blank"}
+                                                                     color="secondary">
+                                                                Ver mapa
+                                                            </MuiLink>
+                                                        </StyledTableCell>
+                                                        <StyledTableCell align="center">
+                                                            {neighborhood.start_time} - {neighborhood.end_time}
+                                                        </StyledTableCell>
+                                                        <StyledTableCell align="center">
+                                                            {neighborhood.days}
+                                                        </StyledTableCell>
+                                                        <StyledTableCell align="center">
+                                                            <IconButton
+                                                                onClick={() => handleOpenEditNeigbhorhood(neighborhood.id)}
+                                                                color="secondary"
+                                                                aria-label="upload picture"
+                                                                component="span">
+                                                                <BorderColorIcon/>
+                                                            </IconButton>
+                                                            <IconButton
+                                                                onClick={() => handleOpenDeleteNeigbhorhood(neighborhood.id)}
+                                                                aria-label="upload picture"
+                                                                component="span">
+                                                                <DeleteIcon  style={{ color: "black" }}/>
+                                                            </IconButton>
+                                                        </StyledTableCell>
+                                                    </StyledTableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                    <TablePagination
+                                        rowsPerPageOptions={[10]}
+                                        component="div"
+                                        count={neighborhoodsPaginated.meta.total}
+                                        rowsPerPage={rowsPerPage}
+                                        page={page}
+                                        className={classes.margin}
+                                        onChangePage={handleChangePage}
+                                    />
+                                </div>
+                                :
+                                <Loading/>
+                        )
 
+                        :
+
+                        (
+                            neighborhoodsAllData ?
+                                <div>
+                                    <TableContainer component={Paper}>
+                                        <Table aria-label="customized table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <StyledTableCell align="center">Barrio</StyledTableCell>
+                                                    <StyledTableCell align="center">Ubicación en mapa</StyledTableCell>
+                                                    <StyledTableCell align="center">horario</StyledTableCell>
+                                                    <StyledTableCell align="center">Dias asignados</StyledTableCell>
+                                                    <StyledTableCell align="center">Opción</StyledTableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                { dataSearchNeighborhood.map((neighborhood) => (
+                                                    <StyledTableRow key={neighborhood.id}>
+                                                        <StyledTableCell align="center">
+                                                            {neighborhood.name}
+                                                        </StyledTableCell>
+                                                        <StyledTableCell align="center">
+                                                            <MuiLink href={neighborhood.link}
+                                                                     target={"_blank"}
+                                                                     color="secondary">
+                                                                Ver mapa
+                                                            </MuiLink>
+                                                        </StyledTableCell>
+                                                        <StyledTableCell align="center">
+                                                            {neighborhood.start_time} - {neighborhood.end_time}
+                                                        </StyledTableCell>
+                                                        <StyledTableCell align="center">
+                                                            {neighborhood.days}
+                                                        </StyledTableCell>
+                                                        <StyledTableCell align="center">
+                                                            <IconButton
+                                                                onClick={() => handleOpenEditNeigbhorhood(neighborhood.id)}
+                                                                color="secondary"
+                                                                aria-label="upload picture"
+                                                                component="span">
+                                                                <BorderColorIcon/>
+                                                            </IconButton>
+                                                            <IconButton
+                                                                onClick={() => handleOpenDeleteNeigbhorhood(neighborhood.id)}
+                                                                aria-label="upload picture"
+                                                                component="span">
+                                                                <DeleteIcon  style={{ color: "black" }}/>
+                                                            </IconButton>
+                                                        </StyledTableCell>
+                                                    </StyledTableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+
+                                </div>
+                                :
+                                <Loading/>
+                        )
+                }
 
                 <div>
                     <Dialog onClose={handleOpenNewNeigbhorhood} open={openAddNeighborhood}>
