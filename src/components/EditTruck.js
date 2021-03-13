@@ -21,6 +21,7 @@ import {
 import api from "@/lib/api";
 import translateMessage from "../constants/messages";
 import { useForm } from "react-hook-form";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -128,6 +129,17 @@ const EditTruck = (props) => {
     fetcher
   );
 
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const handleClick = (message, variant) => {
+    enqueueSnackbar(message, {
+      variant: variant,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "center",
+      },
+    });
+  };
+
   if (error1) return <div>No se pudo cargar el camión</div>;
   if (!truckData) return <Loading />;
 
@@ -149,8 +161,9 @@ const EditTruck = (props) => {
     console.log("truckData1", truckData1);
     try {
       const response = await api.put(`/trucks/${truckData.id}`, truckData1);
-      console.log("rersponse put camion", response);
-      console.log("correcto put camion");
+      //console.log("rersponse put camion", response);
+      //console.log("correcto put camion");
+      handleClick("Se ha editado los datos del camión con éxito.", "success");
       props.onCancel();
       return response;
     } catch (error) {
