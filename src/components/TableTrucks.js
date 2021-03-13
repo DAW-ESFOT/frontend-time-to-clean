@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 import Loading from "@/components/Loading";
@@ -176,40 +176,6 @@ const TableTrucks = () => {
     mutate2();
   };
 
-  `$(document).ready(function () {
-    $("#wordToSearch").on("change", function () {
-      setWordSearch(data.wordToSearch);
-      setDataSearchTrucks([]);
-      const listTrucksData = [];
-      trucksAllData.data.map((truck) => {
-        truck.license_plate
-          .toUpperCase()
-          .includes(data.wordToSearch.toUpperCase())
-          ? listTrucksData.push(truck)
-          : "";
-      });
-
-      setDataSearchTrucks(listTrucksData);
-    });
-  });`;
-
-  const handleClickSearchTruck = async (data) => {
-    setWordSearch(data.wordToSearch);
-    setDataSearchTrucks([]);
-    const listTrucksData = [];
-    trucksAllData.data.map((truck) => {
-      truck.license_plate
-        .toUpperCase()
-        .includes(data.wordToSearch.toUpperCase())
-        ? listTrucksData.push(truck)
-        : "";
-    });
-    setDataSearchTrucks(listTrucksData);
-    //console.log("dataSearchTrucks", dataSearchTrucks);
-    //console.log("wordToSearchlabel", data.wordToSearch);
-    //console.log("wordSearchUsestate", wordSearch);
-  };
-
   const handleClickDeleteSearchTruck = () => {
     setWordSearch("");
 
@@ -218,16 +184,21 @@ const TableTrucks = () => {
 
   const handleChange = (event) => {
     setWordSearch(event.target.value);
-    setDataSearchTrucks([]);
-    console.log("change word to search", wordSearch);
-    const listTrucksData = [];
-    trucksAllData.data.map((truck) => {
-      truck.license_plate.toUpperCase().includes(wordSearch.toUpperCase())
-        ? listTrucksData.push(truck)
-        : "";
-    });
-    setDataSearchTrucks(listTrucksData);
   };
+
+  useEffect(() => {
+    if (trucksAllData) {
+      setDataSearchTrucks([]);
+      //console.log("change word to search", wordSearch);
+      const listTrucksData = [];
+      trucksAllData.data.map((truck) => {
+        truck.license_plate.toUpperCase().includes(wordSearch.toUpperCase())
+          ? listTrucksData.push(truck)
+          : "";
+      });
+      setDataSearchTrucks(listTrucksData);
+    }
+  }, [wordSearch]);
 
   if (error1) return <div>No se pudo cargar los camiones</div>;
   if (!trucksData) return <Loading />;
@@ -247,12 +218,7 @@ const TableTrucks = () => {
         </Button>
       </Box>
       <Box display="flex" justifyContent="flex" m={1} p={1}>
-        <form
-          className={classes.root}
-          noValidate
-          autoComplete="off"
-          onSubmit={handleSubmit(handleClickSearchTruck)}
-        >
+        <form className={classes.root} noValidate autoComplete="off">
           <Paper className={classes.root3}>
             <InputBase
               id="wordToSearch"
@@ -271,13 +237,6 @@ const TableTrucks = () => {
               <BackspaceIcon />
             </IconButton>
             <Divider className={classes.divider} orientation="vertical" />
-            <IconButton
-              type="submit"
-              className={classes.iconButton}
-              aria-label="search"
-            >
-              <SearchIcon />
-            </IconButton>
           </Paper>
         </form>
       </Box>
