@@ -4,7 +4,7 @@ import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
 import {withStyles, makeStyles} from "@material-ui/core/styles";
-import {Dialog, DialogContent} from '@material-ui/core';
+import {Dialog, DialogContent, FormControlLabel, FormHelperText, FormLabel, RadioGroup} from '@material-ui/core';
 import {
     Paper,
     TableRow,
@@ -18,6 +18,8 @@ import {
 } from "@material-ui/core";
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import EditComplaint from "@/components/EditComplaint";
+import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -46,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
 const TableComplaints = () => {
 
     const classes = useStyles();
@@ -74,7 +75,6 @@ const TableComplaints = () => {
         setOpenEditComplaint(!openEditComplaint);
     };
 
-
     return (
         <>
             <h1> Gestión de quejas</h1>
@@ -88,6 +88,7 @@ const TableComplaints = () => {
                                         <TableRow>
                                             <StyledTableCell align="center">Queja</StyledTableCell>
                                             <StyledTableCell align="center">Remitente</StyledTableCell>
+                                            <StyledTableCell align="center">Información</StyledTableCell>
                                             <StyledTableCell align="center">Estado</StyledTableCell>
                                             <StyledTableCell align="center">Observación</StyledTableCell>
                                             <StyledTableCell align="center">Opción</StyledTableCell>
@@ -96,17 +97,21 @@ const TableComplaints = () => {
                                     <TableBody>
                                         {data.data.map((Complaint) => (
                                             <StyledTableRow key={Complaint.id}>
-                                                <StyledTableCell align="center">
+                                                <StyledTableCell align="justify">
                                                     {Complaint.complaint}
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
-                                                    {Complaint.username}
-                                                    {Complaint.email}
+                                                    {Complaint.username} ({Complaint.email})
+                                                </StyledTableCell>
+                                                <StyledTableCell align="left">
+                                                    Fecha: {(Complaint.created_at).substr(0, 10)}<br/>
+                                                    Barrio: {Complaint.neighborhood_id}<br/>
+                                                    Conductor: Nombre<br/>
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
                                                     {Complaint.state}
                                                 </StyledTableCell>
-                                                <StyledTableCell align="center">
+                                                <StyledTableCell align="justify">
                                                     {Complaint.observation}
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
@@ -135,8 +140,6 @@ const TableComplaints = () => {
                         :
                         <Loading/>
                 }
-
-
                 <div>
                     <Dialog onClose={handleCloseEditComplaint} open={openEditComplaint}>
                         <DialogContent dividers>

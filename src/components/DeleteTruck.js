@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import withAuth from "@/hocs/withAuth";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { Button, Box, Grid } from "@material-ui/core";
 import api from "@/lib/api";
 import { useForm } from "react-hook-form";
 import translateMessage from "../constants/messages";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,12 +88,23 @@ const useStyles = makeStyles((theme) => ({
 const DeleteTruck = (props) => {
   const classes = useStyles();
   const { register, handleSubmit, control, errors } = useForm();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const handleClick = (message, variant) => {
+    enqueueSnackbar(message, {
+      variant: variant,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "center",
+      },
+    });
+  };
 
   const onSubmit = async () => {
     try {
       const response = await api.delete(`/trucks/${props.id}`);
       console.log("rersponse delete truck", response);
       console.log("correcto delete camion");
+      handleClick("Se ha eliminado el camión con éxito", "success");
       props.onCancel();
       return response;
     } catch (error) {

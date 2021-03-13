@@ -7,8 +7,11 @@ import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import process from "process";
 import Image from "next/image";
+import api from "@/lib/api";
+import useSWR from "swr";
+import {fetcher} from "@/lib/utils";
+import Loading from "@/components/Loading";
 
 const schema = yup.object().shape({
     email: yup
@@ -40,25 +43,44 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const FormSection = ({neighborhoods}) => {
-
-    console.log("BARRIOS: ", neighborhoods);
+const FormSection = () => {
 
     const {register, handleSubmit, control, errors} = useForm({
         resolver: yupResolver(schema),
     });
     const classes = useStyles();
 
-    const onSubmit = async (data) => {
-        console.log("data", data);
-    };
-
     const [neighborhood, setNeighborhood] = useState("");
     const [id, setId] = useState("");
+    const {data, error} = useSWR(`/neighborhoods/all`, fetcher);
+    if (error) return <div>No se pudieron cargar los barrios</div>;
+    if (!data) return <Loading/>;
+
+    console.log("data", data)
+
+    const onSubmit = async (data) => {
+        const complaintData = {...data, neighborhood_id: id}
+        console.log("Data para enviar:", complaintData);
+        try {
+            const response = await api.post(`/complaints`, complaintData);
+            console.log("Response postComplaint:", response);
+            return response;
+        } catch (error) {
+            if (error.response) {
+                console.log("error", error.response.data.errors);
+                Error(error.response.data.errors)
+                return Promise.reject(error.response);
+            } else if (error.request) {
+                console.log(error.request);
+            } else {
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
+        }
+    };
 
     const handleChange = (event) => {
-        console.log("Barrio selec.", event.target.value)
-        setId(event.target.id);
+        setId(event.target.value);
     };
 
     return (
@@ -79,12 +101,12 @@ const FormSection = ({neighborhoods}) => {
                                     <TextField
                                         className={classes.margin}
                                         autoComplete="name"
-                                        name="name"
+                                        name="username"
                                         variant="outlined"
                                         required
                                         inputRef={register}
                                         fullWidth
-                                        id="firstName"
+                                        id="name"
                                         label="Nombre"
                                         autoFocus
                                     />
@@ -108,7 +130,7 @@ const FormSection = ({neighborhoods}) => {
                                         select
                                         label="Barrio"
                                         required
-                                        // value={neighborhood}
+                                        value={neighborhood}
                                         onChange={handleChange}
                                         SelectProps={{
                                             native: true,
@@ -116,11 +138,15 @@ const FormSection = ({neighborhoods}) => {
                                         helperText="Por favor selecciona un barrio de la lista"
                                         variant="outlined"
                                     >
-                                        {/*{neighborhoods.map((value) => (*/}
-                                        {/*    <option key={value.id} value={value.id}>*/}
-                                        {/*        {value.name}*/}
-                                        {/*    </option>*/}
-                                        {/*))}*/}
+                                        {
+                                            data.data.map((neighborhood) => {
+                                                return (
+                                                    <option key={neighborhood.id} value={neighborhood.id}>
+                                                        {neighborhood.name}
+                                                    </option>
+                                                );
+                                            })
+                                        }
                                     </TextField>
                                 </Grid>
                                 <Grid item xs={12}>
@@ -156,17 +182,6 @@ const FormSection = ({neighborhoods}) => {
             </div>
         </>
     );
-}
-
-export async function getStaticProps() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/neighborhoods`);
-    const data = await res.json();
-    const neighborhoods = data.data;
-    return {
-        props: {
-            neighborhoods,
-        },
-    };
 }
 
 export default FormSection;
