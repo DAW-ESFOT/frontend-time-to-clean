@@ -3,7 +3,7 @@ import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
-import {withStyles, makeStyles} from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import { Button, Icon, InputBase, TextField } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 

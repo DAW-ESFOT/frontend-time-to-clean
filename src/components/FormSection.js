@@ -12,6 +12,7 @@ import api from "@/lib/api";
 import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
+import Box from "@material-ui/core/Box";
 
 const schema = yup.object().shape({
     email: yup
@@ -42,6 +43,13 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.secondary.main,
     },
 }));
+
+const styles = {
+    box: {
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        borderRadius: '5px'
+    }
+}
 
 const FormSection = () => {
 
@@ -85,99 +93,106 @@ const FormSection = () => {
 
     return (
         <>
-
             <div className={classes.container}>
                 <Typography component="h1" variant="h4">
                     Buzón de quejas
                 </Typography>
-                <Grid container spacing={3}>
-                    <Grid item xs={3}>
-                        <Image src="/mailbox.png" alt="" width={300} height={300}/>
-                    </Grid>
-                    <Grid item xs={9}>
+                <Grid container direction="row" justify="space-around" alignItems="center">
+                    <Box m={5}>
+                        <Image src="/mailbox.png" alt="" width={280} height={280}/>
+                    </Box>
+                    <div>
+                        <p>Si tienes alguna queja o recomendación acerca del servicio de recolección de residuos solidos
+                            en Quito, ayudanos llenando el siguiente formulario.</p>
                         <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
-                                    <TextField
-                                        className={classes.margin}
-                                        autoComplete="name"
-                                        name="username"
-                                        variant="outlined"
-                                        required
-                                        inputRef={register}
-                                        fullWidth
-                                        id="name"
-                                        label="Nombre"
-                                        autoFocus
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        className={classes.margin}
-                                        variant="outlined"
-                                        required
-                                        fullWidth
-                                        id="email"
-                                        inputRef={register}
-                                        label="Correo Electronico"
-                                        name="email"
-                                        autoComplete="email"
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        id="outlined-select-currency-native"
-                                        select
-                                        label="Barrio"
-                                        required
-                                        value={neighborhood}
-                                        onChange={handleChange}
-                                        SelectProps={{
-                                            native: true,
-                                        }}
-                                        helperText="Por favor selecciona un barrio de la lista"
-                                        variant="outlined"
-                                    >
-                                        {
-                                            data.data.map((neighborhood) => {
-                                                return (
-                                                    <option key={neighborhood.id} value={neighborhood.id}>
-                                                        {neighborhood.name}
-                                                    </option>
-                                                );
-                                            })
-                                        }
-                                    </TextField>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        variant="outlined"
-                                        multiline
-                                        rows={5}
-                                        required
-                                        fullWidth
-                                        id="complaint"
-                                        inputRef={register}
-                                        label="Queja"
-                                        name="complaint"
-                                    />
-                                </Grid>
-                            </Grid>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <Button onSubmit={handleSubmit(onSubmit)}
-                                            type="submit"
+                                    <div style={styles.box}>
+                                        <TextField
+                                            className={classes.margin}
+                                            autoComplete="name"
+                                            name="username"
+                                            variant="outlined"
+                                            required
+                                            inputRef={register}
                                             fullWidth
-                                            variant="contained"
-                                            color="primary"
-                                            className={classes.submit}
-                                    >
-                                        Enviar
-                                    </Button>
+                                            id="name"
+                                            label="Nombre"
+                                            autoFocus
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <div style={styles.box}>
+                                        <TextField
+                                            className={classes.margin}
+                                            variant="outlined"
+                                            required
+                                            fullWidth
+                                            id="email"
+                                            inputRef={register}
+                                            label="Correo Electronico"
+                                            name="email"
+                                            autoComplete="email"
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <div style={styles.box}>
+                                        <TextField
+                                            id="outlined-select-currency-native"
+                                            select
+                                            label="Barrio"
+                                            required
+                                            value={neighborhood}
+                                            onChange={handleChange}
+                                            SelectProps={{
+                                                native: true,
+                                            }}
+                                            helperText="Por favor selecciona un barrio de la lista"
+                                            variant="outlined"
+                                        >
+                                            <option key="0"/>
+
+                                            {
+                                                data.data.map((neighborhood) => {
+                                                    return (
+                                                        <option key={neighborhood.id} value={neighborhood.id}>
+                                                            {neighborhood.name}
+                                                        </option>
+                                                    );
+                                                })
+                                            }
+                                        </TextField>
+                                    </div>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <div style={styles.box}>
+                                        <TextField
+                                            variant="outlined"
+                                            multiline
+                                            rows={5}
+                                            required
+                                            fullWidth
+                                            id="complaint"
+                                            inputRef={register}
+                                            label="Queja"
+                                            name="complaint"
+                                        />
+                                    </div>
                                 </Grid>
                             </Grid>
+                            <Button onSubmit={handleSubmit(onSubmit)}
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.submit}
+                            >
+                                Enviar
+                            </Button>
                         </form>
-                    </Grid>
+                    </div>
                 </Grid>
             </div>
         </>
