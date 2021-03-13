@@ -68,10 +68,10 @@ const FormSection = () => {
 
     const onSubmit = async (data) => {
         const complaintData = {...data, neighborhood_id: id}
-        console.log("Data para enviar:", complaintData);
+        console.log("Formulario:", complaintData);
         try {
             const response = await api.post(`/complaints`, complaintData);
-            console.log("Response postComplaint:", response);
+            console.log("Response:", response);
             return response;
         } catch (error) {
             if (error.response) {
