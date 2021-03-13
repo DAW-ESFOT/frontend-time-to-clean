@@ -71,9 +71,11 @@ const Management = () => {
     };
     const classes = useStyles();
 
+    // console.log("este  user entra", user);
+
     return (
         <>
-            {user.role === "ROLE_SUPERADMIN" ? (
+            {user.role === "ROLE_SUPERADMIN" || user.data.user.role === "ROLE_SUPERADMIN" ? (
                 <Grid container>
                     <Grid xs={3}>
                         <List className={classes.root}>
@@ -188,7 +190,9 @@ const Management = () => {
                         )}
                     </Grid>
                 </Grid>
-            )}
+            )
+
+            }
         </>
     );
 };

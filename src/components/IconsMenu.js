@@ -133,7 +133,7 @@ const IconsMenu = () => {
             <div className={classes.sectionDesktop}>
                 {user ? (
                     <MenuItem onClick={handleMenuAccountOpen} id="account-menu-button">
-                        <AccountCircle style={{marginRight: 5}}/> {user.name}
+                        <AccountCircle style={{marginRight: 5}}/> {user.name ? user.name : user.data.user.name}
                     </MenuItem>
                 ) : (
                     <Link href={Routes.LOGIN}>
