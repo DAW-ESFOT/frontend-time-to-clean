@@ -70,7 +70,7 @@ const Management = () => {
             backgroundPosition: "center center",
             backgroundSize: "cover",
             backgroundAttachment: "fixed",
-            backgroundImage: `url(${"/fondo-gestion.png"})`,
+            background: 'linear-gradient(0deg, rgba(168,254,216,1) 0%, rgba(96,149,176,1) 100%)',
             backgroundColor: 'rgba(35,96,132,0.8)',
             padding: '40px'
         }
@@ -81,7 +81,7 @@ const Management = () => {
     return (
         <>
             {
-                user.role === "ROLE_SUPERADMIIN" ?
+                user.role === "ROLE_SUPERADMIN" ?
                     <Grid container>
                         <Grid xs={3}>
                             <List className={classes.root}>
