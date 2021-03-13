@@ -19,11 +19,8 @@ import BorderColorIcon from '@material-ui/icons/BorderColor';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import AddNeighborhood from "@/components/AddNeighborhood";
 import EditNeighborhood from "@/components/EditNeighborhood";
-import api from "@/lib/api";
-import {useSnackbar} from "notistack";
 import DeleteNeighborhood from "@/components/DeleteNeighborhood";
 import BackspaceIcon from "@material-ui/icons/Backspace";
-import SearchIcon from "@material-ui/icons/Search";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -94,13 +91,13 @@ const TableNeighborhoods = () => {
 
     useEffect(() => {
         if(neighborhoodsAllData){
-            const listTrucksData = [];
+            const listNeighborhoods = [];
             neighborhoodsAllData.data.map((neighborhood) => {
                 neighborhood.name.toUpperCase().includes(wordSearch.toUpperCase())
-                    ? listTrucksData.push(neighborhood)
+                    ? listNeighborhoods.push(neighborhood)
                     : "";
             });
-            setDataSearchNeighborhood(listTrucksData);
+            setDataSearchNeighborhood(listNeighborhoods);
         }
     }, [wordSearch]);
 

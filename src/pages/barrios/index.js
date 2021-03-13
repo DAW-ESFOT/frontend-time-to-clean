@@ -2,17 +2,14 @@ import React, {useState} from 'react';
 import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "../../components/Loading";
-import FormControl from "@material-ui/core/FormControl";
 import {
-    Box, Divider, FormHelperText,
-    InputBase, InputLabel,
+    Box, Divider,
     List,
     ListItem,
     ListItemAvatar,
     ListItemText,
     makeStyles,
-    MenuItem, NativeSelect,
-    Select, Typography, withStyles
+    Typography
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Link from "next/link";
@@ -23,43 +20,6 @@ import Routes from "../../constants/routes";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 
-
-const BootstrapInput = withStyles(theme => ({
-    root: {
-        'label + &': {
-            marginTop: theme.spacing(3),
-        },
-    },
-    input: {
-        borderRadius: 4,
-        position: 'relative',
-        backgroundColor: theme.palette.background.paper,
-        border: '1px solid #ced4da',
-        fontSize: 16,
-        width: '250',
-        padding: '10px 26px 10px 12px',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-
-        fontFamily: [
-            '-apple-system',
-            'BlinkMacSystemFont',
-            '"Segoe UI"',
-            'Roboto',
-            '"Helvetica Neue"',
-            'Arial',
-            'sans-serif',
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"',
-        ].join(','),
-        '&:focus': {
-            borderRadius: 4,
-            borderColor: '#80bdff',
-            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-        },
-    },
-
-}))(InputBase);
 
 const useStyles = makeStyles((theme) => ({
     button: {

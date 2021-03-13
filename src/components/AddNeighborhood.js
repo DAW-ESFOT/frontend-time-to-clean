@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import withAuth from "@/hocs/withAuth";
-import {withStyles, makeStyles, ThemeProvider} from "@material-ui/core/styles";
+import { makeStyles, ThemeProvider} from "@material-ui/core/styles";
 import {
     Button,
     Grid,
@@ -11,7 +11,7 @@ import {
     FormLabel,
     TextField,
     FormControl,
-    createMuiTheme, Divider, Select, MenuItem, InputBase,
+    createMuiTheme, Divider
 } from "@material-ui/core";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -34,39 +34,6 @@ const defaultMaterialTheme = createMuiTheme({
         },
     },
 });
-
-const BootstrapInput = withStyles(theme => ({
-    root: {
-        'label + &': {
-            marginTop: theme.spacing(3),
-        },
-    },
-    input: {
-        borderRadius: 4,
-        position: 'relative',
-        backgroundColor: theme.palette.background.paper,
-        border: '1px solid #19857b',
-        fontSize: 16,
-        width: 250,
-        padding: '10px 26px 10px 12px',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-
-        fontFamily: [
-            'Arial',
-            'sans-serif',
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"',
-        ].join(','),
-        '&:focus': {
-            borderRadius: 4,
-            borderColor: '#19857b',
-            boxShadow: '0 0 0 0.2rem rgba(25,133,123,.25)',
-        },
-    },
-
-}))(InputBase);
-
 
 const useStyles = makeStyles((theme) => ({
     root: {

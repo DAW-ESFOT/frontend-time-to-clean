@@ -3,7 +3,7 @@ import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
-import {makeStyles, MuiThemeProvider, ThemeProvider} from "@material-ui/core/styles";
+import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
 
 import {
     Button,
@@ -15,8 +15,8 @@ import {
     FormGroup,
     FormHelperText,
     FormLabel,
-    Grid, InputBase, MenuItem, Select,
-    TextField, withStyles,
+    Grid,
+    TextField
 } from "@material-ui/core";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -35,38 +35,6 @@ const defaultMaterialTheme = createMuiTheme({
         },
     },
 });
-
-const BootstrapInput = withStyles(theme => ({
-    root: {
-        'label + &': {
-            marginTop: theme.spacing(3),
-        },
-    },
-    input: {
-        borderRadius: 4,
-        position: 'relative',
-        backgroundColor: theme.palette.background.paper,
-        border: '1px solid #236084',
-        fontSize: 16,
-        width: 200,
-        padding: '10px 26px 10px 12px',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-
-        fontFamily: [
-            'Arial',
-            'sans-serif',
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"',
-        ].join(','),
-        '&:focus': {
-            borderRadius: 4,
-            borderColor: '#236084',
-            boxShadow: '0 0 0 0.2rem rgba(35,96,132,.25)',
-        },
-    },
-
-}))(InputBase);
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -354,8 +322,8 @@ const EditNeighborhood = (props) => {
 
                 {
                     truck === "" ?
-                        <p>Camión asignado: N° - {neighborhoodData.truck.id};
-                            Placa: {neighborhoodData.truck.license_plate}</p>
+                        <p>Camión asignado: N° - {neighborhoodData.truck !== null ? neighborhoodData.truck.id : "No tiene" };
+                            Placa: {neighborhoodData.truck !== null ? neighborhoodData.truck.license_plate : "---"}</p>
                         :
                         <p>Camión ha asignar: N° - {truck} </p>
                 }
