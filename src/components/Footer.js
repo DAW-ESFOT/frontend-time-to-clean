@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Grid from "@material-ui/core/Grid";
 import Image from "next/image";
 import Routes from "../constants/routes";
-import {Box, Link as MuiLink} from "@material-ui/core";
+import {Box, ButtonBase, Icon, Link as MuiLink} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     footer: {
@@ -39,25 +39,50 @@ export default function Footer() {
                             </MuiLink>
                         </Link>
                     </Box>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                            <Link href={Routes.ABOUT}>
+                    <Grid container
+                          spacing={4}
+                          justify="space-around"
+                          alignItems="center"
+                    >
+                        <Box margin={2}>
+                            <ButtonBase href={Routes.ABOUT}>
                                 <Typography align="center">Acerca de</Typography>
-                            </Link>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Link href={Routes.PRIVACY}>
+                            </ButtonBase>
+                        </Box>
+                        <Box margin={2}>
+                            <ButtonBase href={Routes.PRIVACY}>
                                 <Typography align="center">Privacidad</Typography>
-                            </Link>
+                            </ButtonBase>
+                        </Box>
+                        <Grid
+                            container
+                            justify="center"
+                            alignItems="center"
+                        >
+                            <Box margin={2}>
+                                <ButtonBase href="https://www.facebook.com/ESFOT-EPN-UIO-163137570522102/" target="_blank">
+                                    <Icon style={{fontSize: 40}}>facebook</Icon>
+                                </ButtonBase>
+                            </Box>
+                            <Box margin={2}>
+                                <ButtonBase href="https://mail.google.com" target="_blank">
+                                    <Icon style={{fontSize: 40}}>email</Icon>
+                                </ButtonBase>
+                            </Box>
+                        </Grid>
+                        <Grid
+                            container
+                            justify="center"
+                            alignItems="center"
+                        >
+                            <ButtonBase href={Routes.HOME}>
+                                <Typography variant="body2" align="center">
+                                    Copyright © TimeToClean {new Date().getFullYear()}
+                                </Typography>
+                            </ButtonBase>
                         </Grid>
                     </Grid>
-                    <div className={classes.grow}>
-                        <Link href="/">
-                            <Typography variant="body2" align="center">
-                                Copyright © TimeToClean {new Date().getFullYear()}
-                            </Typography>
-                        </Link>
-                    </div>
+
                 </Container>
             </footer>
         </div>

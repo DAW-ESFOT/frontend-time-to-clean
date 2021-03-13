@@ -2,8 +2,8 @@ const publicRoutes = {
   LOGIN: "/iniciar-sesion",
   NEIGHBORHOODS: "/barrios",
   NEIGHBORHOODS_ID: "/barrios/:id",
-  ABOUT: "/about",
-  PRIVACY: "/privacy",
+  ABOUT: "/acerca-de",
+  PRIVACY: "/privacidad",
 
 };
 
