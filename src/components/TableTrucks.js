@@ -25,6 +25,7 @@ import {
   InputAdornment,
   Grid,
   Divider,
+  Select,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
@@ -175,14 +176,33 @@ const TableTrucks = () => {
     mutate2();
   };
 
+  `$(document).ready(function () {
+    $("#wordToSearch").on("change", function () {
+      setWordSearch(data.wordToSearch);
+      setDataSearchTrucks([]);
+      const listTrucksData = [];
+      trucksAllData.data.map((truck) => {
+        truck.license_plate
+          .toUpperCase()
+          .includes(data.wordToSearch.toUpperCase())
+          ? listTrucksData.push(truck)
+          : "";
+      });
+
+      setDataSearchTrucks(listTrucksData);
+    });
+  });`;
+
   const handleClickSearchTruck = async (data) => {
     setWordSearch(data.wordToSearch);
     setDataSearchTrucks([]);
     const listTrucksData = [];
     trucksAllData.data.map((truck) => {
-      truck.license_plate.includes(data.wordToSearch)
+      truck.license_plate
+        .toUpperCase()
+        .includes(data.wordToSearch.toUpperCase())
         ? listTrucksData.push(truck)
-        : console.log("");
+        : "";
     });
     setDataSearchTrucks(listTrucksData);
     //console.log("dataSearchTrucks", dataSearchTrucks);
@@ -192,7 +212,21 @@ const TableTrucks = () => {
 
   const handleClickDeleteSearchTruck = () => {
     setWordSearch("");
+
     //console.log("handleClickDeleteSearchTruck", wordSearch);
+  };
+
+  const handleChange = (event) => {
+    setWordSearch(event.target.value);
+    setDataSearchTrucks([]);
+    console.log("change word to search", wordSearch);
+    const listTrucksData = [];
+    trucksAllData.data.map((truck) => {
+      truck.license_plate.toUpperCase().includes(wordSearch.toUpperCase())
+        ? listTrucksData.push(truck)
+        : "";
+    });
+    setDataSearchTrucks(listTrucksData);
   };
 
   if (error1) return <div>No se pudo cargar los camiones</div>;
@@ -223,9 +257,11 @@ const TableTrucks = () => {
             <InputBase
               id="wordToSearch"
               name="wordToSearch"
+              value={wordSearch}
               className={classes.input}
               placeholder="Placa a buscar"
               inputRef={register}
+              onChange={handleChange}
             />
             <IconButton
               onClick={handleClickDeleteSearchTruck}
@@ -325,15 +361,6 @@ const TableTrucks = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
-              <TablePagination
-                rowsPerPageOptions={[10]}
-                component="div"
-                count={trucksData.meta.total}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                className={classes.margin}
-                onChangePage={handleChangePage}
-              />
             </div>
           ) : (
             <Loading />
@@ -418,27 +445,25 @@ const TableTrucks = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
-
-              {wordSearch === "" ? (
-                <TablePagination
-                  rowsPerPageOptions={[10]}
-                  component="div"
-                  count={trucksData.meta.total}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  className={classes.margin}
-                  onChangePage={handleChangePage}
-                />
-              ) : (
-                ""
-              )}
             </div>
           ) : (
             <Loading />
           )}
         </div>
       )}
-
+      {wordSearch === "" ? (
+        <TablePagination
+          rowsPerPageOptions={[10]}
+          component="div"
+          count={trucksData.meta.total}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          className={classes.margin}
+          onChangePage={handleChangePage}
+        />
+      ) : (
+        ""
+      )}
       <Dialog
         open={isDialogsVisibleAddTruck}
         onClose={handleClose}
