@@ -6,7 +6,7 @@ import {
     ListItemAvatar,
     ListItemText,
     Divider,
-    makeStyles
+    makeStyles, ButtonBase,
 } from "@material-ui/core";
 import TableTrucks from "@/components/TableTrucks";
 import TableNeighborhoods from "@/components/TableNeighborhoods";
@@ -14,8 +14,14 @@ import TableUsers from "@/components/TableUsers";
 import TableComplaints from "@/components/TableComplaints";
 import List from "@material-ui/core/List";
 import Image from "next/image";
+import Box from "@material-ui/core/Box";
+import {useAuth} from "@/lib/auth";
+import DriverInfoProfile from "@/components/DriverInfoProfile";
+import DriverInfoJob from "@/components/DriverInfoJob";
 
 const Management = () => {
+    const {user} = useAuth();
+
     const [showTrucks, setShowTrucks] = useState(false);
     const [showDrivers, setShowDrivers] = useState(true);
     const [showComplaints, setShowComplaints] = useState(false);
@@ -51,77 +57,137 @@ const Management = () => {
 
     const useStyles = makeStyles((theme) => ({
         root: {
-            width: '100%',
+            width: "100%",
             maxWidth: 360,
-            color: '#262626'
+            color: "#262626",
         },
     }));
 
     const styles = {
         container: {
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center center",
-            backgroundSize: "cover",
-            backgroundAttachment: "fixed",
-            backgroundImage: `url(${"/fondo-gestion.png"})`,
-            backgroundColor: 'rgba(35,96,132,0.8)',
-            padding: '40px'
-        }
+            background: 'linear-gradient(0deg, rgba(168,304,216,1) 0%, rgba(96,149,176,1) 100%)',
+            padding: "35px",
+        },
     };
-
     const classes = useStyles();
+
+    // console.log("este  user entra", user);
 
     return (
         <>
-            <Grid container>
-                <Grid xs={3}>
-                    <List className={classes.root}>
-                        <ListItem onClick={onVisibleDriver}>
-                            <ListItemAvatar>
-                                <Image src="/volante-de-coche.png" alt="" width={35} height={35}/>
-                            </ListItemAvatar>
-                            <ListItemText primary="Gestión de Conductores"/>
-                        </ListItem>
-                        <Divider variant="inset" component="li"/>
-                        <ListItem onClick={onVisibleTruck}>
-                            <ListItemAvatar>
-                                <Image src="/delivery-truck.png" alt="" width={35} height={35}/>
-                            </ListItemAvatar>
-                            <ListItemText primary="Gestión de Camiones"/>
-                        </ListItem>
-                        <Divider variant="inset" component="li"/>
-                        <ListItem onClick={onVisibleComplaints}>
-                            <ListItemAvatar>
-                                <Image src="/customer-satisfaction.png" alt="" width={35} height={35}/>
-                            </ListItemAvatar>
-                            <ListItemText primary="Gestión de Quejas"/>
-                        </ListItem>
-                        <Divider variant="inset" component="li"/>
-                        <ListItem onClick={onVisibleNeighborhoods}>
-                            <ListItemAvatar>
-                                <Image src="/maps-and-flags.png" alt="" width={35} height={35}/>
-                            </ListItemAvatar>
-                            <ListItemText primary="Registro de Barrios y Frecuencias"/>
-                        </ListItem>
-                    </List>
+            {user.role === "ROLE_SUPERADMIN" || user.data.user.role === "ROLE_SUPERADMIN" ? (
+                <Grid container>
+                    <Grid xs={3}>
+                        <List className={classes.root}>
+                            <ListItem onClick={onVisibleDriver}button divider>
+                                <ListItemAvatar>
+                                    <Image
+                                        src="/volante-de-coche.png"
+                                        alt=""
+                                        width={30}
+                                        height={30}
+                                    />
+                                </ListItemAvatar>
+                                <ListItemText primary="Gestión de Conductores"/>
+                            </ListItem>
+                            <ListItem onClick={onVisibleTruck} button divider>
+                                <ListItemAvatar>
+                                    <Image
+                                        src="/delivery-truck.png"
+                                        alt=""
+                                        width={30}
+                                        height={30}
+                                    />
+                                </ListItemAvatar>
+                                <ListItemText primary="Gestión de Camiones"/>
+                            </ListItem>
+                            <ListItem onClick={onVisibleNeighborhoods} button divider>
+                                <ListItemAvatar>
+                                    <Image
+                                        src="/maps-and-flags.png"
+                                        alt=""
+                                        width={30}
+                                        height={30}
+                                    />
+                                </ListItemAvatar>
+                                <ListItemText primary="Registro de Barrios y Frecuencias"/>
+                            </ListItem>
+                            <ListItem onClick={onVisibleComplaints} button divider>
+                                <ListItemAvatar>
+                                    <Image
+                                        src="/customer-satisfaction.png"
+                                        alt=""
+                                        width={30}
+                                        height={30}
+                                    />
+                                </ListItemAvatar>
+                                <ListItemText primary="Gestión de Quejas"/>
+                            </ListItem>
+                            <Box p={14} bgcolor="background.paper"/>
+                        </List>
+                    </Grid>
+                    <Grid xs={9} style={styles.container}>
+                        {showTrucks ? (
+                            <TableTrucks/>
+                        ) : showDrivers ? (
+                            <TableUsers/>
+                        ) : showComplaints ? (
+                            <TableComplaints/>
+                        ) : showTrucks === false &&
+                        showDrivers === false &&
+                        showComplaints === false &&
+                        showNeighborhoods ? (
+                            <TableNeighborhoods/>
+                        ) : (
+                            "Cargando tablas"
+                        )}
+                    </Grid>
                 </Grid>
-                <Grid xs={9} style={styles.container}>
-                    {showTrucks ? (
-                        <TableTrucks/>
-                    ) : showDrivers ? (
-                        <TableUsers/>
-                    ) : showComplaints ? (
-                        <TableComplaints/>
-                    ) : showTrucks === false &&
-                    showDrivers === false &&
-                    showComplaints === false &&
-                    showNeighborhoods ? (
-                        <TableNeighborhoods/>
-                    ) : (
-                        "cargando XD"
-                    )}
+            ) : (
+                <Grid container>
+                    <Grid xs={3}>
+                        <List className={classes.root}>
+                            <ListItemAvatar>
+                                <Image src="/reuse.png" alt="" width={100} height={100}/>
+                            </ListItemAvatar>
+                            <ListItem onClick={onVisibleDriver} button divider>
+                                <ListItemAvatar>
+                                    <Image
+                                        src="/volante-de-coche.png"
+                                        alt=""
+                                        width={30}
+                                        height={30}
+                                    />
+                                </ListItemAvatar>
+                                <ListItemText primary="DATOS DE PERFIL"/>
+                            </ListItem>
+                            <ListItem onClick={onVisibleTruck} button divider>
+                                <ListItemAvatar>
+                                    <Image
+                                        src="/delivery-truck.png"
+                                        alt=""
+                                        width={30}
+                                        height={30}
+                                    />
+                                </ListItemAvatar>
+                                <ListItemText primary="INFORMACIÓN DE TRABAJO"/>
+                            </ListItem>
+                            <Box p={20} bgcolor="background.paper"/>
+                        </List>
+                    </Grid>
+                    <Grid xs={9}>
+                        {showTrucks ? (
+                            <DriverInfoProfile user={user}/>
+                        ) : showDrivers ? (
+                            <DriverInfoJob user={user}/>
+                        ) : (
+                            <DriverInfoProfile user={user}/>
+                        )}
+                    </Grid>
                 </Grid>
-            </Grid>
+            )
+
+            }
         </>
     );
 };

@@ -100,7 +100,6 @@ const OptionSection = () => {
                         </Grid>
                     </Grid>
                 </Paper>
-
             </Grid>
         </div>
     )

@@ -3,14 +3,12 @@ import Carousel from 'react-material-ui-carousel'
 import Grid from "@material-ui/core/Grid";
 import {Paper} from "@material-ui/core";
 import Image from "next/image";
-import Typography from "@material-ui/core/Typography";
 
 const InfoSection = () => {
-
     const styles = {
         container: {
             backgroundRepeat: "no-repeat",
-            backgroundPosition: "center top",
+            backgroundPosition: "right top",
             backgroundSize: "cover",
             backgroundAttachment: "fixed",
             backgroundImage: `url(${"/info-fondo.png"})`,
@@ -41,18 +39,14 @@ const InfoSection = () => {
                     justify="flex-end"
                     alignItems="flex-end"
                 >
-
-                    <Grid container spacing={1} justify="flex-end" alignItems="flex-end">
-                        <Paper elevation={0} style={styles.paper}>
-                            <Grid>
-                                <h1 style={styles.title}>{props.item.name}</h1>
-                            </Grid>
-                        </Paper>
+                    <Paper elevation={0} style={styles.paper}>
                         <Grid>
-                            <Image src={props.item.icon} alt="" width="100" height="100"/>
+                            <h1 style={styles.title}>{props.item.name}</h1>
                         </Grid>
+                    </Paper>
+                    <Grid>
+                        <Image src={props.item.icon} alt="" width="100" height="100"/>
                     </Grid>
-
                 </Grid>
             </div>
 

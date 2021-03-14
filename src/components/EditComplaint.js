@@ -1,37 +1,152 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import useSWR from "swr";
-import { fetcher } from "@/lib/utils";
+import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
+import {Button, FormControlLabel, Icon, InputBase, Paper, Radio, RadioGroup, TextField} from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import {useForm} from "react-hook-form";
+import api from "@/lib/api";
+import {useSnackbar} from "notistack";
 
-import {
-    Button,
-} from "@material-ui/core";
-
-
-const useStyles = makeStyles({
-    table: {
-        minWidth: 600,
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
     },
-});
+    control: {
+        padding: theme.spacing(2),
+    },
+    form: {
+        width: "100%", // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+    },
+    submit: {
+        margin: theme.spacing(3, 2, 2),
+        backgroundColor: theme.palette.secondary.main,
+    },
+    button: {
+        margin: theme.spacing(3, 2, 2),
+        backgroundColor: theme.palette.cancel.main,
+    },
+}));
 
-const EditComplaint = ( props ) => {
+const styles = {
+    paper: {
+        backgroundColor: 'rgba(73,199,171,0.25)',
+        padding: '10px',
+        marginBottom: '15px'
+    }
+};
 
-    const { data, error } = useSWR(`/complaints/${props.id}`, fetcher);
-
+const EditComplaint = (props) => {
+    const classes = useStyles();
+    const {register, handleSubmit} = useForm();
+    const {data, error} = useSWR(`/complaints/${props.id}`, fetcher);
     if (error) return <div>No se pudo cargar queja</div>;
-    if (!data) return <Loading />;
+    if (!data) return (<Loading/>);
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+    const handleClick = (message, variant) => {
+        enqueueSnackbar(message, {
+            variant: variant,
+            anchorOrigin: {
+                vertical: "top",
+                horizontal: "center",
+            },
+        });
+    };
+
+    const onSubmit = async (complaintData) => {
+        console.log("Datos a actualizar:", complaintData)
+        try {
+            const response = await api.put(`/complaints/${props.id}`, complaintData);
+            console.log("Response:", response);
+            handleClick("Cambios guardados.", "success");
+            props.onCancel();
+            return response;
+        } catch (error) {
+            if (error.response) {
+                console.log("error", error.response.data.errors);
+                Error(error.response.data.errors)
+                return Promise.reject(error.response);
+            } else if (error.request) {
+                console.log(error.request);
+            } else {
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
+        }
+    }
 
     console.log("Id del barrio", props.id);
 
     return (
         <>
-            <div>Edición</div>
-            <Button color="secondary">Agregar</Button>
-            <Button onClick={props.onHandleCloseModal } color="secondary">
-                Cancelar
-            </Button>
+            <Grid
+                container
+                direction="row"
+                justify="space-between"
+                alignItems="center"
+            >
+                <div/>
+                <h1>Edición</h1>
+                <Icon color="secondary" onClick={props.onHandleCloseModal}>cancel</Icon>
+            </Grid>
+            <Grid
+                container
+                direction="row"
+                justify="space-between"
+                alignItems="center"
+            >
+                <h2>Queja #{data.id}</h2>
+                <i>Recibida: {(data.created_at).substr(0, 10)}</i>
+            </Grid>
+            <Paper elevation={0} style={styles.paper}>
+                <Typography variant="body1" gutterBottom>{data.complaint}</Typography>
+            </Paper>
+            <form className={classes.root}
+                  noValidate
+                  autoComplete="off"
+                  onSubmit={handleSubmit(onSubmit)}
+            >
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <Typography variant="body1" gutterBottom>Estado de la queja:</Typography>
+                        <RadioGroup row aria-label="position" name="state" defaultValue={data.state}>
+                            <FormControlLabel inputRef={register} value="Atendida" control={<Radio color="secondary"/>}
+                                              label="Atendida"/>
+                            <FormControlLabel inputRef={register} value="En proceso"
+                                              control={<Radio color="secondary"/>} label="En proceso"/>
+                            <FormControlLabel inputRef={register} value="Pendiente" control={<Radio color="secondary"/>}
+                                              label="Pendiente"/>
+                        </RadioGroup>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="body1" gutterBottom>Observación:</Typography>
+                        <TextField
+                            id="outlined-multiline-static"
+                            multiline
+                            rows={4}
+                            defaultValue={data.observation}
+                            variant="outlined"
+                            name="observation"
+                            inputRef={register}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="secondary"
+                            className={classes.submit}
+                            onClick={props.onHandleCloseModal}
+                        >
+                            Guardar Cambios
+                        </Button>
+                    </Grid>
+                </Grid>
+            </form>
         </>
     );
 };

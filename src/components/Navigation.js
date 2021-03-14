@@ -4,7 +4,7 @@ import {makeStyles, useTheme} from "@material-ui/core/styles";
 import Link from "next/link";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import {Link as MuiLink} from "@material-ui/core";
+import {Breadcrumbs, Link as MuiLink} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -40,10 +40,6 @@ const mainMenuItems = [
     },
     {
         text: "Acerca de",
-        to: Routes.ABOUT,
-    },
-    {
-        text: "Contacto",
         to: Routes.ABOUT,
     },
 ];
@@ -188,11 +184,13 @@ export default function MainMenu(props) {
                         </Box>
                         <div className={classes.grow}/>
                         <div className={classes.sectionDesktop}>
-                            {mainMenuItems.map((item) => (
-                                <Link href={item.to} key={item.text}>
-                                    <MenuItem>{item.text}</MenuItem>
-                                </Link>
-                            ))}
+                            <Breadcrumbs aria-label="breadcrumb">
+                                {mainMenuItems.map((item) => (
+                                    <Link href={item.to} key={item.text}>
+                                        <MenuItem>{item.text}</MenuItem>
+                                    </Link>
+                                ))}
+                            </Breadcrumbs>
                         </div>
                         <div className={classes.grow}/>
                         <IconsMenu/>
