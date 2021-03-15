@@ -30,11 +30,7 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
 import PostAddIcon from "@material-ui/icons/PostAdd";
-import SearchIcon from "@material-ui/icons/Search";
 import BackspaceIcon from "@material-ui/icons/Backspace";
-import AddTruck from "@/components/AddTruck";
-import EditTruck from "@/components/EditTruck";
-import DeleteTruck from "@/components/DeleteTruck";
 import DeleteUser from "@/components/DeleteUser";
 import EditUser from "@/components/EditUser";
 import AddUser from "@/components/AddUser";
@@ -119,14 +115,15 @@ const useStyles = makeStyles((theme) => ({
 
 const TableUsers = () => {
     const classes = useStyles();
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
     const { data, error,mutate} = useSWR(`/users?page=${page + 1}`, fetcher);
     const { data: usersAllData, error: e, mutate: m } = useSWR(
         `/users/all`,
         fetcher
     );
     const { register } = useForm();
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+
     const [dataSearchUsers, setDataSearchUsers] = useState([]);
     const [wordSearch, setWordSearch] = useState("");
     const [valueIdUser, setValueIdUser] = useState(null);
@@ -181,12 +178,13 @@ const TableUsers = () => {
         setIsDialogsVisibleDeleteUser(false);
         mutate();
     };
-    if (error) return <div>No se pudo cargar los conductores</div>;
-    if (!data) return <Loading />;
-    console.log("data usuarios",data);
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
+    if (error) return <div>No se pudo cargar los conductores</div>;
+    if (!data) return <Loading />;
+    console.log("data usuarios",data);
+
 
     return (
         <>
