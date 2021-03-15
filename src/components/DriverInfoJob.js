@@ -17,6 +17,7 @@ import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import PlaceIcon from "@material-ui/icons/Place";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
+import DriverInfoNotFound from "@/components/DriverInfoNotFound";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -51,13 +52,12 @@ const useStyles = makeStyles((theme) => ({
 const DriverInfoJob = ({user}) => {
 
     const classes = useStyles();
-    //deberia ser con prop pero no tenia user pra probar
-    // const {data: truckUser, error} = useSWR(`/users/${user.id}/truck`, fetcher);
-    const {data: truckUser, error} = useSWR(`/users/2/truck`, fetcher);
+    const {data: truckUser, error} = useSWR(`/users/${user.id}/truck`, fetcher);
 
-    if (error) return <div>algo ha ocurrido</div>;
+    if (error) {
+        return <div><DriverInfoNotFound/></div>;
+    }
     if (!truckUser) return <Loading/>;
-    console.log(truckUser);
 
     return (
         <>

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import withAuth from "@/hocs/withAuth";
 import {
     Grid,
@@ -21,7 +21,7 @@ import DriverInfoJob from "@/components/DriverInfoJob";
 
 const Management = () => {
     const {user} = useAuth();
-
+    const [userData, setUserData]= useState("");
     const [showTrucks, setShowTrucks] = useState(false);
     const [showDrivers, setShowDrivers] = useState(true);
     const [showComplaints, setShowComplaints] = useState(false);
@@ -71,11 +71,22 @@ const Management = () => {
     };
     const classes = useStyles();
 
-    // console.log("este  user entra", user);
+
+    useEffect(() => {
+        if(user.role){
+            // console.log("entra User directo", user);
+            setUserData(user);
+        }else{
+            // console.log("entra user modficiado", user.data.user)
+            setUserData(user.data.user);
+        }
+    }, []);
+
 
     return (
         <>
-            {user.role === "ROLE_SUPERADMIN" || user.data.user.role === "ROLE_SUPERADMIN" ? (
+            {
+                userData.role === "ROLE_SUPERADMIN" ? (
                 <Grid container>
                     <Grid xs={3}>
                         <List className={classes.root}>
@@ -177,16 +188,15 @@ const Management = () => {
                     </Grid>
                     <Grid xs={9}>
                         {showTrucks ? (
-                            <DriverInfoProfile user={user}/>
+                            <DriverInfoJob user={userData}/>
                         ) : showDrivers ? (
-                            <DriverInfoJob user={user}/>
+                            <DriverInfoProfile user={userData}/>
                         ) : (
-                            <DriverInfoProfile user={user}/>
+                            "Cargando Tablas"
                         )}
                     </Grid>
                 </Grid>
-            )
-
+                )
             }
         </>
     );
