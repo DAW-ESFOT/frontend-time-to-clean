@@ -60,7 +60,7 @@ const login = () => {
     const onSubmit = async (data) => {
         try {
             const userData = await login(data);
-            handleClick("El usuario ha ingresado con éxito", "success");
+            handleClick("Bienvenido", "success");
             console.log('userdata', userData);
 
         } catch (error) {
