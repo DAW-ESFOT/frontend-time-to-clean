@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Grid from "@material-ui/core/Grid";
-import { Button, TextField } from "@material-ui/core";
+import {Button, Paper, TextField} from "@material-ui/core";
 import * as yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuth } from "../../lib/auth";
@@ -9,6 +9,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import Routes from "../../constants/routes";
+import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
 
 const schema = yup.object().shape({
     email: yup
@@ -18,13 +22,28 @@ const schema = yup.object().shape({
 });
 
 const useStyles = makeStyles((theme) => ({
-    textField: {
-        width: "100%",
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
     },
-    buttonWrapper: {
-        textAlign: "center",
+
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+        backgroundColor: theme.palette.secondary.main,
     },
 }));
+const styles = {
+    Container: {
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center center",
+        backgroundSize: "cover",
+        backgroundImage: `url(${"/fondo-login.png"})`,
+        padding:'40px'
+    },
+    paper: {
+        padding: '35px',
+    },
+};
 
 const ResetPasswordPage = () => {
     const router = useRouter();
@@ -33,6 +52,15 @@ const ResetPasswordPage = () => {
     const classes = useStyles();
     const [loading, setLoading] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
+    const handleClick = (message, variant) => {
+        enqueueSnackbar(message, {
+            variant: variant,
+            anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'center',
+            },
+        });
+    }
     const { register, handleSubmit, errors } = useForm({
         resolver: yupResolver(schema),
     });
@@ -46,12 +74,7 @@ const ResetPasswordPage = () => {
             setLoading(true);
             await confirmPasswordReset(email, password, password_confirmation, token);
             setLoading(false);
-            enqueueSnackbar(
-                "Tu clave se ha restablecido correctamente, puedes iniciar sesión",
-                {
-                    variant: "success",
-                }
-            );
+            handleClick("Tu clave se ha restablecido correctamente, puedes iniciar sesión", "success");
             router.push(Routes.LOGIN);
         } catch (error) {
             setLoading(false);
@@ -84,70 +107,79 @@ const ResetPasswordPage = () => {
     };
 
     return (
-        <Grid container justify="center">
-            <Grid item xs={6}>
-                <form
-                    noValidate
-                    autoComplete="off"
-                    onSubmit={handleSubmit(onResetPassword)}
-                >
-                    <Grid container spacing={2} justify="center" alignItems="center">
-                        <Grid xs={12} item>
-                            <TextField
-                                id="email"
-                                name="email"
-                                type="email"
-                                label="Correo electrónico"
-                                inputRef={register}
-                                autoComplete="email"
-                                error={!!errors.email}
-                                helperText={errors.email?.message}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={2} justify="center" alignItems="center">
-                        <Grid xs={12} item>
-                            <TextField
-                                id="password"
-                                name="password"
-                                type="password"
-                                label="Clave"
-                                inputRef={register}
-                                error={!!errors.password}
-                                helperText={errors.password?.message}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={2} justify="center" alignItems="center">
-                        <Grid xs={12} item>
-                            <TextField
-                                id="password_confirmation"
-                                name="password_confirmation"
-                                type="password"
-                                label="Confirmar clave"
-                                inputRef={register}
-                                error={!!errors.password_confirmation}
-                                helperText={errors.password_confirmation?.message}
-                            />
-                        </Grid>
-                    </Grid>
-
-                    <Grid container spacing={2} justify="center" alignItems="center">
-                        <Grid xs={12} item className={classes.buttonWrapper}>
-                            <Button
-                                name="submit"
-                                variant="contained"
-                                type="submit"
-                                color="primary"
-                                disabled={loading}
-                            >
-                                Enviar
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </form>
-            </Grid>
-        </Grid>
+        <>
+            <div style={styles.Container}>
+                <Container component="main" maxWidth="xs">
+                    <CssBaseline/>
+                    <Paper elevation={3} style={styles.paper}>
+                        <Grid item xs={false} sm={4} md={7} className={classes.image}/>
+                        <Typography component="h1" variant="h5" align="center">
+                            <strong>Ingrese su nueva contraseña</strong>
+                        </Typography>
+                        <form className={classes.form} noValidate onSubmit={handleSubmit(onResetPassword)}>
+                            <Grid container spacing={2} justify="center" alignItems="center">
+                                <Grid xs={12} item>
+                                    <TextField
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        label="Correo electrónico"
+                                        color="secondary"
+                                        inputRef={register}
+                                        autoComplete="email"
+                                        error={!!errors.email}
+                                        helperText={errors.email?.message}
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={2} justify="center" alignItems="center">
+                                <Grid xs={12} item>
+                                    <TextField
+                                        id="password"
+                                        name="password"
+                                        type="password"
+                                        label="Contraseña"
+                                        color="secondary"
+                                        inputRef={register}
+                                        error={!!errors.password}
+                                        helperText={errors.password?.message}
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={2} justify="center" alignItems="center">
+                                <Grid xs={12} item>
+                                    <TextField
+                                        id="password_confirmation"
+                                        name="password_confirmation"
+                                        color="secondary"
+                                        type="password"
+                                        label="Confirmar contraseña"
+                                        inputRef={register}
+                                        error={!!errors.password_confirmation}
+                                        helperText={errors.password_confirmation?.message}
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={2} justify="center" alignItems="center">
+                                <Grid xs={12} item className={classes.buttonWrapper}>
+                                    <Button
+                                        name="submit"
+                                        variant="contained"
+                                        type="submit"
+                                        color="primary"
+                                        disabled={loading}
+                                        fullWidth
+                                        className={classes.submit}
+                                    >
+                                        Enviar
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </form>
+                    </Paper>
+                </Container>
+            </div>
+        </>
     );
 };
 
