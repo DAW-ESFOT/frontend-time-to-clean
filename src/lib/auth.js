@@ -97,25 +97,24 @@ function useAuthProvider() {
         } catch (error) {}
     }
 
-    // const sendPasswordResetEmail = (email) => {
-    //   return firebase
-    //     .auth()
-    //     .sendPasswordResetEmail(email)
-    //     .then(() => {
-    //       return true;
-    //     });
-    // };
-    //
-    // const confirmPasswordReset = (password, code) => {
-    //   const resetCode = code || getFromQueryString('oobCode');
-    //
-    //   return firebase
-    //     .auth()
-    //     .confirmPasswordReset(resetCode, password)
-    //     .then(() => {
-    //       return true;
-    //     });
-    // };
+     const sendPasswordResetEmail = async (email) => {
+        await api.post("forgot-password",{email});
+     };
+
+    const confirmPasswordReset = async (
+        email,
+        password,
+        password_confirmation,
+        token
+    ) => {
+        // try {
+        await api.post("/reset-password", {
+            email,
+            password,
+            password_confirmation,
+            token,
+        });
+    };
 
     async function getAuthenticatedUser() {
         try {
@@ -169,7 +168,7 @@ function useAuthProvider() {
         register,
         login,
         logout,
-        // sendPasswordResetEmail,
-        // confirmPasswordReset
+        sendPasswordResetEmail,
+        confirmPasswordReset
     };
 }

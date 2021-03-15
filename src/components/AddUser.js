@@ -1,22 +1,20 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
 import withAuth from "../hocs/withAuth";
-import {useAuth} from "../lib/auth";
-import Routes from "../constants/routes";
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Grid from '@material-ui/core/Grid';
-import Alert from '@material-ui/lab/Alert';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
+import api from "@/lib/api";
+import {useSnackbar} from "notistack";
 const schema = yup.object().shape({
     email: yup
         .string()
@@ -41,10 +39,6 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         minWidth: 220,
     },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
@@ -54,30 +48,46 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.secondary.main,
     },
     cancel:{
-        margin: theme.spacing(3, 0, 2),
-        backgroundColor: theme.palette.primary.main,
+        margin: theme.spacing(3, 2, 2),
+        backgroundColor: theme.palette.cancel.main,
     }
 }));
 
-const Register = ()=>{
+const Register = (props)=>{
     const [valSelect, setValSelect] = React.useState('');
-    const {register: doRegister}=useAuth();
     const { register, handleSubmit, errors } = useForm({
         resolver: yupResolver(schema),
     });
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const handleClick = (message, variant) => {
+        enqueueSnackbar(message, {
+            variant: variant,
+            anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'center',
+            },
+        });
+    }
+
     const classes = useStyles();
     const onSubmit=async (data)=>{
-
-        try{
-            const userData=await doRegister({...data,type:valSelect,role:'ROLE_DRIVER'});
-
-            console.log('userdata',userData);
+        console.log("data enviar", data);
+        const userData = {...data,type:valSelect,role:'ROLE_DRIVER'};
+        console.log("userData", userData);
+        try {
+            const response = await api.post("/register", userData);
+            handleClick("Se ha registrado con éxito el usuario", "success");
+            console.log("rersponse post users", response);
+            console.log("correcto post usuarios");
+            props.onCancel();
+            return response;
         }catch (error) {
             if (error.response) {
                 // The request was made and the server responded with a status code
                 // that falls out of the range of 2xx
                 alert(error.response.data.error);
                 console.log(error.response.data);
+                Error(error.response.data.errors)
                 //d
             } else if (error.request) {
                 // The request was made but no response was received
@@ -101,9 +111,6 @@ const Register = ()=>{
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <div className={classes.paper}>
-                    <Typography component="h1" variant="h5">
-                        Registro Conductores
-                    </Typography>
                     <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
@@ -112,6 +119,7 @@ const Register = ()=>{
                                     name="name"
                                     variant="outlined"
                                     required
+                                    color="secondary"
                                     inputRef={register}
                                     fullWidth
                                     id="firstName"
@@ -125,6 +133,7 @@ const Register = ()=>{
                                     required
                                     fullWidth
                                     id="lastname"
+                                    color="secondary"
                                     inputRef={register}
                                     label="Apellido"
                                     name="lastname"
@@ -136,6 +145,7 @@ const Register = ()=>{
                                     required
                                     fullWidth
                                     id="email"
+                                    color="secondary"
                                     inputRef={register}
                                     label="Correo Electronico"
                                     name="email"
@@ -148,11 +158,10 @@ const Register = ()=>{
                                     variant="outlined"
                                     required
                                     fullWidth
+                                    color="secondary"
+                                    type="date"
                                     inputRef={register}
                                     id="birthdate"
-                                    label="Fecha de Nacimiento"
-                                    type="date"
-                                    autoFocus
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -160,6 +169,7 @@ const Register = ()=>{
                                     variant="outlined"
                                     required
                                     fullWidth
+                                    color="secondary"
                                     inputRef={register}
                                     id="cellphone"
                                     label="Celular"
@@ -189,6 +199,7 @@ const Register = ()=>{
                                     name="password"
                                     inputRef={register}
                                     label="Contraseña"
+                                    color="secondary"
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
@@ -202,6 +213,7 @@ const Register = ()=>{
                                     name="password_confirmation"
                                     type="password"
                                     label="Confirmar clave"
+                                    color="secondary"
                                     inputRef={register}
                                     autoComplete="current-password"
                                     error={!!errors.password_confirmation}
@@ -210,30 +222,26 @@ const Register = ()=>{
                             </Grid>
                         </Grid>
                         <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                            href={Routes.MANAGEMENT}
-                        >
-                            Registrar
-                        </Button>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                        <Button
-                                type="cancel"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.cancel}
-                                href={Routes.MANAGEMENT}
-                        >
-                                Cancelar
-                        </Button>
-                        </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.submit}
+                                >
+                                    Registrar
+                                </Button>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Button
+                                    onClick={props.onCancel}
+                                    variant="contained"
+                                    className={classes.cancel}
+                                >
+                                    Cancelar
+                                </Button>
+                            </Grid>
                         </Grid>
                     </form>
                 </div>

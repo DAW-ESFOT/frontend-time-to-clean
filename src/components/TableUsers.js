@@ -1,10 +1,9 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
-import { useRouter } from "next/router";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
-import { cyan } from '@material-ui/core/colors';
+import { useForm } from "react-hook-form";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import {
     Paper,
@@ -14,25 +13,32 @@ import {
     TableCell,
     TableBody,
     Table,
+    Button,
+    Box,
+    TablePagination,
+    IconButton,
+    DialogTitle,
+    DialogContent,
+    Dialog,
+    TextField,
+    InputBase,
+    InputAdornment,
+    Grid,
+    Divider,
+    Select,
 } from "@material-ui/core";
-import PostAddIcon from '@material-ui/icons/PostAdd';
-import BorderColorIcon from '@material-ui/icons/BorderColor';
-import DeleteIcon from '@material-ui/icons/Delete';
-import TableUsersTrucks from "@/components/TableUsersTrucks";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
+import DeleteIcon from "@material-ui/icons/Delete";
+import BorderColorIcon from "@material-ui/icons/BorderColor";
+import PostAddIcon from "@material-ui/icons/PostAdd";
+import SearchIcon from "@material-ui/icons/Search";
+import BackspaceIcon from "@material-ui/icons/Backspace";
+import AddTruck from "@/components/AddTruck";
+import EditTruck from "@/components/EditTruck";
+import DeleteTruck from "@/components/DeleteTruck";
+import DeleteUser from "@/components/DeleteUser";
+import EditUser from "@/components/EditUser";
+import AddUser from "@/components/AddUser";
 
-import Routes from "../constants/routes";
-import Modal from '@material-ui/core/Modal';
-
-function rand() {
-    return Math.round(Math.random() * 20) - 10;
-}
-const useStyles = makeStyles({
-    table: {
-        minWidth: 600,
-    },
-});
 const StyledTableCell = withStyles((theme) => ({
     head: {
         backgroundColor: theme.palette.common.black,
@@ -42,6 +48,7 @@ const StyledTableCell = withStyles((theme) => ({
         fontSize: 14,
     },
 }))(TableCell);
+
 const StyledTableRow = withStyles((theme) => ({
     root: {
         "&:nth-of-type(odd)": {
@@ -50,103 +57,348 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
+const useStyles = makeStyles((theme) => ({
+    table: {
+        minWidth: 600,
+    },
+    margin: {
+        backgroundColor: "#F5F5F5",
+    },
+    paper: {
+        height: 140,
+        width: 100,
+    },
+    control: {
+        padding: theme.spacing(2),
+    },
+    root2: {
+        minWidth: 275,
+    },
+    bullet: {
+        display: "inline-block",
+        margin: "0 2px",
+        transform: "scale(0.8)",
+    },
+    title: {
+        fontSize: 14,
+    },
+    pos: {
+        marginBottom: 12,
+    },
+    form: {
+        width: "100%", // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+    },
+    submit: {
+        margin: theme.spacing(3, 2, 2),
+        backgroundColor: theme.palette.secondary.main,
+    },
+    button: {
+        margin: theme.spacing(3, 2, 2),
+        backgroundColor: theme.palette.cancel.main,
+    },
+
+    root3: {
+        padding: "2px 4px",
+        display: "flex",
+        alignItems: "center",
+        width: 400,
+    },
+    input: {
+        marginLeft: theme.spacing(1),
+        flex: 1,
+    },
+    iconButton: {
+        padding: 10,
+    },
+    divider: {
+        height: 28,
+        margin: 4,
+    },
+}));
 
 const TableUsers = () => {
-    const router = useRouter();
     const classes = useStyles();
-    const { data, error } = useSWR(`/trucks/filter/with-drivers`, fetcher);
-    const [modalStyle] = React.useState(getModalStyle);
-    const [open, setOpen] = React.useState(false);
-    if (error) return <div>No se pudo cargar los conductores</div>;
-    if (!data) return <Loading />;
-    function getModalStyle() {
-        const top = 50 + rand();
-        const left = 50 + rand();
-
-        return {
-            top: `${top}%`,
-            left: `${left}%`,
-            transform: `translate(-${top}%, -${left}%)`,
-        };
-    }
-    const body = (
-        <div style={modalStyle} >
-            <h2 id="simple-modal-title">Text in a modal</h2>
-            <p id="simple-modal-description">
-                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </p>
-        </div>
+    const { data, error,mutate} = useSWR(`/users?page=${page + 1}`, fetcher);
+    const { data: usersAllData, error: e, mutate: m } = useSWR(
+        `/users/all`,
+        fetcher
     );
-    console.log("data usuarios",data);
-    const handleOpen = () => {
-        setOpen(true);
+    const { register } = useForm();
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [dataSearchUsers, setDataSearchUsers] = useState([]);
+    const [wordSearch, setWordSearch] = useState("");
+    const [valueIdUser, setValueIdUser] = useState(null);
+    const [isDialogsVisibleEditUser, setIsDialogsVisibleEditUser] = useState(
+        false
+    );
+    const [isDialogsVisibleAddUser, setIsDialogsVisibleAddUser] = useState(
+        false
+    );
+    const [
+        isDialogsVisibleDeleteUser,
+        setIsDialogsVisibleDeleteUser,
+    ] = useState(false);
+
+    const handleClickOpenAddUser = () => {
+        setIsDialogsVisibleAddUser(true);
     };
 
+    const handleClickOpenEditUser = (id) => {
+        setIsDialogsVisibleEditUser(true);
+        setValueIdUser(id);
+    };
+
+    const handleClickDeleteUser= async (id) => {
+        setIsDialogsVisibleDeleteUser(true);
+        setValueIdUser(id);
+    };
+    const handleClickDeleteSearchUser = () => {
+        setWordSearch("");
+
+    };
+    const handleChange = (event) => {
+        setWordSearch(event.target.value);
+    };
+
+    useEffect(() => {
+        if (usersAllData) {
+            setDataSearchUsers([]);
+            const listUsersData = [];
+            usersAllData.data.map((user) => {
+               user.name.toUpperCase().includes(wordSearch.toUpperCase())
+                    ? listUsersData.push(user)
+                    : "";
+            });
+            setDataSearchUsers(listUsersData);
+        }
+    }, [wordSearch]);
+
     const handleClose = () => {
-        setOpen(false);
+        setIsDialogsVisibleAddUser(false);
+        setIsDialogsVisibleEditUser(false);
+        setIsDialogsVisibleDeleteUser(false);
+        mutate();
+    };
+    if (error) return <div>No se pudo cargar los conductores</div>;
+    if (!data) return <Loading />;
+    console.log("data usuarios",data);
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
     };
 
     return (
         <>
-            <h1 align="center">Gestión de Usuarios</h1>
+            <h1 align="center">Gestión de conductores</h1>
             <Box display="flex" justifyContent="flex-end" m={1} p={1}>
                 <Button
                     variant="outlined"
                     size="large"
                     className={classes.margin}
-                    endIcon={<PostAddIcon/>}
-                    href={Routes.REGISTER}
+                    endIcon={<PostAddIcon />}
+                    onClick={handleClickOpenAddUser}
                 >
                     Agregar Usuario
                 </Button>
             </Box>
-            <TableContainer component={Paper}>
-                <Table aria-label="customized table">
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell align="center">Nombre</StyledTableCell>
-                            <StyledTableCell align="center">Correo</StyledTableCell>
-                            <StyledTableCell align="center">Celular</StyledTableCell>
-                            <StyledTableCell align="center">Camion</StyledTableCell>
-                            <StyledTableCell align="center">Tipo</StyledTableCell>
-                            <StyledTableCell align="center">Opciones</StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {data.data.map((truck) => (
-                            <StyledTableRow key={truck.user.id}>
-                                <StyledTableCell align="center">
-                                    {truck.user.name} {truck.user.lastname}
-                                </StyledTableCell>
-                                <StyledTableCell align="center">
-                                    {truck.user.email}
-                                </StyledTableCell>
-                                <StyledTableCell align="center">{truck.user.cellphone}</StyledTableCell>
-                                <StyledTableCell align="center">
-                                    {truck.license_plate === null ? "Sin camion" : truck.license_plate}
-                                </StyledTableCell>
-                                <StyledTableCell align="center">
-                                    {truck.user.type}
-                                </StyledTableCell>
-                                <StyledTableCell align="center">
-                                    <BorderColorIcon  style={{ color: cyan[700] }} onClick={handleOpen}/>
+            <Box display="flex" justifyContent="flex" m={1} p={1}>
+                <form className={classes.root} noValidate autoComplete="off">
+                    <Paper className={classes.root3}>
+                        <InputBase
+                            id="wordToSearch"
+                            name="wordToSearch"
+                            value={wordSearch}
+                            className={classes.input}
+                            placeholder="Ingrese el nombre del conductor"
+                            inputRef={register}
+                            onChange={handleChange}
+                        />
+                        <IconButton
+                            onClick={handleClickDeleteSearchUser}
+                            className={classes.iconButton}
+                            aria-label="search"
+                        >
+                            <BackspaceIcon />
+                        </IconButton>
+                        <Divider className={classes.divider} orientation="vertical" />
+                    </Paper>
+                </form>
+            </Box>
 
-                                    <DeleteIcon />
-                                </StyledTableCell>
-                            </StyledTableRow>
-                        ))}
-                    </TableBody>
-                    <TableUsersTrucks/>
-                </Table>
-            </TableContainer>
-            <Modal
-                open={open}
+            {wordSearch !== "" ? (
+                <div>
+                    {dataSearchUsers ? (
+                        <div>
+                            <TableContainer component={Paper}>
+                                <Table aria-label="customized table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <StyledTableCell align="center">Nombre</StyledTableCell>
+                                            <StyledTableCell align="center">Correo</StyledTableCell>
+                                            <StyledTableCell align="center">Celular</StyledTableCell>
+                                            <StyledTableCell align="center">Camion</StyledTableCell>
+                                            <StyledTableCell align="center">Tipo</StyledTableCell>
+                                            <StyledTableCell align="center">Opciones</StyledTableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {dataSearchUsers.map((user) => (
+                                            <StyledTableRow key={user.id}>
+                                                <StyledTableCell align="center">
+                                                    {user.name} {user.lastname}
+                                                </StyledTableCell>
+                                                <StyledTableCell align="center">
+                                                    {user.email}
+                                                </StyledTableCell>
+                                                <StyledTableCell align="center">{user.cellphone}</StyledTableCell>
+                                                <StyledTableCell align="center">
+                                                    {user.truck === null ? "Sin camion" : user.truck}
+                                                </StyledTableCell>
+                                                <StyledTableCell align="center">
+                                                    {user.type}
+                                                </StyledTableCell>
+                                                <StyledTableCell align="center">
+                                                    <IconButton
+                                                        color="secondary"
+                                                        aria-label="upload picture"
+                                                        component="span"
+                                                        onClick={() => handleClickOpenEditUser(user.id)}
+                                                    >
+                                                        <BorderColorIcon />
+                                                    </IconButton>
+
+                                                    <IconButton
+                                                        color="dark"
+                                                        aria-label="upload picture"
+                                                        component="span"
+                                                        onClick={() => handleClickDeleteUser(user.id)}
+                                                    >
+                                                        <DeleteIcon
+                                                        />
+                                                    </IconButton>
+                                                </StyledTableCell>
+                                            </StyledTableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </div>
+                    ) : (
+                        <Loading />
+                    )}
+                </div>
+            ) : (
+                <div>
+                    {data ? (
+                        <div>
+                            <TableContainer component={Paper}>
+                                <Table aria-label="customized table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <StyledTableCell align="center">Nombre</StyledTableCell>
+                                            <StyledTableCell align="center">Correo</StyledTableCell>
+                                            <StyledTableCell align="center">Celular</StyledTableCell>
+                                            <StyledTableCell align="center">Camion</StyledTableCell>
+                                            <StyledTableCell align="center">Tipo</StyledTableCell>
+                                            <StyledTableCell align="center">Opciones</StyledTableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {data.data.map((user) => (
+                                            <StyledTableRow key={user.id}>
+                                                <StyledTableCell align="center">
+                                                    {user.name} {user.lastname}
+                                                </StyledTableCell>
+                                                <StyledTableCell align="center">
+                                                    {user.email}
+                                                </StyledTableCell>
+                                                <StyledTableCell align="center">{user.cellphone}</StyledTableCell>
+                                                <StyledTableCell align="center">
+                                                    {user.truck === null ? "Sin camion" : user.truck}
+                                                </StyledTableCell>
+                                                <StyledTableCell align="center">
+                                                    {user.type}
+                                                </StyledTableCell>
+                                                <StyledTableCell align="center">
+                                                    <IconButton
+                                                        color="secondary"
+                                                        aria-label="upload picture"
+                                                        component="span"
+                                                        onClick={() => handleClickOpenEditUser(user.id)}
+                                                    >
+                                                        <BorderColorIcon />
+                                                    </IconButton>
+                                                    <IconButton
+                                                        color="dark"
+                                                        aria-label="upload picture"
+                                                        component="span"
+                                                        onClick={() => handleClickDeleteUser(user.id)}
+                                                    >
+                                                        <DeleteIcon/>
+                                                    </IconButton>
+                                                </StyledTableCell>
+                                            </StyledTableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </div>
+                    ) : (
+                        <Loading />
+                    )}
+                </div>
+            )}
+            {wordSearch === "" ? (
+                <TablePagination
+                    rowsPerPageOptions={[10]}
+                    component="div"
+                    count={data.meta.total}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    className={classes.margin}
+                    onChangePage={handleChangePage}
+                />
+            ) : (
+                ""
+            )}
+            <Dialog
+                open={isDialogsVisibleAddUser}
                 onClose={handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
+                aria-labelledby="form-dialog-title"
+                disableBackdropClick={true}
             >
-                {body}
-            </Modal>
+                <DialogTitle id="form-dialog-title">Agregar nuevo usuario</DialogTitle>
+                <DialogContent>
+                    <AddUser onCancel={handleClose} />
+                </DialogContent>
+            </Dialog>
+
+            <Dialog
+                open={isDialogsVisibleEditUser}
+                onClose={handleClose}
+                aria-labelledby="form-dialog-title"
+                disableBackdropClick={true}
+            >
+                <DialogTitle id="form-dialog-title">
+                    Editar información del conductor
+                </DialogTitle>
+                <DialogContent>
+                    <EditUser id={valueIdUser} onCancel={handleClose} />
+                </DialogContent>
+            </Dialog>
+
+            <Dialog
+                open={isDialogsVisibleDeleteUser}
+                onClose={handleClose}
+                aria-labelledby="form-dialog-title"
+                disableBackdropClick={true}
+            >
+                <DialogTitle id="form-dialog-title">Eliminar usuario</DialogTitle>
+                <DialogContent>
+                    <DeleteUser id={valueIdUser} onCancel={handleClose} />
+                </DialogContent>
+            </Dialog>
         </>
     );
 };

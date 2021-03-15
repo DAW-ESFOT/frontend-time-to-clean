@@ -12,8 +12,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {black} from "colorette";
 import {Paper} from "@material-ui/core";
+import {useSnackbar} from "notistack";
 
 const schema = yup.object().shape({
     email: yup.string().email("Ingrese un email válido").required("El campo email es obligatorio"),
@@ -47,9 +47,20 @@ const login = () => {
     const {login} = useAuth();
     const {register, handleSubmit, errors} = useForm({resolver: yupResolver(schema)});
     const classes = useStyles();
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const handleClick = (message, variant) => {
+        enqueueSnackbar(message, {
+            variant: variant,
+            anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'center',
+            },
+        });
+    }
     const onSubmit = async (data) => {
         try {
             const userData = await login(data);
+            handleClick("El usuario ha ingresado con éxito", "success");
             console.log('userdata', userData);
 
         } catch (error) {
@@ -71,30 +82,6 @@ const login = () => {
             console.log(error.config);
         }
     };
-
-    /*const handleViewDetails=async ()=>{
-          try{
-                const user=await User.getById(1)
-                 console.log('usuario1',user)
-        }catch (error) {
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);//d
-            } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-                console.log(error.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', error.message);
-            }
-            console.log(error.config);
-            }
-        }*/
     return (
         <>
             <div style={styles.Container}>
@@ -117,7 +104,8 @@ const login = () => {
                                 required
                                 fullWidth
                                 autoComplete="email"
-                                //autoFocus
+                                color="secondary"
+                                autoFocus
                                 error={!!errors.email}
                                 helperText={errors.email?.message}
                             />
@@ -129,6 +117,7 @@ const login = () => {
                                 fullWidth
                                 name="password"
                                 label="Contraseña"
+                                color="secondary"
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
@@ -146,7 +135,7 @@ const login = () => {
                             </Button>
                             <Grid container>
                                 <Grid item>
-                                    <Link href="/contrasenia" color="dark">
+                                    <Link href="/olvide-mi-clave" color="dark">
                                         <strong>¿Olvidaste tu contraseña?</strong>
                                     </Link>
                                 </Grid>
