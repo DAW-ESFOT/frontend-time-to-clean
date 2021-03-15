@@ -13,11 +13,12 @@ import {
     Grid,
     RadioGroup,
     FormControlLabel,
-    Radio,
+    Radio, TextField,
 } from "@material-ui/core";
 import api from "@/lib/api";
 import translateMessage from "../constants/messages";
 import { useForm } from "react-hook-form";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -101,7 +102,7 @@ function StyledRadio(props) {
 const EditUser = (props) => {
     const classes = useStyles();
     const { register, handleSubmit} = useForm();
-    const { data: userData, error: error1 } = useSWR(
+    const { data: userData, error: error1 , mutate} = useSWR(
         `/users/${props.id}`,
         fetcher
     );
@@ -110,7 +111,7 @@ const EditUser = (props) => {
         fetcher
     );
     console.log("camiones sin conductor",truckData)
-
+    const [truck, setTruck] = useState("");
     if (error1) return <div>No se pudo cargar el usuario</div>;
     if (!userData) return <Loading />;
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -123,14 +124,22 @@ const EditUser = (props) => {
             },
         });
     }
+    const handleChangeSelect = event => {
+        setTruck(event.target.value);
+    };
     const onSubmit = async (data) => {
         console.log("data enviar", data);
-
+        let truck_user = "";
+        if (truck === "") {
+            truck_user = userData.truck;
+        } else {
+            truck_user = truck;
+        }
         const userData1 = {
             name: userData.name + userData.lastname,
             email: userData.email,
             cellphone: userData.cellphone,
-            truck: userData.truck === null ? null : userData.truck,
+            truck: truck_user,
             type: data.type,
         };
         console.log("userData1", userData1);
@@ -140,12 +149,13 @@ const EditUser = (props) => {
             console.log("rersponse put usuario", response);
             console.log("correcto put usuario");
             props.onCancel();
+            mutate();
             return response;
         } catch (error) {
             if (error.response) {
                 // The request was made and the server responded with a status code
                 // that falls out of the range of 2xx
-                alert(translateMessage(error.response.data.error));
+                //alert(translateMessage(error.response.data.error));
                 console.log(error.response.data);
                 return Promise.reject(error.response);
                 // return error.response;
@@ -208,21 +218,37 @@ const EditUser = (props) => {
                             </RadioGroup>
                         </FormControl>
                     </Grid>
-                    {userData.truck === null ? ( truckData ? (
-                        <ul>
-                            {truckData.map((truck)=>{
-                                    <li>{truck.license_plate}</li>
-                                }
-                            )}
-                        </ul>
-                    ): "No hay camiones disponibles"
-                    ) : ( <Grid xs={12} spa cing={2}>
-                            <h3>Camion del usuario</h3>
-                            <ul>
-                                <li>{userData.truck}</li>
-                            </ul>
-                        </Grid>
-                    )}
+                {
+                    truck === "" ?
+                        <p>Camión asignado:{userData.truck !== null ? userData.truck : "No tiene asignado" }</p>
+                        :
+                        <p>Camión ha asignar:{truck} </p>
+                }
+                <Grid item xs={12}>
+                    <TextField
+                        id="outlined-select-currency-native"
+                        select
+                        label="Camion"
+                        value={truck}
+                        onChange={handleChangeSelect}
+                        SelectProps={{
+                            native: true,
+                        }}
+                        helperText="Cambiar de camión"
+                    >
+                        <option aria-label="None" value=""/>
+                        {
+                            truckData ?
+                                truckData.map((truck) => (
+                                    <option value={truck.id} key={truck.id}>
+                                        {truck.license_plate}
+                                    </option>
+                                ))
+                                :
+                                <Typography> No hay camiones disponibles </Typography>
+                        }
+                    </TextField>
+                </Grid>
 
                     <Box display="flex" justifyContent="center" m={1} p={1}>
                         <Button

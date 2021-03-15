@@ -135,7 +135,7 @@ const login = () => {
                             </Button>
                             <Grid container>
                                 <Grid item>
-                                    <Link href="/contrasenia" color="dark">
+                                    <Link href="/olvide-mi-clave" color="dark">
                                         <strong>¿Olvidaste tu contraseña?</strong>
                                     </Link>
                                 </Grid>
