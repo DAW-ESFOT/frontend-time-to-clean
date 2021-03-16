@@ -257,24 +257,27 @@ const TableUsers = () => {
                                                     {user.type}
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
-                                                    <IconButton
-                                                        color="secondary"
-                                                        aria-label="upload picture"
-                                                        component="span"
-                                                        onClick={() => handleClickOpenEditUser(user.id)}
-                                                    >
-                                                        <BorderColorIcon />
-                                                    </IconButton>
-
-                                                    <IconButton
-                                                        color="dark"
-                                                        aria-label="upload picture"
-                                                        component="span"
-                                                        onClick={() => handleClickDeleteUser(user.id)}
-                                                    >
-                                                        <DeleteIcon
-                                                        />
-                                                    </IconButton>
+                                                    {user.role === 'ROLE_DRIVER'? <>
+                                                            <IconButton
+                                                                color="secondary"
+                                                                aria-label="upload picture"
+                                                                component="span"
+                                                                onClick={() => handleClickOpenEditUser(user.id)}
+                                                            >
+                                                                <BorderColorIcon />
+                                                            </IconButton>
+                                                            <IconButton
+                                                                color="dark"
+                                                                aria-label="upload picture"
+                                                                component="span"
+                                                                onClick={() => handleClickDeleteUser(user.id)}
+                                                            >
+                                                                <DeleteIcon
+                                                                />
+                                                            </IconButton>
+                                                        </>
+                                                        : ""
+                                                    }
                                                 </StyledTableCell>
                                             </StyledTableRow>
                                         ))}
@@ -319,22 +322,31 @@ const TableUsers = () => {
                                                     {user.type}
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
-                                                    <IconButton
-                                                        color="secondary"
-                                                        aria-label="upload picture"
-                                                        component="span"
-                                                        onClick={() => handleClickOpenEditUser(user.id)}
-                                                    >
-                                                        <BorderColorIcon />
-                                                    </IconButton>
-                                                    <IconButton
-                                                        color="dark"
-                                                        aria-label="upload picture"
-                                                        component="span"
-                                                        onClick={() => handleClickDeleteUser(user.id)}
-                                                    >
-                                                        <DeleteIcon/>
-                                                    </IconButton>
+                                                    {user.role === 'ROLE_DRIVER'? <>
+                                                            <IconButton
+                                                                color="secondary"
+                                                                aria-label="upload picture"
+                                                                component="span"
+                                                                onClick={() => handleClickOpenEditUser(user.id)}
+                                                            >
+                                                                <BorderColorIcon />
+                                                            </IconButton>
+                                                            {user.truck === null ?
+                                                                <IconButton
+                                                                    color="dark"
+                                                                    aria-label="upload picture"
+                                                                    component="span"
+                                                                    onClick={() => handleClickDeleteUser(user.id)}
+                                                                >
+                                                                    <DeleteIcon
+                                                                    />
+                                                                </IconButton>
+                                                                : ""
+                                                            }
+
+                                                        </>
+                                                        : ""
+                                                    }
                                                 </StyledTableCell>
                                             </StyledTableRow>
                                         ))}
