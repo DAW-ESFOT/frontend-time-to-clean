@@ -120,11 +120,11 @@ const EditTruck = (props) => {
 
   const [name, setName] = useState("");
   const { register, handleSubmit } = useForm();
-  const { data: truckData, error: error1 } = useSWR(
+  const { data: truckData, error: error1, mutate: mutate1 } = useSWR(
     `/trucks/${props.id}`,
     fetcher
   );
-  const { data: neighborhoodData, error: error2 } = useSWR(
+  const { data: neighborhoodData, error: error2, mutate: mutate2 } = useSWR(
     `/trucks/${props.id}/neighborhoods`,
     fetcher
   );
@@ -164,6 +164,8 @@ const EditTruck = (props) => {
       //console.log("rersponse put camion", response);
       //console.log("correcto put camion");
       handleClick("Se ha editado los datos del camión con éxito.", "success");
+      mutate1();
+      mutate2();
       props.onCancel();
       return response;
     } catch (error) {
