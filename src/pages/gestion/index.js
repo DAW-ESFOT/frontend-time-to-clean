@@ -18,6 +18,7 @@ import Box from "@material-ui/core/Box";
 import {useAuth} from "@/lib/auth";
 import DriverInfoProfile from "@/components/DriverInfoProfile";
 import DriverInfoJob from "@/components/DriverInfoJob";
+import PersonIcon from '@material-ui/icons/Person';
 
 const Management = () => {
     const {user} = useAuth();
@@ -88,7 +89,7 @@ const Management = () => {
             {
                 userData.role === "ROLE_SUPERADMIN" ? (
                 <Grid container>
-                    <Grid xs={3}>
+                    <Grid xs={3} >
                         <List className={classes.root}>
                             <ListItem onClick={onVisibleDriver}button divider>
                                 <ListItemAvatar>
@@ -156,11 +157,13 @@ const Management = () => {
                 </Grid>
             ) : (
                 <Grid container>
-                    <Grid xs={3}>
+                    <Grid xs={3} justify="center">
                         <List className={classes.root}>
-                            <ListItemAvatar>
-                                <Image src="/reuse.png" alt="" width={100} height={100}/>
-                            </ListItemAvatar>
+                            <Box display="flex" justifyContent={"center"} m={1} p={1}>
+                                <ListItemAvatar >
+                                    <Image src="/user.png" alt="" width={150} height={100}/>
+                                </ListItemAvatar>
+                            </Box>
                             <ListItem onClick={onVisibleDriver} button divider>
                                 <ListItemAvatar>
                                     <Image
@@ -183,10 +186,9 @@ const Management = () => {
                                 </ListItemAvatar>
                                 <ListItemText primary="INFORMACIÓN DE TRABAJO"/>
                             </ListItem>
-                            <Box p={20} bgcolor="background.paper"/>
                         </List>
                     </Grid>
-                    <Grid xs={9}>
+                    <Grid xs={9} style={styles.container}>
                         {showTrucks ? (
                             <DriverInfoJob user={userData}/>
                         ) : showDrivers ? (

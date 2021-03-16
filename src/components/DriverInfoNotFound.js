@@ -38,7 +38,7 @@ const DriverInfoNotFound = () => {
                             <Paper style={styles.Paper} elevation={3}>
                                 <Typography variant="body1" gutterBottom>
                                     Es posible que el administrador de Time2Clean, todavía no le haya
-                                    asignado un camión y por ende no tenie rutas asignadas
+                                    asignado un camión y por ende no tiene ruta asignada.
                                 </Typography>
                             </Paper>
                         </Grid>
