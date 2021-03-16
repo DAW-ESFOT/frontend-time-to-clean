@@ -174,6 +174,7 @@ const TableTrucks = () => {
     setIsDialogsVisibleDeleteTruck(false);
     mutate1();
     mutate2();
+    mutate3();
   };
 
   const handleClickDeleteSearchTruck = () => {
