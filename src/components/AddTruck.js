@@ -14,7 +14,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import api from "@/lib/api";
-import translateMessage from "../constants/messages";
 import Box from "@material-ui/core/Box";
 import { useSnackbar } from "notistack";
 
@@ -119,15 +118,25 @@ const AddTruck = (props) => {
     });
   };
 
+  const Error = (errorCode) => {
+    if (errorCode) {
+      if (errorCode.license_plate[0] === "validation.unique") {
+        handleClick("Ya existe un camión registrado con esa placa", "error");
+      }
+    } else {
+      handleClick(errorCode, "error");
+    }
+  };
+
   const onSubmit = async (data) => {
-    console.log("data enviar", data);
+    //console.log("data enviar", data);
     const truckData = {
       license_plate: data.license_plate.toUpperCase(),
       working: true,
       user_id: null,
       type: name,
     };
-    console.log("truckData", truckData);
+    //console.log("truckData", truckData);
     try {
       const response = await api.post("/trucks", truckData);
       //console.log("rersponse post truck", response);
@@ -137,19 +146,12 @@ const AddTruck = (props) => {
       return response;
     } catch (error) {
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        alert(translateMessage(error.response.data.errors));
-        console.log(error.response.data.errors);
-        return Promise.reject(error.response.errors);
-        // return error.response;
+        Error(error.response.data.errors);
+        props.onCancel();
+        return Promise.reject(error.response);
       } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
         console.log(error.request);
       } else {
-        // Something happened in setting up the request that triggered an Error
         console.log("Error", error.message);
       }
       console.log(error.config);
@@ -187,6 +189,7 @@ const AddTruck = (props) => {
                 <Select
                   value={name}
                   onChange={handleChange}
+                  color="secundary"
                   input={
                     <BootstrapInput
                       name="neighborhood"
@@ -205,8 +208,6 @@ const AddTruck = (props) => {
             </Grid>
             <Box display="flex" justifyContent="center" m={1} p={1}>
               <Button
-                //onSubmit={handleSubmit(onSubmit)}
-                //onClick={props.onCancel}
                 type="submit"
                 variant="contained"
                 color="primary"

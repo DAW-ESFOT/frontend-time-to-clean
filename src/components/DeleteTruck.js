@@ -1,10 +1,9 @@
 import React from "react";
 import withAuth from "@/hocs/withAuth";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Button, Box, Grid } from "@material-ui/core";
 import api from "@/lib/api";
 import { useForm } from "react-hook-form";
-import translateMessage from "../constants/messages";
 import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
@@ -87,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
 
 const DeleteTruck = (props) => {
   const classes = useStyles();
-  const { register, handleSubmit, control, errors } = useForm();
+  const { handleSubmit } = useForm();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const handleClick = (message, variant) => {
     enqueueSnackbar(message, {
@@ -109,19 +108,13 @@ const DeleteTruck = (props) => {
       return response;
     } catch (error) {
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        alert(translateMessage(error.response.data.error));
+        handleClick("No se pudo eliminar el camión", "error");
+        props.onHandleCloseModal();
         console.log(error.response.data);
         return Promise.reject(error.response);
-        // return error.response;
       } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
         console.log(error.request);
       } else {
-        // Something happened in setting up the request that triggered an Error
         console.log("Error", error.message);
       }
       console.log(error.config);
@@ -143,8 +136,6 @@ const DeleteTruck = (props) => {
         <Grid container>
           <Box display="flex" justifyContent="center" m={1} p={1}>
             <Button
-              //onSubmit={handleSubmit(onSubmit)}
-              //onClick={props.onCancel}
               type="submit"
               variant="contained"
               color="primary"
