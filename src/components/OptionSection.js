@@ -85,10 +85,10 @@ const OptionSection = () => {
                             <Grid item xs container direction="column" spacing={2}>
                                 <Grid item xs>
                                     <Typography gutterBottom variant="subtitle1">
-                                        Sistema de gestion de recolectores
+                                        Sistema de gestión de recolectores
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
-                                        Solo para personal de recolección de residuos sólidos de Quito
+                                        Solo para personal de la organización
                                     </Typography>
                                 </Grid>
                             </Grid>

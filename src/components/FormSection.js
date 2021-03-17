@@ -17,7 +17,7 @@ import {useSnackbar} from "notistack";
 
 const schema = yup.object().shape({
     username: yup.string().required("Este campo es obligatorio"),
-    email: yup.string().email("Ingrese un email válido").required("Este campo es obligatorio"),
+    email: yup.string().email("Ingrese un correo válido").required("Este campo es obligatorio"),
     complaint: yup.string().required("Este campo es obligatorio")
 });
 
@@ -127,7 +127,7 @@ const FormSection = () => {
                     </Box>
                     <div>
                         <Typography variant="body1"> Si tienes alguna queja o recomendación acerca del servicio de
-                            recolección de residuos solidos en Quito, ayudanos llenando el siguiente formulario.
+                            recolección de residuos solidos en Quito, ayúdanos llenando el siguiente formulario.
                         </Typography>
                         <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
                             <Grid container spacing={2}>
@@ -157,7 +157,7 @@ const FormSection = () => {
                                             fullWidth
                                             id="email"
                                             inputRef={register}
-                                            label="Correo Electronico"
+                                            label="Correo Electrónico"
                                             name="email"
                                             autoComplete="email"
                                             color="secondary"

@@ -115,7 +115,7 @@ const TableComplaints = () => {
                                 <FormControlLabel value={"/filter/state1"} control={<Radio color="primary"/>}
                                                   label="Pendiente"/>
                                 <FormControlLabel value={"/filter/state2"} control={<Radio color="primary"/>}
-                                                  label="Proceso"/>
+                                                  label="En proceso"/>
                                 <FormControlLabel value={"/filter/state3"} control={<Radio color="primary"/>}
                                                   label="Atendida"/>
                             </Box>
