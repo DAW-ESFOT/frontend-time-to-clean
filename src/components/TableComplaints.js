@@ -46,7 +46,8 @@ const styles = {
         textShadow: '2px 2px #262626',
     },
     Paper: {
-        backgroundColor: 'rgba(255,255,255)',
+        color:'white',
+        backgroundColor:'rgba(0,0,0,0.01)',
         marginBottom: '15px',
         paddingLeft: '15px',
     },
@@ -100,13 +101,13 @@ const TableComplaints = () => {
                         justify="center"
                         alignItems="center"
                     >
-                        <Typography><strong>Buscar por:</strong></Typography>
+                        <Typography variant="h6">Buscar por:</Typography>
                         <RadioGroup aria-label="gender" value={filter} onChange={handleChange}>
                             <Box display="flex" justifyContent="center" m={1} p={1}>
-                                <FormControlLabel value={""} control={<Radio/>} label="Todas"/>
-                                <FormControlLabel value={"/filter/state1"} control={<Radio/>} label="Pendiente"/>
-                                <FormControlLabel value={"/filter/state2"} control={<Radio/>} label="Proceso"/>
-                                <FormControlLabel value={"/filter/state3"} control={<Radio/>} label="Atendida"/>
+                                <FormControlLabel value={""} control={<Radio color="primaryy"/>} label="Todas"/>
+                                <FormControlLabel value={"/filter/state1"} control={<Radio color="primary"/>} label="Pendiente"/>
+                                <FormControlLabel value={"/filter/state2"} control={<Radio color="primary"/>} label="Proceso"/>
+                                <FormControlLabel value={"/filter/state3"} control={<Radio color="primary"/>} label="Atendida"/>
                             </Box>
                         </RadioGroup>
                     </Grid>
