@@ -190,11 +190,8 @@ const EditUser = (props) => {
       working: data.working,
       user_id: props.id,
     };
-    //console.log("truckData1 a cambiar", truckData1);
     try {
       const response = await api.put(`/trucks/${data.id}`, truckData1);
-      //console.log("rersponse put camion", response);
-      //console.log("correcto put camion");
       props.onCancel();
       return response;
     } catch (error) {
@@ -202,7 +199,6 @@ const EditUser = (props) => {
         alert(translateMessage(error.response.data.error));
         console.log(error.response.data);
         return Promise.reject(error.response);
-        // return error.response;
       } else if (error.request) {
         console.log(error.request);
       } else {
