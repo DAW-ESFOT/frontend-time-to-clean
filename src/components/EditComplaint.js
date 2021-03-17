@@ -113,7 +113,8 @@ const EditComplaint = (props) => {
                 <i>Recibida: {(data.created_at).substr(0, 10)}</i>
             </Grid>
             <Paper elevation={0} style={styles.paper}>
-                <Typography variant="body1" gutterBottom><b>Remitente:</b> {data.username}  &lt;<i>{data.email}</i>&gt;</Typography>
+                <Typography variant="body1" gutterBottom><b>Remitente:</b> {data.username}  &lt;<i>{data.email}</i>&gt;
+                </Typography>
                 <Divider/>
                 <Typography variant="body1" gutterBottom>{data.complaint}</Typography>
             </Paper>
@@ -147,7 +148,12 @@ const EditComplaint = (props) => {
                             color="secondary"
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid
+                        container
+                        direction="row"
+                        justify="space-between"
+                        alignItems="flex-end"
+                    >
                         <Button
                             type="submit"
                             variant="contained"
@@ -156,6 +162,13 @@ const EditComplaint = (props) => {
                             onClick={props.onHandleCloseModal}
                         >
                             Guardar Cambios
+                        </Button>
+                        <Button
+                            variant="contained"
+                            className={classes.button}
+                            onClick={props.onHandleCloseModal}
+                        >
+                            Cancelar
                         </Button>
                     </Grid>
                 </Grid>

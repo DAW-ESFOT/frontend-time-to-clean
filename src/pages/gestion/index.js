@@ -5,8 +5,7 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
-    Divider,
-    makeStyles, ButtonBase,
+    makeStyles,
 } from "@material-ui/core";
 import TableTrucks from "@/components/TableTrucks";
 import TableNeighborhoods from "@/components/TableNeighborhoods";
@@ -17,7 +16,7 @@ import Image from "next/image";
 import {useAuth} from "@/lib/auth";
 import DriverInfoProfile from "@/components/DriverInfoProfile";
 import DriverInfoJob from "@/components/DriverInfoJob";
-import PersonIcon from '@material-ui/icons/Person';
+import Box from "@material-ui/core/Box";
 
 const Management = () => {
     const {user} = useAuth();
