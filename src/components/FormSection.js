@@ -13,12 +13,12 @@ import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import Box from "@material-ui/core/Box";
+import {useSnackbar} from "notistack";
 
 const schema = yup.object().shape({
-    email: yup
-        .string()
-        .email("Ingresa un correo válido")
-        .required("Ingresa tu correo electrónico"),
+    username: yup.string().required("Este campo es obligatorio"),
+    email: yup.string().email("Ingrese un email válido").required("Este campo es obligatorio"),
+    complaint: yup.string().required("Este campo es obligatorio")
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -53,25 +53,40 @@ const styles = {
 
 const FormSection = () => {
 
-    const {register, handleSubmit, control, errors} = useForm({
+    const {register, handleSubmit, errors} = useForm({
         resolver: yupResolver(schema),
     });
     const classes = useStyles();
 
-    const [neighborhood, setNeighborhood] = useState("");
+    const [name, setName] = useState({
+        id: "",
+        neighborhood: ""
+    });
     const [id, setId] = useState("");
     const {data, error} = useSWR(`/neighborhoods/all`, fetcher);
     if (error) return <div>No se pudieron cargar los barrios</div>;
     if (!data) return <Loading/>;
 
-    console.log("data", data)
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+    const handleClick = (message, variant) => {
+        enqueueSnackbar(message, {
+            variant: variant,
+            anchorOrigin: {
+                vertical: "top",
+                horizontal: "center",
+            },
+        });
+    };
+
+    // console.log("data", data)
 
     const onSubmit = async (data) => {
-        const complaintData = {...data, neighborhood_id: id}
-        console.log("Formulario:", complaintData);
+        const complaintData = {...data, neighborhood_id: name.id}
+        // console.log("Formulario:", complaintData);
         try {
             const response = await api.post(`/complaints`, complaintData);
             console.log("Response:", response);
+            handleClick("Enviado", "success");
             return response;
         } catch (error) {
             if (error.response) {
@@ -88,7 +103,12 @@ const FormSection = () => {
     };
 
     const handleChange = (event) => {
-        setId(event.target.value);
+        const number = event.target.value;
+        setName({
+            ...name,
+            id: number ? number : "",
+            neighborhood: number ? data.data[number].name : "",
+        });
     };
 
     return (
@@ -102,15 +122,15 @@ const FormSection = () => {
                         <Image src="/mailbox.png" alt="" width={280} height={280}/>
                     </Box>
                     <div>
-                        <p>Si tienes alguna queja o recomendación acerca del servicio de recolección de residuos solidos
-                            en Quito, ayudanos llenando el siguiente formulario.</p>
+                        <Typography variant="body1"> Si tienes alguna queja o recomendación acerca del servicio de
+                            recolección de residuos solidos en Quito, ayudanos llenando el siguiente formulario.
+                        </Typography>
                         <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <div style={styles.box}>
                                         <TextField
                                             className={classes.margin}
-                                            autoComplete="name"
                                             name="username"
                                             variant="outlined"
                                             required
@@ -118,8 +138,9 @@ const FormSection = () => {
                                             fullWidth
                                             id="name"
                                             label="Nombre"
-                                            autoFocus
                                             color="secondary"
+                                            error={!!errors.username}
+                                            helperText={errors.username?.message}
                                         />
                                     </div>
                                 </Grid>
@@ -136,6 +157,8 @@ const FormSection = () => {
                                             name="email"
                                             autoComplete="email"
                                             color="secondary"
+                                            error={!!errors.email}
+                                            helperText={errors.email?.message}
                                         />
                                     </div>
                                 </Grid>
@@ -146,62 +169,64 @@ const FormSection = () => {
                                             select
                                             label="Barrio"
                                             required
-                                            value={neighborhood}
+                                            value={name.id}
                                             onChange={handleChange}
                                             SelectProps={{
                                                 native: true,
                                             }}
-                                            helperText="Por favor selecciona un barrio de la lista"
                                             variant="outlined"
                                             color="secondary"
+                                            helperText="Por favor, selecciona un barrio"
                                         >
-                                            <option key="0"/>
-
+                                            <option aria-label="None" value=""/>
                                             {
-                                                data.data.map((neighborhood) => {
+                                                data.data.map((neighborhood, index) => {
                                                     return (
-                                                        <option key={neighborhood.id} value={neighborhood.id}>
+                                                        <option key={index} value={neighborhood.id}>
                                                             {neighborhood.name}
                                                         </option>
-                                                    );
-                                                })
+                                                    )
+                                                }
+                                                )
+                                                }
+                                                </TextField>
+                                                </div>
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                <div style={styles.box}>
+                                                <TextField
+                                                variant="outlined"
+                                                multiline
+                                                rows={5}
+                                                required
+                                                fullWidth
+                                                id="complaint"
+                                                inputRef={register}
+                                                label="Queja"
+                                                name="complaint"
+                                                color="secondary"
+                                                error={!!errors.complaint}
+                                                helperText={errors.complaint?.message}
+                                                />
+                                                </div>
+                                                </Grid>
+                                                </Grid>
+                                                <Button onSubmit={handleSubmit(onSubmit)}
+                                                type="submit"
+                                                fullWidth
+                                                variant="contained"
+                                                color="primary"
+                                                className={classes.submit}
+                                                >
+                                                Enviar
+                                                </Button>
+                                                </form>
+                                                </div>
+                                                </Grid>
+                                                </div>
+                                                </>
+                                                );
                                             }
-                                        </TextField>
-                                    </div>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <div style={styles.box}>
-                                        <TextField
-                                            variant="outlined"
-                                            multiline
-                                            rows={5}
-                                            required
-                                            fullWidth
-                                            id="complaint"
-                                            inputRef={register}
-                                            label="Queja"
-                                            name="complaint"
-                                            color="secondary"
-                                        />
-                                    </div>
-                                </Grid>
-                            </Grid>
-                            <Button onSubmit={handleSubmit(onSubmit)}
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.submit}
-                            >
-                                Enviar
-                            </Button>
-                        </form>
-                    </div>
-                </Grid>
-            </div>
-        </>
-    );
-}
 
-export default FormSection;
+                                            export default FormSection;
 
