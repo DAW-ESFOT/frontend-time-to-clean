@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 600,
     },
     margin: {
-        backgroundColor: "#F5F5F5",
+        backgroundColor: "rgba(255,255,255,0.8)",
     },
     paper: {
         height: 140,
@@ -385,7 +385,7 @@ const TableUsers = () => {
                 aria-labelledby="form-dialog-title"
                 disableBackdropClick={true}
             >
-                <DialogTitle id="form-dialog-title">Agregar nuevo usuario</DialogTitle>
+                <DialogTitle id="form-dialog-title">Agrega un nuevo usuario</DialogTitle>
                 <DialogContent>
                     <AddUser onCancel={handleClose}/>
                 </DialogContent>

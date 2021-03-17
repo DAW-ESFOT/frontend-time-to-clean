@@ -3,8 +3,8 @@ import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
-import {withStyles} from "@material-ui/core/styles";
-import {Box, Dialog, DialogContent, FormControlLabel, FormLabel, Grid, Radio, RadioGroup} from '@material-ui/core';
+import {makeStyles, withStyles} from "@material-ui/core/styles";
+import {Box, Dialog, DialogContent, FormControlLabel, Grid, Radio, RadioGroup} from '@material-ui/core';
 import {
     Paper,
     TableRow,
@@ -31,6 +31,15 @@ const StyledTableCell = withStyles((theme) => ({
     },
 }))(TableCell);
 
+const useStyles = makeStyles((theme) => ({
+    table: {
+        minWidth: 600,
+    },
+    margin: {
+        backgroundColor: "rgba(255,255,255,0.8)",
+    },
+}));
+
 const StyledTableRow = withStyles((theme) => ({
     root: {
         "&:nth-of-type(odd)": {
@@ -46,11 +55,12 @@ const styles = {
         textShadow: '2px 2px #262626',
     },
     paper: {
-        color:'white',
+        color: 'white',
     },
 };
 
 const TableComplaints = () => {
+    const classes = useStyles();
     const [page, setPage] = useState(0);
     const [filter, setFilter] = useState("");
     const {data, error, mutate} = useSWR(`/complaints?page=${page + 1}`, fetcher);
@@ -102,9 +112,12 @@ const TableComplaints = () => {
                         <RadioGroup aria-label="gender" value={filter} onChange={handleChange}>
                             <Box display="flex" justifyContent="center" m={1} p={1}>
                                 <FormControlLabel value={""} control={<Radio color="primaryy"/>} label="Todas"/>
-                                <FormControlLabel value={"/filter/state1"} control={<Radio color="primary"/>} label="Pendiente"/>
-                                <FormControlLabel value={"/filter/state2"} control={<Radio color="primary"/>} label="Proceso"/>
-                                <FormControlLabel value={"/filter/state3"} control={<Radio color="primary"/>} label="Atendida"/>
+                                <FormControlLabel value={"/filter/state1"} control={<Radio color="primary"/>}
+                                                  label="Pendiente"/>
+                                <FormControlLabel value={"/filter/state2"} control={<Radio color="primary"/>}
+                                                  label="Proceso"/>
+                                <FormControlLabel value={"/filter/state3"} control={<Radio color="primary"/>}
+                                                  label="Atendida"/>
                             </Box>
                         </RadioGroup>
                     </Grid>
@@ -129,7 +142,7 @@ const TableComplaints = () => {
                                                 <StyledTableCell align="center">Estado</StyledTableCell>
                                                 <StyledTableCell align="center"
                                                                  style={{width: 200}}>Observación</StyledTableCell>
-                                                <StyledTableCell align="center"></StyledTableCell>
+                                                <StyledTableCell align="center">Opciones</StyledTableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
@@ -140,7 +153,7 @@ const TableComplaints = () => {
                                                         {(Complaint.created_at).substr(11, 5)}
                                                     </StyledTableCell>
                                                     {
-                                                        (Complaint.complaint).length>90 ?
+                                                        (Complaint.complaint).length > 90 ?
                                                             <StyledTableCell align="justify">
                                                                 {(Complaint.complaint).substr(0, 90)} [...]
                                                             </StyledTableCell>
@@ -181,6 +194,7 @@ const TableComplaints = () => {
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     onChangePage={handleChangePage}
+                                    className={classes.margin}
                                 />
                             </div>
                             :
@@ -200,7 +214,7 @@ const TableComplaints = () => {
                                                 <StyledTableCell align="center">Estado</StyledTableCell>
                                                 <StyledTableCell align="center"
                                                                  style={{width: 200}}>Observación</StyledTableCell>
-                                                <StyledTableCell align="center"></StyledTableCell>
+                                                <StyledTableCell align="center">Opciones</StyledTableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
@@ -211,16 +225,16 @@ const TableComplaints = () => {
                                                             {(Complaint.created_at).substr(0, 10)}<br/>
                                                             {(Complaint.created_at).substr(11, 5)}
                                                         </StyledTableCell>
-                                                            {
-                                                                (Complaint.complaint).length>90 ?
-                                                                    <StyledTableCell align="justify">
-                                                                        {(Complaint.complaint).substr(0, 90)} [...]
-                                                                    </StyledTableCell>
-                                                                    :
-                                                                    <StyledTableCell align="justify">
-                                                                        {Complaint.complaint}
-                                                                    </StyledTableCell>
-                                                            }
+                                                        {
+                                                            (Complaint.complaint).length > 90 ?
+                                                                <StyledTableCell align="justify">
+                                                                    {(Complaint.complaint).substr(0, 90)} [...]
+                                                                </StyledTableCell>
+                                                                :
+                                                                <StyledTableCell align="justify">
+                                                                    {Complaint.complaint}
+                                                                </StyledTableCell>
+                                                        }
                                                         <StyledTableCell align="left">
                                                             Barrio: {Complaint.neighborhood_name}<br/>
                                                             Camión: {Complaint.truck.license_plate}<br/>
