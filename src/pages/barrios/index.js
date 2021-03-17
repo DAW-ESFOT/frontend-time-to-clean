@@ -119,11 +119,9 @@ const Neighborhoods = () => {
                 <Grid style={styles.container} justify={"center"}>
                     <div>
                         <Box display="flex" justifyContent="center" m={1} p={1}>
-                            <h1 style={styles.title} >Encuentra Datos Sobre tu Sector de Manera Fácil y Sencilla</h1>
+                            <h1 style={styles.title} >Encuentra la información sobre tu sector de manera fácil y rápida</h1>
                         </Box>
                     </div>
-
-
                     <Grid container justify="center">
                         <Paper style={styles.Paper} elevation={3}>
                             <Grid item xs={12}  justify={"center"}>

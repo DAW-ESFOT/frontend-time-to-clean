@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, createContext } from "react";
 import api from "./api";
 import cookie from "js-cookie";
 import translateMessage from '../constants/messages';
+import {useSnackbar} from "notistack";
 const authContext = createContext(null);
 
 export function AuthProvider({ children }) {
@@ -34,7 +35,7 @@ function useAuthProvider() {
             return false;
         }
     };
-
+    const { enqueueSnackbar } = useSnackbar();
     async function register(data) {
         try {
             const response = await api.post("/register", data);
@@ -43,16 +44,14 @@ function useAuthProvider() {
             return response;
         } catch (error) {
             if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                alert(translateMessage(error.response.data.error));
+                enqueueSnackbar(error.response.data, { variant: "error",  anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    },});
                 console.log(error.response.data);
                 return Promise.reject(error.response);
                 // return error.response;
             } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
                 console.log(error.request);
             } else {
                 // Something happened in setting up the request that triggered an Error
@@ -71,7 +70,10 @@ function useAuthProvider() {
             if (error.response) {
                 // The request was made and the server responded with a status code
                 // that falls out of the range of 2xx
-                alert(translateMessage(error.response.data.error));
+                enqueueSnackbar(translateMessage(error.response.data.error), { variant: "error",  anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    },});
                 console.log('errorers', error.response.data);
                 console.log(error.response.status);
                 console.log(error.response.headers);
@@ -152,15 +154,7 @@ function useAuthProvider() {
             console.log("NO USER");
         }
 
-        // const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-        //   if (user) {
-        //     handleUser(user);
-        //   } else {
-        //     handleUser(false);
-        //   }
-        // });
-        //
-        // return () => unsubscribe();
+
     }, []);
 
     return {

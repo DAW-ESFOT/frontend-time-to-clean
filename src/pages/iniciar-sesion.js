@@ -14,6 +14,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {Paper} from "@material-ui/core";
 import {useSnackbar} from "notistack";
+import translateMessage from "../constants/messages";
 
 const schema = yup.object().shape({
     email: yup.string().email("Ingrese un email válido").required("El campo email es obligatorio"),
@@ -48,15 +49,6 @@ const login = () => {
     const {register, handleSubmit, errors} = useForm({resolver: yupResolver(schema)});
     const classes = useStyles();
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-    const handleClick = (message, variant) => {
-        enqueueSnackbar(message, {
-            variant: variant,
-            anchorOrigin: {
-                vertical: 'top',
-                horizontal: 'center',
-            },
-        });
-    }
     const onSubmit = async (data) => {
         try {
             const userData = await login(data);
@@ -64,7 +56,10 @@ const login = () => {
 
         } catch (error) {
             if (error.response) {
-                alert(error.response.data.error);
+                enqueueSnackbar(translateMessage(error.response.data.error), { variant: "error",  anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    },});
                 console.log(error.response.data);
                 //d
             } else if (error.request) {

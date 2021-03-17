@@ -72,7 +72,10 @@ const useStyles = makeStyles((theme) => ({
         transform: "scale(0.8)",
     },
     title: {
-        fontSize: 14,
+        textAlign:'center',
+        color:'white',
+        textShadow: '2px 2px #262626',
+
     },
     pos: {
         marginBottom: 12,
@@ -274,15 +277,18 @@ const TableUsers = () => {
                                                             >
                                                                 <BorderColorIcon/>
                                                             </IconButton>
-                                                            <IconButton
-                                                                color="dark"
-                                                                aria-label="upload picture"
-                                                                component="span"
-                                                                onClick={() => handleClickDeleteUser(user.id)}
-                                                            >
-                                                                <DeleteIcon
-                                                                />
-                                                            </IconButton>
+                                                            {user.truck === null ?
+                                                                <IconButton
+                                                                    color="dark"
+                                                                    aria-label="upload picture"
+                                                                    component="span"
+                                                                    onClick={() => handleClickDeleteUser(user.id)}
+                                                                >
+                                                                    <DeleteIcon
+                                                                    />
+                                                                </IconButton>
+                                                                : ""
+                                                            }
                                                         </>
                                                         : ""
                                                     }

@@ -14,7 +14,7 @@ import {
     RadioGroup,
     FormControlLabel,
     Radio,
-    TextField, Icon, Paper,
+    TextField,
 } from "@material-ui/core";
 import api from "@/lib/api";
 import translateMessage from "../constants/messages";
@@ -24,10 +24,18 @@ import Typography from "@material-ui/core/Typography";
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+        "&:hover": {
+            backgroundColor: "transparent",
+        },
     },
-    control: {
-        padding: theme.spacing(2),
+    paper: {
+        height: 140,
+        width: 100,
     },
+    root2: {
+        minWidth: 275,
+    },
+
     form: {
         width: "100%", // Fix IE 11 issue.
         marginTop: theme.spacing(1),
@@ -40,15 +48,43 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(3, 2, 2),
         backgroundColor: theme.palette.cancel.main,
     },
+    icon: {
+        borderRadius: "50%",
+        width: 16,
+        height: 16,
+        boxShadow:
+            "inset 0 0 0 1px rgba(16,22,26,.2), inset 0 -1px 0 rgba(16,22,26,.1)",
+        backgroundColor: "#f5f8fa",
+        backgroundImage:
+            "linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))",
+        "$root.Mui-focusVisible &": {
+            outline: "2px auto rgba(19,124,189,.6)",
+            outlineOffset: 2,
+        },
+        "input:hover ~ &": {
+            backgroundColor: "#ebf1f5",
+        },
+        "input:disabled ~ &": {
+            boxShadow: "none",
+            background: "rgba(206,217,224,.5)",
+        },
+    },
+    checkedIcon: {
+        backgroundColor: "#137cbd",
+        backgroundImage:
+            "linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))",
+        "&:before": {
+            display: "flex",
+            width: 16,
+            height: 16,
+            backgroundImage: "radial-gradient(#fff,#fff 28%,transparent 32%)",
+            content: '""',
+        },
+        "input:hover ~ &": {
+            backgroundColor: "#106ba3",
+        },
+    },
 }));
-
-const styles = {
-    paper: {
-        backgroundColor: 'rgba(112,125,136,0.10)',
-        padding: '10px',
-        marginBottom: '15px'
-    }
-};
 
 function StyledRadio(props) {
     const classes = useStyles();
@@ -76,9 +112,6 @@ const EditUser = (props) => {
         fetcher
     );
     const {data: truckAllData, error: error2} = useSWR(`/trucks/all`, fetcher);
-    //console.log("camiones sin conductor", truckData);
-    //console.log("camiones todos", truckAllData);
-    //console.log("datos del conductorr", userData);
     const [truck, setTruck] = useState("");
     if (error1) return <div>No se pudo cargar el usuario</div>;
     if (!userData) return <Loading/>;
@@ -125,8 +158,6 @@ const EditUser = (props) => {
             cellphone: userData.cellphone,
             type: data.type,
         };
-        //console.log("truck_user", truck_user);
-        //console.log("userDatapost", userData1);
         try {
             const response = await api.put(`/users/${userData.id}`, userData1);
             handleClick("Se ha actualizado con éxito el usuario", "success");
@@ -137,6 +168,12 @@ const EditUser = (props) => {
             return response;
         } catch (error) {
             if (error.response) {
+                enqueueSnackbar(error.response.data, {
+                    variant: "error", anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    },
+                });
                 console.log(error.response.data);
                 return Promise.reject(error.response);
             } else if (error.request) {
@@ -149,19 +186,14 @@ const EditUser = (props) => {
     };
 
     const handleChangeUserToTruck = async (data) => {
-        //console.log("data del camión a edittar userid", data);
-        // console.log("id del usuario a poner en el truck", props.id);
         const truckData1 = {
             license_plate: data.license_plate,
             type: data.type,
             working: data.working,
             user_id: props.id,
         };
-        //console.log("truckData1 a cambiar", truckData1);
         try {
             const response = await api.put(`/trucks/${data.id}`, truckData1);
-            //console.log("rersponse put camion", response);
-            //console.log("correcto put camion");
             props.onCancel();
             return response;
         } catch (error) {
@@ -169,7 +201,6 @@ const EditUser = (props) => {
                 alert(translateMessage(error.response.data.error));
                 console.log(error.response.data);
                 return Promise.reject(error.response);
-                // return error.response;
             } else if (error.request) {
                 console.log(error.request);
             } else {
@@ -191,8 +222,6 @@ const EditUser = (props) => {
         console.log("truckData1 a eliminar", truckData1);
         try {
             const response = await api.put(`/trucks/${data.id}`, truckData1);
-            //console.log("rersponse put camion", response);
-            //console.log("correcto put camion");
             props.onCancel();
             return response;
         } catch (error) {
@@ -210,33 +239,19 @@ const EditUser = (props) => {
         }
     };
 
-    //console.log("datausuarioEdit", userData);
-
     return (
         <>
-            <Grid
-                container
-                direction="row"
-                justify="space-between"
-                alignItems="center"
-            >
-                <div/>
-                <h2>Detalle y edición del conductor</h2>
-                <Icon color="secondary" onClick={props.onCancel}>cancel</Icon>
-            </Grid>
-            <Paper elevation={0} style={styles.paper}>
-                <div>
-                    <h3>
-                        Nombre: {userData.name} {userData.lastname}
-                    </h3>
-                </div>
-                <div>
-                    <h3>Correo: {userData.email}</h3>
-                </div>
-                <div>
-                    <h3>Celular: {userData.cellphone}</h3>
-                </div>
-            </Paper>
+            <div>
+                <h3>
+                    Nombre: {userData.name} {userData.lastname}
+                </h3>
+            </div>
+            <div>
+                <h3>Correo: {userData.email}</h3>
+            </div>
+            <div>
+                <h3>Celular: {userData.cellphone}</h3>
+            </div>
             <form
                 className={classes.root}
                 noValidate
@@ -303,19 +318,14 @@ const EditUser = (props) => {
                     </TextField>
                 </Grid>
 
-                <Grid
-                    container
-                    direction="row"
-                    justify="space-evenly"
-                    alignItems="flex-end"
-                >
+                <Box display="flex" justifyContent="center" m={1} p={1}>
                     <Button
                         type="submit"
                         variant="contained"
                         color="primary"
                         className={classes.submit}
                     >
-                        Guardar cambios
+                        Editar
                     </Button>
                     <Button
                         onClick={props.onCancel}
@@ -324,7 +334,7 @@ const EditUser = (props) => {
                     >
                         Cancelar
                     </Button>
-                </Grid>
+                </Box>
             </form>
         </>
     );
