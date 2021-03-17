@@ -36,7 +36,7 @@ const styles = {
         backgroundPosition: "center center",
         backgroundSize: "cover",
         backgroundImage: `url(${"/fondo-login.png"})`,
-        padding:'40px'
+        padding:'60px'
     },
     paper: {
         padding: '35px',

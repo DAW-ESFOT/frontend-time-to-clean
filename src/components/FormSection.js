@@ -116,10 +116,10 @@ const FormSection = () => {
             <div className={classes.container}>
                 <Typography component="h1" variant="h4">
                     Buzón de quejas
-                </Typography>
+                </Typography><br/>
                 <Grid container direction="row" justify="space-around" alignItems="center">
                     <Box m={5}>
-                        <Image src="/mailbox.png" alt="" width={280} height={280}/>
+                        <Image src="/mailbox.png" alt="" width={250} height={250}/>
                     </Box>
                     <div>
                         <Typography variant="body1"> Si tienes alguna queja o recomendación acerca del servicio de

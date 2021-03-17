@@ -35,7 +35,7 @@ const styles = {
         backgroundPosition: "center center",
         backgroundSize: "cover",
         backgroundImage: `url(${"/fondo-login.png"})`,
-        padding:'40px'
+        padding:'80px'
     },
     paper: {
         padding: '35px',
@@ -104,7 +104,7 @@ const SendPasswordResetEmailPage = () => {
                         <Grid item xs={false} sm={4} md={7} className={classes.image}/>
                             <Typography component="h1" variant="h5" align="center">
                                 <strong>Recuperar contraseña</strong>
-                            </Typography>
+                            </Typography><br/>
                         <form className={classes.form}
                             noValidate
                             autoComplete="off"
