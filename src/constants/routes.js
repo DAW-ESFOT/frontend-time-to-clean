@@ -4,15 +4,14 @@ const publicRoutes = {
   NEIGHBORHOODS_ID: "/barrios/:id",
   ABOUT: "/acerca-de",
   PRIVACY: "/privacidad",
-
 };
 
 const privateRoutes = {
   HOME: "/",
-    REGISTER: "/registro",
-    USERS: "/usuarios",
-    USERS_ID: `/usuario/:id`,
-    MANAGEMENT: "/gestion",
+  REGISTER: "/registro",
+  USERS: "/usuarios",
+  USERS_ID: `/usuario/:id`,
+  MANAGEMENT: "/gestion",
 };
 
 const Routes = {
