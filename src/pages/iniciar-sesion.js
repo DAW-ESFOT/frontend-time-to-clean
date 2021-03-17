@@ -85,7 +85,7 @@ const login = () => {
                             <TextField
                                 id="email"
                                 name="email"
-                                label="Correo electronico"
+                                label="Correo electrónico"
                                 inputRef={register}
                                 variant="outlined"
                                 margin="normal"
