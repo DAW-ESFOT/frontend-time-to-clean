@@ -31,10 +31,10 @@ const schema = yup.object().shape({
     password: yup
         .string()
         .required("Ingresa la clave")
-        .min(6, "La clave debe tener al menos 6 caracteres"),
+        .min(6, "La contraseña debe tener al menos 6 caracteres"),
     password_confirmation: yup
         .string()
-        .oneOf([yup.ref("password"), null], "Las claves no coinciden")
+        .oneOf([yup.ref("password"), null], "Las contraseñas no coinciden")
         .required("Campo requerido"),
     birthdate: yup
         .date()
