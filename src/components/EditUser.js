@@ -173,6 +173,10 @@ const EditUser = (props) => {
       return response;
     } catch (error) {
       if (error.response) {
+        enqueueSnackbar(error.response.data, { variant: "error",  anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'center',
+          },});
         console.log(error.response.data);
         return Promise.reject(error.response);
       } else if (error.request) {
