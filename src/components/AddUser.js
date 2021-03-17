@@ -42,9 +42,12 @@ const schema = yup.object().shape({
         .max ("2002-01-01", "Ingresar una fecha válida")
         .required("Campo requerido"),
     cellphone: yup
-        .number()
-        .label("El campo solo debe contener números, exactamente 10")
-        .min(9,"El teléfono debe tener 10 digitos")
+        .string()
+        .length(10,'Deben ser 10 dígitos')
+        .required()
+        .matches(/^[0-9]+$/, "Ingrese solo números, exactamente 10 dígitos")
+        .max(10, 'Deben ser 10 dígitos')
+
 });
 const useStyles = makeStyles((theme) => ({
     paper: {
