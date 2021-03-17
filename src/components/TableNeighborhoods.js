@@ -134,7 +134,6 @@ const TableNeighborhoods = () => {
     if (error || error2) return <div>No se pudo cargar los barrios</div>;
     if (!neighborhoodsPaginated) return <Loading/>;
 
-    console.log("dataNeig", neighborhoodsPaginated)
     return (
         <>
             <h1 style={styles.title}>Gestión y asignación de barrios y frecuencias</h1>
