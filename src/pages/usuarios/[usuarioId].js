@@ -1,10 +1,8 @@
-import {useEffect} from 'react';
-
 import Link from "next/link";
 import {useRouter} from "next/router";
 import Loading from "../../components/Loading";
 import useSWR from "swr";
-import {fetcher} from "../../lib/utils";
+import {fetcher} from "@/lib/utils";
 import withAuth from "../../hocs/withAuth";
 
 const UserDetails=()=>{

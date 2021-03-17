@@ -87,17 +87,12 @@ const ResetPasswordPage = () => {
         } catch (error) {
             setLoading(false);
             if (error.response) {
-                console.log(error.response.status);
                 enqueueSnackbar(translateMessage(error.response.data.status), { variant: "error",anchorOrigin: {
                         vertical: 'top',
                         horizontal: 'center',
                     } });
                 return error.response;
             } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-                console.log(error.request);
                 enqueueSnackbar("Ocurrió un error al realizar la petición.", {
                     variant: "error", anchorOrigin: {
                         vertical: 'top',
@@ -105,8 +100,6 @@ const ResetPasswordPage = () => {
                     }
                 });
             } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log("Error", error.message);
                 enqueueSnackbar("Ocurrió un error desconocido :(", {
                     variant: "error",anchorOrigin: {
                         vertical: 'top',
@@ -114,7 +107,7 @@ const ResetPasswordPage = () => {
                     }
                 });
             }
-            console.log("p",error.config);
+            console.log(error.config);
         }
     };
 

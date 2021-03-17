@@ -137,13 +137,11 @@ const EditUser = (props) => {
         setTruck(event.target.value);
     };
     const onSubmit = async (data) => {
-        console.log("data enviar", data);
         let truck_user = "";
         if (truck === "") {
             truck_user = userData.truck;
         } else {
             truck_user = truck;
-
             truckAllData
                 ? userData.truck !== null
                 ? truckAllData.data.map((truck) =>
@@ -169,8 +167,6 @@ const EditUser = (props) => {
         try {
             const response = await api.put(`/users/${userData.id}`, userData1);
             handleClick("Se ha actualizado con éxito el usuario", "success");
-            console.log("rersponse put usuario", response);
-            console.log("correcto put usuario");
             props.onCancel();
             mutate();
             return response;
@@ -182,12 +178,11 @@ const EditUser = (props) => {
                         horizontal: 'center',
                     },
                 });
-                console.log(error.response.data);
                 return Promise.reject(error.response);
             } else if (error.request) {
                 console.log(error.request);
             } else {
-                console.log("Error", error.message);
+                console.log(error.message);
             }
             console.log(error.config);
         }
@@ -206,38 +201,43 @@ const EditUser = (props) => {
             return response;
         } catch (error) {
             if (error.response) {
-                alert(translateMessage(error.response.data.error));
-                console.log(error.response.data);
+                enqueueSnackbar(translateMessage(error.response.data), {
+                    variant: "error", anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    },
+                });
                 return Promise.reject(error.response);
             } else if (error.request) {
                 console.log(error.request);
             } else {
-                console.log("Error", error.message);
+                console.log(error.message);
             }
             console.log(error.config);
         }
     };
 
     const handleDeleteUserToTruck = async (data) => {
-        console.log("data del camión a eliminar userid", data);
-        // console.log("id del usuario a poner en el truck", props.id);
         const truckData1 = {
             license_plate: data.license_plate,
             type: data.type,
             working: data.working,
             user_id: null,
         };
-        console.log("truckData1 a eliminar", truckData1);
         try {
             const response = await api.put(`/trucks/${data.id}`, truckData1);
             props.onCancel();
             return response;
         } catch (error) {
             if (error.response) {
-                alert(translateMessage(error.response.data.error));
+                enqueueSnackbar(translateMessage(error.response.data), {
+                    variant: "error", anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    },
+                });
                 console.log(error.response.data);
                 return Promise.reject(error.response);
-                // return error.response;
             } else if (error.request) {
                 console.log(error.request);
             } else {
