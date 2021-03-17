@@ -4,7 +4,17 @@ import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
 import {makeStyles} from "@material-ui/core/styles";
-import {Button, FormControlLabel, Icon, InputBase, Paper, Radio, RadioGroup, TextField} from "@material-ui/core";
+import {
+    Button,
+    Divider,
+    FormControlLabel,
+    Icon,
+    InputBase,
+    Paper,
+    Radio,
+    RadioGroup,
+    TextField
+} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import {useForm} from "react-hook-form";
@@ -34,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 
 const styles = {
     paper: {
-        backgroundColor: 'rgba(73,199,171,0.25)',
+        backgroundColor: 'rgba(112,125,136,0.10)',
         padding: '10px',
         marginBottom: '15px'
     }
@@ -103,6 +113,8 @@ const EditComplaint = (props) => {
                 <i>Recibida: {(data.created_at).substr(0, 10)}</i>
             </Grid>
             <Paper elevation={0} style={styles.paper}>
+                <Typography variant="body1" gutterBottom><b>Remitente:</b> {data.username}  &lt;<i>{data.email}</i>&gt;</Typography>
+                <Divider/>
                 <Typography variant="body1" gutterBottom>{data.complaint}</Typography>
             </Paper>
             <form className={classes.root}
@@ -132,6 +144,7 @@ const EditComplaint = (props) => {
                             variant="outlined"
                             name="observation"
                             inputRef={register}
+                            color="secondary"
                         />
                     </Grid>
                     <Grid item xs={12}>
