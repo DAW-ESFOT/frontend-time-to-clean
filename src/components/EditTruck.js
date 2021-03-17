@@ -142,7 +142,7 @@ const EditTruck = (props) => {
     //console.log("data enviar", data);
 
     data.working === "Disponible"
-      ? console.log("tiene valor positivo. Mo s elimina ningun barrio")
+      ? ""
       : neighborhoodData.data.map((neigborhood) =>
           handleDeleteNeighborhood(neigborhood)
         );
@@ -151,7 +151,12 @@ const EditTruck = (props) => {
       license_plate: truckData.license_plate,
       type: data.type,
       working: data.working === "Disponible" ? true : false,
-      user_id: truckData.user === null ? null : truckData.user.id,
+      user_id:
+        truckData.user === null
+          ? null
+          : data.working === "Disponible"
+          ? truckData.user.id
+          : null,
     };
     console.log("truckData1", truckData1);
     try {
@@ -215,8 +220,8 @@ const EditTruck = (props) => {
     }
   };
 
-  console.log("datacamionEdit", truckData);
-  console.log("neighborhoodDataEdit", neighborhoodData);
+  //console.log("datacamionEdit", truckData);
+  //console.log("neighborhoodDataEdit", neighborhoodData);
 
   return (
     <>

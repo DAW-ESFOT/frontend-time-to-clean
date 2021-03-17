@@ -68,7 +68,7 @@ const EditComplaint = (props) => {
     };
 
     const onSubmit = async (complaintData) => {
-        console.log("Datos a actualizar:", complaintData)
+        // console.log("Datos a actualizar:", complaintData)
         try {
             const response = await api.put(`/complaints/${props.id}`, complaintData);
             console.log("Response:", response);
@@ -88,8 +88,6 @@ const EditComplaint = (props) => {
             console.log(error.config);
         }
     }
-
-    console.log("Id del barrio", props.id);
 
     return (
         <>

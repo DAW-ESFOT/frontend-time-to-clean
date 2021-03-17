@@ -62,6 +62,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const styles={
+    title:{
+        textAlign:'center',
+        color:'white',
+        textShadow: '2px 2px #262626',
+    }
+};
 
 const TableNeighborhoods = () => {
 
@@ -128,9 +135,10 @@ const TableNeighborhoods = () => {
     if (error || error2) return <div>No se pudo cargar los barrios</div>;
     if (!neighborhoodsPaginated) return <Loading/>;
 
+    console.log("dataNeig", neighborhoodsPaginated)
     return (
         <>
-            <h1 align="center">Gestión y asignación de barrios y frecuencias</h1>
+            <h1 style={styles.title} >Gestión y asignación de barrios y frecuencias</h1>
             <Box display="flex" justifyContent="flex-end" m={1} p={1}>
                 <Button
                     variant="outlined"
@@ -177,6 +185,7 @@ const TableNeighborhoods = () => {
                                                     <StyledTableCell align="center">Ubicación en mapa</StyledTableCell>
                                                     <StyledTableCell align="center">horario</StyledTableCell>
                                                     <StyledTableCell align="center">Dias asignados</StyledTableCell>
+                                                    <StyledTableCell align="center">Camión</StyledTableCell>
                                                     <StyledTableCell align="center">Opción</StyledTableCell>
                                                 </TableRow>
                                             </TableHead>
@@ -200,19 +209,35 @@ const TableNeighborhoods = () => {
                                                             {neighborhood.days}
                                                         </StyledTableCell>
                                                         <StyledTableCell align="center">
-                                                            <IconButton
-                                                                onClick={() => handleOpenEditNeigbhorhood(neighborhood.id)}
-                                                                color="secondary"
-                                                                aria-label="upload picture"
-                                                                component="span">
-                                                                <BorderColorIcon/>
-                                                            </IconButton>
-                                                            <IconButton
-                                                                onClick={() => handleOpenDeleteNeigbhorhood(neighborhood.id)}
-                                                                aria-label="upload picture"
-                                                                component="span">
-                                                                <DeleteIcon  style={{ color: "black" }}/>
-                                                            </IconButton>
+                                                            {neighborhood.truck ? neighborhood.truck.license_plate : "No tienen camión"}
+                                                        </StyledTableCell>
+                                                        <StyledTableCell align="center">
+                                                            { neighborhood.complaint.data.length > 0 ?
+                                                                <IconButton
+                                                                    color="secondary"
+                                                                    aria-label="upload picture"
+                                                                    component="span"
+                                                                    onClick={() => handleOpenEditNeigbhorhood(neighborhood.id)}>
+                                                                    <BorderColorIcon/>
+                                                                </IconButton>
+                                                                :
+                                                                <>
+                                                                    <IconButton
+                                                                        color="secondary"
+                                                                        aria-label="upload picture"
+                                                                        component="span"
+                                                                        onClick={() => handleOpenEditNeigbhorhood(neighborhood.id)}>
+                                                                        <BorderColorIcon/>
+                                                                    </IconButton>
+                                                                    <IconButton
+                                                                        color="dark"
+                                                                        aria-label="upload picture"
+                                                                        component="span"
+                                                                        onClick={() => handleOpenDeleteNeigbhorhood(neighborhood.id)}>
+                                                                        <DeleteIcon />
+                                                                    </IconButton>
+                                                                </>
+                                                            }
                                                         </StyledTableCell>
                                                     </StyledTableRow>
                                                 ))}
@@ -246,6 +271,7 @@ const TableNeighborhoods = () => {
                                                     <StyledTableCell align="center">Ubicación en mapa</StyledTableCell>
                                                     <StyledTableCell align="center">horario</StyledTableCell>
                                                     <StyledTableCell align="center">Dias asignados</StyledTableCell>
+                                                    <StyledTableCell align="center">Camión</StyledTableCell>
                                                     <StyledTableCell align="center">Opción</StyledTableCell>
                                                 </TableRow>
                                             </TableHead>
@@ -269,19 +295,35 @@ const TableNeighborhoods = () => {
                                                             {neighborhood.days}
                                                         </StyledTableCell>
                                                         <StyledTableCell align="center">
-                                                            <IconButton
-                                                                onClick={() => handleOpenEditNeigbhorhood(neighborhood.id)}
-                                                                color="secondary"
-                                                                aria-label="upload picture"
-                                                                component="span">
-                                                                <BorderColorIcon/>
-                                                            </IconButton>
-                                                            <IconButton
-                                                                onClick={() => handleOpenDeleteNeigbhorhood(neighborhood.id)}
-                                                                aria-label="upload picture"
-                                                                component="span">
-                                                                <DeleteIcon  style={{ color: "black" }}/>
-                                                            </IconButton>
+                                                            {neighborhood.truck ? neighborhood.truck.license_plate : "No tienen camión"}
+                                                        </StyledTableCell>
+                                                        <StyledTableCell align="center">
+                                                            { neighborhood.complaint.data.length > 0 ?
+                                                                <IconButton
+                                                                    color="secondary"
+                                                                    aria-label="upload picture"
+                                                                    component="span"
+                                                                    onClick={() => handleOpenEditNeigbhorhood(neighborhood.id)}>
+                                                                    <BorderColorIcon/>
+                                                                </IconButton>
+                                                                    :
+                                                                <>
+                                                                    <IconButton
+                                                                        color="secondary"
+                                                                        aria-label="upload picture"
+                                                                        component="span"
+                                                                        onClick={() => handleOpenEditNeigbhorhood(neighborhood.id)}>
+                                                                        <BorderColorIcon/>
+                                                                    </IconButton>
+                                                                    <IconButton
+                                                                        color="dark"
+                                                                        aria-label="upload picture"
+                                                                        component="span"
+                                                                        onClick={() => handleOpenDeleteNeigbhorhood(neighborhood.id)}>
+                                                                        <DeleteIcon />
+                                                                    </IconButton>
+                                                                </>
+                                                            }
                                                         </StyledTableCell>
                                                     </StyledTableRow>
                                                 ))}
