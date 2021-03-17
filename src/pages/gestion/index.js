@@ -5,8 +5,7 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
-    Divider,
-    makeStyles, ButtonBase,
+    makeStyles,
 } from "@material-ui/core";
 import TableTrucks from "@/components/TableTrucks";
 import TableNeighborhoods from "@/components/TableNeighborhoods";
@@ -14,11 +13,10 @@ import TableUsers from "@/components/TableUsers";
 import TableComplaints from "@/components/TableComplaints";
 import List from "@material-ui/core/List";
 import Image from "next/image";
-import Box from "@material-ui/core/Box";
 import {useAuth} from "@/lib/auth";
 import DriverInfoProfile from "@/components/DriverInfoProfile";
 import DriverInfoJob from "@/components/DriverInfoJob";
-import PersonIcon from '@material-ui/icons/Person';
+import Box from "@material-ui/core/Box";
 
 const Management = () => {
     const {user} = useAuth();
@@ -135,7 +133,6 @@ const Management = () => {
                                 </ListItemAvatar>
                                 <ListItemText primary="Gestión de Quejas"/>
                             </ListItem>
-                            <Box p={14} bgcolor="background.paper"/>
                         </List>
                     </Grid>
                     <Grid xs={9} style={styles.container}>

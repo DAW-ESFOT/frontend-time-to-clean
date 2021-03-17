@@ -119,6 +119,7 @@ const FormSection = () => {
                                             id="name"
                                             label="Nombre"
                                             autoFocus
+                                            color="secondary"
                                         />
                                     </div>
                                 </Grid>
@@ -134,6 +135,7 @@ const FormSection = () => {
                                             label="Correo Electronico"
                                             name="email"
                                             autoComplete="email"
+                                            color="secondary"
                                         />
                                     </div>
                                 </Grid>
@@ -151,6 +153,7 @@ const FormSection = () => {
                                             }}
                                             helperText="Por favor selecciona un barrio de la lista"
                                             variant="outlined"
+                                            color="secondary"
                                         >
                                             <option key="0"/>
 
@@ -178,6 +181,7 @@ const FormSection = () => {
                                             inputRef={register}
                                             label="Queja"
                                             name="complaint"
+                                            color="secondary"
                                         />
                                     </div>
                                 </Grid>
