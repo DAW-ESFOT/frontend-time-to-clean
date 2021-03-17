@@ -147,7 +147,7 @@ const TableComplaints = () => {
                                                     <StyledTableCell align="left">
                                                         Barrio: {Complaint.neighborhood_name}<br/>
                                                         Camión: {Complaint.truck.license_plate}<br/>
-                                                        Conductor: {Complaint.truck.user.name ? Complaint.truck.user.name : "Desconocido" } {Complaint.truck.user.lastname ? Complaint.truck.user.lastname : "" }<br/>
+                                                        {/*Conductor: {Complaint.truck.user.name ? Complaint.truck.user.name : "Desconocido" } {Complaint.truck.user.lastname ? Complaint.truck.user.lastname : "" }<br/>*/}
                                                     </StyledTableCell>
                                                     <StyledTableCell align="center">
                                                         {Complaint.state}
@@ -212,7 +212,7 @@ const TableComplaints = () => {
                                                         <StyledTableCell align="left">
                                                             Barrio: {Complaint.neighborhood_name}<br/>
                                                             Camión: {Complaint.truck.license_plate}<br/>
-                                                            Conductor: {Complaint.truck.user.name} {Complaint.truck.user.lastname}<br/>
+                                                            {/*Conductor: {Complaint.truck.user.name} {Complaint.truck.user.lastname}<br/>*/}
                                                         </StyledTableCell>
                                                         <StyledTableCell align="center">
                                                             {Complaint.state}
