@@ -116,10 +116,10 @@ const FormSection = () => {
             <div className={classes.container}>
                 <Typography component="h1" variant="h4">
                     Buzón de quejas
-                </Typography>
+                </Typography><br/>
                 <Grid container direction="row" justify="space-around" alignItems="center">
                     <Box m={5}>
-                        <Image src="/mailbox.png" alt="" width={280} height={280}/>
+                        <Image src="/mailbox.png" alt="" width={250} height={250}/>
                     </Box>
                     <div>
                         <Typography variant="body1"> Si tienes alguna queja o recomendación acerca del servicio de
@@ -181,52 +181,52 @@ const FormSection = () => {
                                             <option aria-label="None" value=""/>
                                             {
                                                 data.data.map((neighborhood, index) => {
-                                                    return (
-                                                        <option key={index} value={neighborhood.id}>
-                                                            {neighborhood.name}
-                                                        </option>
-                                                    )
-                                                }
+                                                        return (
+                                                            <option key={index} value={neighborhood.id}>
+                                                                {neighborhood.name}
+                                                            </option>
+                                                        )
+                                                    }
                                                 )
-                                                }
-                                                </TextField>
-                                                </div>
-                                                </Grid>
-                                                <Grid item xs={12}>
-                                                <div style={styles.box}>
-                                                <TextField
-                                                variant="outlined"
-                                                multiline
-                                                rows={5}
-                                                required
-                                                fullWidth
-                                                id="complaint"
-                                                inputRef={register}
-                                                label="Queja"
-                                                name="complaint"
-                                                color="secondary"
-                                                error={!!errors.complaint}
-                                                helperText={errors.complaint?.message}
-                                                />
-                                                </div>
-                                                </Grid>
-                                                </Grid>
-                                                <Button onSubmit={handleSubmit(onSubmit)}
-                                                type="submit"
-                                                fullWidth
-                                                variant="contained"
-                                                color="primary"
-                                                className={classes.submit}
-                                                >
-                                                Enviar
-                                                </Button>
-                                                </form>
-                                                </div>
-                                                </Grid>
-                                                </div>
-                                                </>
-                                                );
                                             }
+                                        </TextField>
+                                    </div>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <div style={styles.box}>
+                                        <TextField
+                                            variant="outlined"
+                                            multiline
+                                            rows={5}
+                                            required
+                                            fullWidth
+                                            id="complaint"
+                                            inputRef={register}
+                                            label="Queja"
+                                            name="complaint"
+                                            color="secondary"
+                                            error={!!errors.complaint}
+                                            helperText={errors.complaint?.message}
+                                        />
+                                    </div>
+                                </Grid>
+                            </Grid>
+                            <Button onSubmit={handleSubmit(onSubmit)}
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.submit}
+                            >
+                                Enviar
+                            </Button>
+                        </form>
+                    </div>
+                </Grid>
+            </div>
+        </>
+    );
+}
 
-                                            export default FormSection;
+export default FormSection;
 

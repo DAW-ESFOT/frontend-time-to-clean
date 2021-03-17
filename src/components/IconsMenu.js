@@ -122,7 +122,9 @@ const IconsMenu = () => {
                     >
                         <AccountCircle/>
                     </IconButton>
-                    <p>Iniciar Sesión</p>
+                    <Link href={Routes.LOGIN}>
+                        <MenuItem>Iniciar sesión</MenuItem>
+                    </Link>
                 </MenuItem>
             )}
         </Menu>
