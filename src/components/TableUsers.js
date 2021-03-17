@@ -76,7 +76,10 @@ const useStyles = makeStyles((theme) => ({
         transform: "scale(0.8)",
     },
     title: {
-        fontSize: 14,
+        textAlign:'center',
+        color:'white',
+        textShadow: '2px 2px #262626',
+
     },
     pos: {
         marginBottom: 12,
@@ -188,7 +191,7 @@ const TableUsers = () => {
 
     return (
         <>
-            <h1 align="center">Gestión de conductores</h1>
+            <h1 className={classes.title}>Gestión de conductores</h1>
             <Box display="flex" justifyContent="flex-end" m={1} p={1}>
                 <Button
                     variant="outlined"
@@ -266,15 +269,18 @@ const TableUsers = () => {
                                                             >
                                                                 <BorderColorIcon />
                                                             </IconButton>
-                                                            <IconButton
-                                                                color="dark"
-                                                                aria-label="upload picture"
-                                                                component="span"
-                                                                onClick={() => handleClickDeleteUser(user.id)}
-                                                            >
-                                                                <DeleteIcon
-                                                                />
-                                                            </IconButton>
+                                                            {user.truck === null ?
+                                                                <IconButton
+                                                                    color="dark"
+                                                                    aria-label="upload picture"
+                                                                    component="span"
+                                                                    onClick={() => handleClickDeleteUser(user.id)}
+                                                                >
+                                                                    <DeleteIcon
+                                                                    />
+                                                                </IconButton>
+                                                                : ""
+                                                            }
                                                         </>
                                                         : ""
                                                     }
