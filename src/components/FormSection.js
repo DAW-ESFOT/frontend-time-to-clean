@@ -78,7 +78,7 @@ const FormSection = () => {
         });
     };
 
-    // console.log("data", data)
+    console.log("Lista de barrios", data)
 
     const onSubmit = async (data) => {
         const complaintData = {...data, neighborhood_id: name.id}
@@ -103,11 +103,15 @@ const FormSection = () => {
     };
 
     const handleChange = (event) => {
-        const number = event.target.value;
+        const neighborhood_id = event.target.value;
+        let neighborhood_name=""
+        data.data.map((neighborhood) => {
+            neighborhood.id===neighborhood_id ? neighborhood_name=neighborhood.name: ""
+        })
+
         setName({
-            ...name,
-            id: number ? number : "",
-            neighborhood: number ? data.data[number].name : "",
+            id: neighborhood_id,
+            neighborhood: neighborhood_name
         });
     };
 
