@@ -157,7 +157,7 @@ const TableNeighborhoods = () => {
                         name="wordToSearch"
                         value={wordSearch}
                         className={classes.input}
-                        placeholder="Placa a buscar"
+                        placeholder="Barrio a buscar"
                         onChange={handleChange}
                     />
                     <Divider className={classes.divider} orientation="vertical" />
