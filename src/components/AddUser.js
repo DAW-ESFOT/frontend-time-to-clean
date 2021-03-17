@@ -16,6 +16,7 @@ import translateMessage from '../constants/messages';
 import InputLabel from '@material-ui/core/InputLabel';
 import api from "@/lib/api";
 import {useSnackbar} from "notistack";
+import Tooltip from "@material-ui/core/Tooltip";
 const schema = yup.object().shape({
     name: yup
         .string()
@@ -156,7 +157,7 @@ const Register = (props)=>{
                                     helperText={errors.lastname?.message}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} >
                                 <TextField
                                     variant="outlined"
                                     required
@@ -164,7 +165,7 @@ const Register = (props)=>{
                                     id="email"
                                     color="secondary"
                                     inputRef={register}
-                                    label="Correo Electronico"
+                                    label="Correo Electrónico"
                                     name="email"
                                     autoComplete="email"
                                     error={!!errors.email}
@@ -172,22 +173,24 @@ const Register = (props)=>{
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <TextField
-                                    name="birthdate"
-                                    variant="outlined"
-                                    required
-                                    fullWidth
-                                    color="secondary"
-                                    type="date"
-                                    inputProps={{
-                                        min: "1973-01-01",
-                                        max: "2002-01-01"
-                                    }}
-                                    inputRef={register}
-                                    error={!!errors.birthdate}
-                                    helperText={errors.birthdate?.message}
-                                    id="birthdate"
-                                />
+                                <Tooltip title="Fecha de nacimiento" placement="left" >
+                                    <TextField
+                                        name="birthdate"
+                                        variant="outlined"
+                                        required
+                                        fullWidth
+                                        color="secondary"
+                                        type="date"
+                                        inputProps={{
+                                            min: "1973-01-01",
+                                            max: "2002-01-01"
+                                        }}
+                                        inputRef={register}
+                                        error={!!errors.birthdate}
+                                        helperText={errors.birthdate?.message}
+                                        id="birthdate"
+                                    />
+                                </Tooltip>
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -243,7 +246,7 @@ const Register = (props)=>{
                                     id="password_confirmation"
                                     name="password_confirmation"
                                     type="password"
-                                    label="Confirmar clave"
+                                    label="Confirmar contraseña"
                                     color="secondary"
                                     inputRef={register}
                                     autoComplete="current-password"

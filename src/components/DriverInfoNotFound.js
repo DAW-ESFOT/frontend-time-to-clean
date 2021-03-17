@@ -37,7 +37,7 @@ const DriverInfoNotFound = () => {
                         <Grid item xs={12} sm={6}>
                             <Paper style={styles.Paper} elevation={3}>
                                 <Typography variant="body1" gutterBottom>
-                                    Es posible que el administrador de Time2Clean, todavía no le haya
+                                    Es posible que el administrador de Time To Clean, todavía no le haya
                                     asignado un camión y por ende no tiene ruta asignada.
                                 </Typography>
                             </Paper>
