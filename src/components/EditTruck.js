@@ -244,7 +244,7 @@ const EditTruck = (props) => {
                 <Icon color="secondary" onClick={props.onCancel}>cancel</Icon>
             </Grid>
             <Paper elevation={0} style={styles.paper}>
-                <Grid container spacing={3} justify="space-around" alignItems="flex-start">
+                <Grid container spacing={2} justify="space-evenly" alignItems="flex-start">
                     <Grid item xs={12} sm={6}>
                         <h3>Placa: {truckData.license_plate}</h3>
                         <h3>

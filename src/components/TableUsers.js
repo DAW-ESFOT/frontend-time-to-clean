@@ -34,6 +34,7 @@ import BackspaceIcon from "@material-ui/icons/Backspace";
 import DeleteUser from "@/components/DeleteUser";
 import EditUser from "@/components/EditUser";
 import AddUser from "@/components/AddUser";
+import SearchIcon from "@material-ui/icons/Search";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -220,7 +221,7 @@ const TableUsers = () => {
                             className={classes.iconButton}
                             aria-label="search"
                         >
-                            <BackspaceIcon/>
+                            <SearchIcon/>
                         </IconButton>
                         <Divider className={classes.divider} orientation="vertical"/>
                     </Paper>
@@ -396,9 +397,9 @@ const TableUsers = () => {
                 aria-labelledby="form-dialog-title"
                 disableBackdropClick={true}
             >
-                <DialogTitle id="form-dialog-title">
-                    Editar información del conductor
-                </DialogTitle>
+                {/*<DialogTitle id="form-dialog-title">*/}
+                {/*    Editar información del conductor*/}
+                {/*</DialogTitle>*/}
                 <DialogContent>
                     <EditUser id={valueIdUser} onCancel={handleClose}/>
                 </DialogContent>
@@ -410,7 +411,7 @@ const TableUsers = () => {
                 aria-labelledby="form-dialog-title"
                 disableBackdropClick={true}
             >
-                <DialogTitle id="form-dialog-title">Eliminar usuario</DialogTitle>
+                {/*<DialogTitle id="form-dialog-title">Eliminar usuario</DialogTitle>*/}
                 <DialogContent>
                     <DeleteUser id={valueIdUser} onCancel={handleClose}/>
                 </DialogContent>

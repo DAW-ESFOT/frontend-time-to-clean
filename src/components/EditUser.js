@@ -14,7 +14,7 @@ import {
     RadioGroup,
     FormControlLabel,
     Radio,
-    TextField,
+    TextField, Icon, Paper,
 } from "@material-ui/core";
 import api from "@/lib/api";
 import translateMessage from "../constants/messages";
@@ -85,6 +85,14 @@ const useStyles = makeStyles((theme) => ({
         },
     },
 }));
+
+const styles = {
+    paper: {
+        backgroundColor: 'rgba(112,125,136,0.10)',
+        padding: '10px',
+        marginBottom: '15px'
+    }
+};
 
 function StyledRadio(props) {
     const classes = useStyles();
@@ -241,17 +249,23 @@ const EditUser = (props) => {
 
     return (
         <>
-            <div>
+            <Grid
+                container
+                direction="row"
+                justify="space-between"
+                alignItems="center"
+            >
+                <div/>
+                <h2>Detalle y edición de usuario</h2>
+                <Icon color="secondary" onClick={props.onCancel}>cancel</Icon>
+            </Grid>
+            <Paper elevation={0} style={styles.paper}>
                 <h3>
                     Nombre: {userData.name} {userData.lastname}
                 </h3>
-            </div>
-            <div>
                 <h3>Correo: {userData.email}</h3>
-            </div>
-            <div>
                 <h3>Celular: {userData.cellphone}</h3>
-            </div>
+            </Paper>
             <form
                 className={classes.root}
                 noValidate
@@ -318,14 +332,19 @@ const EditUser = (props) => {
                     </TextField>
                 </Grid>
 
-                <Box display="flex" justifyContent="center" m={1} p={1}>
+                <Grid
+                    container
+                    direction="row"
+                    justify="space-evenly"
+                    alignItems="flex-end"
+                >
                     <Button
                         type="submit"
                         variant="contained"
                         color="primary"
                         className={classes.submit}
                     >
-                        Editar
+                        Guardar cambios
                     </Button>
                     <Button
                         onClick={props.onCancel}
@@ -334,7 +353,7 @@ const EditUser = (props) => {
                     >
                         Cancelar
                     </Button>
-                </Box>
+                </Grid>
             </form>
         </>
     );
