@@ -112,9 +112,6 @@ const EditUser = (props) => {
     fetcher
   );
   const { data: truckAllData, error: error2 } = useSWR(`/trucks/all`, fetcher);
-  //console.log("camiones sin conductor", truckData);
-  //console.log("camiones todos", truckAllData);
-  //console.log("datos del conductorr", userData);
   const [truck, setTruck] = useState("");
   if (error1) return <div>No se pudo cargar el usuario</div>;
   if (!userData) return <Loading />;
@@ -161,8 +158,6 @@ const EditUser = (props) => {
       cellphone: userData.cellphone,
       type: data.type,
     };
-    //console.log("truck_user", truck_user);
-    //console.log("userDatapost", userData1);
     try {
       const response = await api.put(`/users/${userData.id}`, userData1);
       handleClick("Se ha actualizado con éxito el usuario", "success");
@@ -189,8 +184,6 @@ const EditUser = (props) => {
   };
 
   const handleChangeUserToTruck = async (data) => {
-    //console.log("data del camión a edittar userid", data);
-    // console.log("id del usuario a poner en el truck", props.id);
     const truckData1 = {
       license_plate: data.license_plate,
       type: data.type,
@@ -231,8 +224,6 @@ const EditUser = (props) => {
     console.log("truckData1 a eliminar", truckData1);
     try {
       const response = await api.put(`/trucks/${data.id}`, truckData1);
-      //console.log("rersponse put camion", response);
-      //console.log("correcto put camion");
       props.onCancel();
       return response;
     } catch (error) {
@@ -249,8 +240,6 @@ const EditUser = (props) => {
       console.log(error.config);
     }
   };
-
-  //console.log("datausuarioEdit", userData);
 
   return (
     <>
