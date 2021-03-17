@@ -3,14 +3,13 @@ import Grid from "@material-ui/core/Grid";
 import {Button, Paper, TextField} from "@material-ui/core";
 import * as yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
-import { useAuth } from "../lib/auth";
+import { useAuth } from "@/lib/auth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useSnackbar } from "notistack";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
 
 const schema = yup.object().shape({
     email: yup

@@ -20,17 +20,12 @@ import {
     DialogTitle,
     DialogContent,
     Dialog,
-    TextField,
     InputBase,
-    InputAdornment,
-    Grid,
-    Divider,
-    Select,
+    Divider
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
 import PostAddIcon from "@material-ui/icons/PostAdd";
-import BackspaceIcon from "@material-ui/icons/Backspace";
 import DeleteUser from "@/components/DeleteUser";
 import EditUser from "@/components/EditUser";
 import AddUser from "@/components/AddUser";
@@ -411,7 +406,6 @@ const TableUsers = () => {
                 aria-labelledby="form-dialog-title"
                 disableBackdropClick={true}
             >
-                {/*<DialogTitle id="form-dialog-title">Eliminar usuario</DialogTitle>*/}
                 <DialogContent>
                     <DeleteUser id={valueIdUser} onCancel={handleClose}/>
                 </DialogContent>
