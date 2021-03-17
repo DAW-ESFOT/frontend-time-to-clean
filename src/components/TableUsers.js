@@ -239,7 +239,7 @@ const TableUsers = () => {
                                             <StyledTableCell align="center">Nombre</StyledTableCell>
                                             <StyledTableCell align="center">Correo</StyledTableCell>
                                             <StyledTableCell align="center">Celular</StyledTableCell>
-                                            <StyledTableCell align="center">Camion</StyledTableCell>
+                                            <StyledTableCell align="center">Camión</StyledTableCell>
                                             <StyledTableCell align="center">Tipo</StyledTableCell>
                                             <StyledTableCell align="center">Opciones</StyledTableCell>
                                         </TableRow>
@@ -255,7 +255,7 @@ const TableUsers = () => {
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">{user.cellphone}</StyledTableCell>
                                                 <StyledTableCell align="center">
-                                                    {user.truck === null ? "Sin camion" : user.truck}
+                                                    {user.truck === null ? "Sin camión" : user.truck}
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
                                                     {user.type}
@@ -307,7 +307,7 @@ const TableUsers = () => {
                                             <StyledTableCell align="center">Nombre</StyledTableCell>
                                             <StyledTableCell align="center">Correo</StyledTableCell>
                                             <StyledTableCell align="center">Celular</StyledTableCell>
-                                            <StyledTableCell align="center">Camion</StyledTableCell>
+                                            <StyledTableCell align="center">Camión</StyledTableCell>
                                             <StyledTableCell align="center">Tipo</StyledTableCell>
                                             <StyledTableCell align="center">Opciones</StyledTableCell>
                                         </TableRow>
@@ -323,7 +323,7 @@ const TableUsers = () => {
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">{user.cellphone}</StyledTableCell>
                                                 <StyledTableCell align="center">
-                                                    {user.truck === null ? "Sin camion" : user.truck}
+                                                    {user.truck === null ? "Sin camión" : user.truck}
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
                                                     {user.type}

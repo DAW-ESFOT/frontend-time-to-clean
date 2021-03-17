@@ -311,7 +311,7 @@ const EditUser = (props) => {
                     <TextField
                         id="outlined-select-currency-native"
                         select
-                        label="Camion"
+                        label="Camión"
                         value={truck}
                         onChange={handleChangeSelect}
                         SelectProps={{

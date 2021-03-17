@@ -2,14 +2,14 @@ import React from "react";
 import withAuth from "@/hocs/withAuth";
 import Typography from "@material-ui/core/Typography";
 import {
-    Box, Divider,
-    Grid, IconButton,
-    Link as MuiLink, List, ListItem, ListItemAvatar, ListItemText, makeStyles,
+     Divider,
+    Grid,
+    List, ListItem, ListItemAvatar, ListItemText, makeStyles,
     Paper,
     Table,
     TableBody, TableCell,
     TableContainer,
-    TableHead, TablePagination,
+    TableHead,
     TableRow
 } from "@material-ui/core";
 import useSWR from "swr";
@@ -198,7 +198,6 @@ const DriverInfoJob = ({user}) => {
                         </Paper>
                     </Grid>
                 </Grid>
-
 
             </div>
         </>
