@@ -80,27 +80,28 @@ const TableComplaints = () => {
                                 <Table aria-label="customized table">
                                     <TableHead>
                                         <TableRow>
-                                            <StyledTableCell align="center">Queja</StyledTableCell>
-                                            <StyledTableCell align="center">Remitente</StyledTableCell>
+                                            <StyledTableCell align="center" style={{ width: 100 }}>Fecha</StyledTableCell>
+                                            <StyledTableCell align="center" style={{ width: 350 }}>Queja</StyledTableCell>
                                             <StyledTableCell align="center">Información</StyledTableCell>
                                             <StyledTableCell align="center">Estado</StyledTableCell>
-                                            <StyledTableCell align="center">Observación</StyledTableCell>
-                                            <StyledTableCell align="center">Opción</StyledTableCell>
+                                            <StyledTableCell align="center" style={{ width: 200 }}>Observación</StyledTableCell>
+                                            <StyledTableCell align="center"></StyledTableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {data.data.map((Complaint) => (
                                             <StyledTableRow key={Complaint.id}>
-                                                <StyledTableCell align="justify">
-                                                    {Complaint.complaint}
-                                                </StyledTableCell>
                                                 <StyledTableCell align="center">
-                                                    {Complaint.username} ({Complaint.email})
+                                                    {(Complaint.created_at).substr(0, 10)}<br/>
+                                                    {(Complaint.created_at).substr(11, 5)}
+                                                </StyledTableCell>
+                                                <StyledTableCell align="justify">
+                                                    {(Complaint.complaint).substr(0, 135)} [...]
                                                 </StyledTableCell>
                                                 <StyledTableCell align="left">
-                                                    Fecha: {(Complaint.created_at).substr(0, 10)}<br/>
                                                     Barrio: {Complaint.neighborhood_id}<br/>
-                                                    Conductor: Nombre<br/>
+                                                    Camión: {Complaint.truck.license_plate}<br/>
+                                                    Conductor: {Complaint.truck.user.name} {Complaint.truck.user.lastname}<br/>
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
                                                     {Complaint.state}

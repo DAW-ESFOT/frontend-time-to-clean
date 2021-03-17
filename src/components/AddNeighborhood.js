@@ -185,11 +185,9 @@ const AddNeighborhood = (props) => {
     return (
         <>
             <div>
-                <Typography component={'span'} color={"secondary"}>
-                    <Box display="flex" justifyContent="center" m={1} p={1}>
-                        <h1>Creación de un Barrio </h1>
-                    </Box>
-                </Typography>
+                <div>
+                    <h3>Agregar nuevo barrio </h3>
+                </div>
 
                 <form
                     className={classes.root}
@@ -309,6 +307,8 @@ const AddNeighborhood = (props) => {
                             id="outlined-select-currency-native"
                             select
                             label="Camion"
+                            color="secondary"
+                            margin="normal"
                             value={truck}
                             onChange={handleChangeSelect}
                             SelectProps={{

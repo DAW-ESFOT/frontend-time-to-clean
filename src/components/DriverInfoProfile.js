@@ -46,9 +46,9 @@ const styles = {
         margin: '10px',
         padding: '35px',
     },
-    Title: {
-        fontWeight: 'bold',
-        color: 'white',
+    title:{
+        textAlign:'center',
+        color:'white',
         textShadow: '2px 2px #262626',
     }
 };
@@ -122,11 +122,7 @@ const DriverInfoJob = ({user}) => {
     return (
         <>
             <div>
-                <Typography component={'span'} color={"black"}>
-                    <Box display="flex" justifyContent="center" m={1} p={1}>
-                        <h1>Información del perfil</h1>
-                    </Box>
-                </Typography>
+                <h1 style={styles.title}>Información del perfil</h1>
 
                 <Grid container justify="center" >
 
@@ -221,7 +217,7 @@ const DriverInfoJob = ({user}) => {
                                                     onClick={handleChangeCheck}
                                                     variant="contained"
                                                     color="primary"
-                                                    className={classes.button}
+                                                    className={classes.submit}
                                                 >
                                                     Cambiar información
                                                 </Button>
