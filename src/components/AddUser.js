@@ -93,7 +93,6 @@ const Register = (props)=>{
         console.log("userData", userData);
         try {
             const response = await api.post("/register", userData);
-
             handleClick("Se ha registrado con éxito el usuario", "success");
             console.log("rersponse post users", response);
             console.log("correcto post usuarios");
