@@ -120,7 +120,7 @@ const Management = () => {
                                         height={30}
                                     />
                                 </ListItemAvatar>
-                                <ListItemText primary="Registro de Barrios y Frecuencias"/>
+                                <ListItemText primary="Gestión de Barrios y Frecuencias"/>
                             </ListItem>
                             <ListItem onClick={onVisibleComplaints} button divider>
                                 <ListItemAvatar>

@@ -9,7 +9,6 @@ import {
     Divider,
     FormControlLabel,
     Icon,
-    InputBase,
     Paper,
     Radio,
     RadioGroup,
@@ -98,7 +97,7 @@ const EditComplaint = (props) => {
                 alignItems="center"
             >
                 <div/>
-                <h1>Edición</h1>
+                <h2>Detalle y edición</h2>
                 <Icon color="secondary" onClick={props.onHandleCloseModal}>cancel</Icon>
             </Grid>
             <Grid
@@ -107,7 +106,7 @@ const EditComplaint = (props) => {
                 justify="space-between"
                 alignItems="center"
             >
-                <h2>Queja #{data.id}</h2>
+                <h2>Queja n°{data.id}</h2>
                 <i>Recibida: {(data.created_at).substr(0, 10)}</i>
             </Grid>
             <Paper elevation={0} style={styles.paper}>
@@ -149,7 +148,7 @@ const EditComplaint = (props) => {
                     <Grid
                         container
                         direction="row"
-                        justify="space-between"
+                        justify="space-evenly"
                         alignItems="flex-end"
                     >
                         <Button

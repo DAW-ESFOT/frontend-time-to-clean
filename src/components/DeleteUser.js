@@ -1,9 +1,9 @@
 import React from "react";
 import withAuth from "@/hocs/withAuth";
-import { makeStyles } from "@material-ui/core/styles";
-import { Button, Box, Grid } from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
+import {Button, Box, Grid} from "@material-ui/core";
 import api from "@/lib/api";
-import { useForm } from "react-hook-form";
+import {useForm} from "react-hook-form";
 import {useSnackbar} from "notistack";
 
 const useStyles = makeStyles((theme) => ({
@@ -33,12 +33,10 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.cancel.main,
     },
 }));
-
-
 const DeleteUser = (props) => {
     const classes = useStyles();
-    const { handleSubmit} = useForm();
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const {handleSubmit} = useForm();
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
     const handleClick = (message, variant) => {
         enqueueSnackbar(message, {
             variant: variant,
@@ -48,7 +46,6 @@ const DeleteUser = (props) => {
             },
         });
     }
-
     const onSubmit = async () => {
         try {
             const response = await api.delete(`/users/${props.id}`);
@@ -69,13 +66,11 @@ const DeleteUser = (props) => {
             console.log(error.config);
         }
     };
-
     return (
         <>
             <div>
                 <h3>¿Está seguro que desea eliminar este usuario?</h3>
             </div>
-
             <form
                 className={classes.root}
                 noValidate
@@ -105,5 +100,4 @@ const DeleteUser = (props) => {
         </>
     );
 };
-
 export default withAuth(DeleteUser);

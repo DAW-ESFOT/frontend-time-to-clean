@@ -1,14 +1,3 @@
-import React from 'react';
-import { useForm } from "react-hook-form";
-import withAuth from "../hocs/withAuth";
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import {yupResolver} from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -16,6 +5,7 @@ import translateMessage from '../constants/messages';
 import InputLabel from '@material-ui/core/InputLabel';
 import api from "@/lib/api";
 import {useSnackbar} from "notistack";
+
 const schema = yup.object().shape({
     name: yup
         .string()
@@ -37,13 +27,13 @@ const schema = yup.object().shape({
         .required("Campo requerido"),
     birthdate: yup
         .date()
-        .min ("1973-01-01","Ingresar una fecha válida")
-        .max ("2002-01-01", "Ingresar una fecha válida")
+        .min("1973-01-01", "Ingresar una fecha válida")
+        .max("2002-01-01", "Ingresar una fecha válida")
         .required("Campo requerido"),
     cellphone: yup
         .number()
         .label("El campo solo debe contener números, exactamente 10")
-        .min(9,"El teléfono debe tener 10 digitos")
+        .min(9, "El teléfono debe tener 10 digitos")
 });
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -63,18 +53,18 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(3, 0, 2),
         backgroundColor: theme.palette.secondary.main,
     },
-    cancel:{
+    cancel: {
         margin: theme.spacing(3, 2, 2),
         backgroundColor: theme.palette.cancel.main,
     }
 }));
 
-const Register = (props)=>{
+const Register = (props) => {
     const [valSelect, setValSelect] = React.useState('');
-    const { register, handleSubmit, errors } = useForm({
+    const {register, handleSubmit, errors} = useForm({
         resolver: yupResolver(schema),
     });
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
     const handleClick = (message, variant) => {
         enqueueSnackbar(message, {
             variant: variant,
@@ -86,9 +76,9 @@ const Register = (props)=>{
     }
 
     const classes = useStyles();
-    const onSubmit=async (data)=>{
+    const onSubmit = async (data) => {
         console.log("data enviar", data);
-        const userData = {...data,type:valSelect,role:'ROLE_DRIVER'};
+        const userData = {...data, type: valSelect, role: 'ROLE_DRIVER'};
         console.log("userData", userData);
         try {
             const response = await api.post("/register", userData);
@@ -98,13 +88,22 @@ const Register = (props)=>{
             console.log("correcto post usuarios");
             props.onCancel();
             return response;
-        }catch (error) {
+        } catch (error) {
             if (error.response) {
-                console.log("errores",error.response);
-                enqueueSnackbar(translateMessage(error.response.data), { variant: "error",  anchorOrigin: {
+                console.log("errores", error.response);
+                enqueueSnackbar(translateMessage(error.response.data), {
+                    variant: "error", anchorOrigin: {
                         vertical: 'top',
                         horizontal: 'center',
-                    },});
+                    },
+                });
+                console.log("errores", error.response);
+                enqueueSnackbar(translateMessage(error.response.data), {
+                    variant: "error", anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    },
+                });
                 console.log(error.response.data);
             } else if (error.request) {
                 console.log(error.request);
@@ -116,13 +115,13 @@ const Register = (props)=>{
     };
     const handleChange = (event) => {
         setValSelect(event.target.value);
-        console.log("tipo",event);
+        console.log("tipo", event);
     };
 
     return (
         <>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
+                <CssBaseline/>
                 <div className={classes.paper}>
                     <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
                         <Grid container spacing={2}>

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import useSWR from "swr";
-import { fetcher } from "@/lib/utils";
+import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
-import { useForm } from "react-hook-form";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import {useForm} from "react-hook-form";
+import {withStyles, makeStyles} from "@material-ui/core/styles";
 import {
     Paper,
     TableRow,
@@ -20,20 +20,16 @@ import {
     DialogTitle,
     DialogContent,
     Dialog,
-    TextField,
     InputBase,
-    InputAdornment,
-    Grid,
     Divider,
-    Select,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
 import PostAddIcon from "@material-ui/icons/PostAdd";
-import BackspaceIcon from "@material-ui/icons/Backspace";
 import DeleteUser from "@/components/DeleteUser";
 import EditUser from "@/components/EditUser";
 import AddUser from "@/components/AddUser";
+import SearchIcon from "@material-ui/icons/Search";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -58,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 600,
     },
     margin: {
-        backgroundColor: "#F5F5F5",
+        backgroundColor: "rgba(255,255,255,0.8)",
     },
     paper: {
         height: 140,
@@ -116,16 +112,27 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const styles = {
+    title: {
+        textAlign: 'center',
+        color: 'white',
+        textShadow: '2px 2px #262626',
+    },
+    paper: {
+        color: 'white',
+    },
+};
+
 const TableUsers = () => {
     const classes = useStyles();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const { data, error,mutate} = useSWR(`/users?page=${page + 1}`, fetcher);
-    const { data: usersAllData, error: e, mutate: m } = useSWR(
+    const {data, error, mutate} = useSWR(`/users?page=${page + 1}`, fetcher);
+    const {data: usersAllData, error: e, mutate: m} = useSWR(
         `/users/all`,
         fetcher
     );
-    const { register } = useForm();
+    const {register} = useForm();
 
     const [dataSearchUsers, setDataSearchUsers] = useState([]);
     const [wordSearch, setWordSearch] = useState("");
@@ -150,7 +157,7 @@ const TableUsers = () => {
         setValueIdUser(id);
     };
 
-    const handleClickDeleteUser= async (id) => {
+    const handleClickDeleteUser = async (id) => {
         setIsDialogsVisibleDeleteUser(true);
         setValueIdUser(id);
     };
@@ -167,7 +174,7 @@ const TableUsers = () => {
             setDataSearchUsers([]);
             const listUsersData = [];
             usersAllData.data.map((user) => {
-               user.name.toUpperCase().includes(wordSearch.toUpperCase())
+                user.name.toUpperCase().includes(wordSearch.toUpperCase())
                     ? listUsersData.push(user)
                     : "";
             });
@@ -185,19 +192,19 @@ const TableUsers = () => {
         setPage(newPage);
     };
     if (error) return <div>No se pudo cargar los conductores</div>;
-    if (!data) return <Loading />;
-    console.log("data usuarios",data);
+    if (!data) return <Loading/>;
+    console.log("data usuarios", data);
 
 
     return (
         <>
-            <h1 className={classes.title}>Gestión de conductores</h1>
+            <h1 style={styles.title}>Gestión de conductores</h1>
             <Box display="flex" justifyContent="flex-end" m={1} p={1}>
                 <Button
                     variant="outlined"
                     size="large"
                     className={classes.margin}
-                    endIcon={<PostAddIcon />}
+                    endIcon={<PostAddIcon/>}
                     onClick={handleClickOpenAddUser}
                 >
                     Agregar Usuario
@@ -215,14 +222,15 @@ const TableUsers = () => {
                             inputRef={register}
                             onChange={handleChange}
                         />
+                        <Divider className={classes.divider} orientation="vertical"/>
                         <IconButton
                             onClick={handleClickDeleteSearchUser}
                             className={classes.iconButton}
                             aria-label="search"
                         >
-                            <BackspaceIcon />
+                            <SearchIcon/>
                         </IconButton>
-                        <Divider className={classes.divider} orientation="vertical" />
+                        <Divider className={classes.divider} orientation="vertical"/>
                     </Paper>
                 </form>
             </Box>
@@ -259,15 +267,15 @@ const TableUsers = () => {
                                                 <StyledTableCell align="center">
                                                     {user.type}
                                                 </StyledTableCell>
-                                                <StyledTableCell align="center">
-                                                    {user.role === 'ROLE_DRIVER'? <>
+                                                <StyledTableCell align="left">
+                                                    {user.role === 'ROLE_DRIVER' ? <>
                                                             <IconButton
                                                                 color="secondary"
                                                                 aria-label="upload picture"
                                                                 component="span"
                                                                 onClick={() => handleClickOpenEditUser(user.id)}
                                                             >
-                                                                <BorderColorIcon />
+                                                                <BorderColorIcon/>
                                                             </IconButton>
                                                             {user.truck === null ?
                                                                 <IconButton
@@ -292,7 +300,7 @@ const TableUsers = () => {
                             </TableContainer>
                         </div>
                     ) : (
-                        <Loading />
+                        <Loading/>
                     )}
                 </div>
             ) : (
@@ -328,14 +336,14 @@ const TableUsers = () => {
                                                     {user.type}
                                                 </StyledTableCell>
                                                 <StyledTableCell align="center">
-                                                    {user.role === 'ROLE_DRIVER'? <>
+                                                    {user.role === 'ROLE_DRIVER' ? <>
                                                             <IconButton
                                                                 color="secondary"
                                                                 aria-label="upload picture"
                                                                 component="span"
                                                                 onClick={() => handleClickOpenEditUser(user.id)}
                                                             >
-                                                                <BorderColorIcon />
+                                                                <BorderColorIcon/>
                                                             </IconButton>
                                                             {user.truck === null ?
                                                                 <IconButton
@@ -361,7 +369,7 @@ const TableUsers = () => {
                             </TableContainer>
                         </div>
                     ) : (
-                        <Loading />
+                        <Loading/>
                     )}
                 </div>
             )}
@@ -384,9 +392,9 @@ const TableUsers = () => {
                 aria-labelledby="form-dialog-title"
                 disableBackdropClick={true}
             >
-                <DialogTitle id="form-dialog-title">Agregar nuevo usuario</DialogTitle>
+                <DialogTitle id="form-dialog-title">Agrega un nuevo usuario</DialogTitle>
                 <DialogContent>
-                    <AddUser onCancel={handleClose} />
+                    <AddUser onCancel={handleClose}/>
                 </DialogContent>
             </Dialog>
 
@@ -396,11 +404,11 @@ const TableUsers = () => {
                 aria-labelledby="form-dialog-title"
                 disableBackdropClick={true}
             >
-                <DialogTitle id="form-dialog-title">
-                    Editar información del conductor
-                </DialogTitle>
+                {/*<DialogTitle id="form-dialog-title">*/}
+                {/*    Editar información del conductor*/}
+                {/*</DialogTitle>*/}
                 <DialogContent>
-                    <EditUser id={valueIdUser} onCancel={handleClose} />
+                    <EditUser id={valueIdUser} onCancel={handleClose}/>
                 </DialogContent>
             </Dialog>
 
@@ -410,9 +418,9 @@ const TableUsers = () => {
                 aria-labelledby="form-dialog-title"
                 disableBackdropClick={true}
             >
-                <DialogTitle id="form-dialog-title">Eliminar usuario</DialogTitle>
+                {/*<DialogTitle id="form-dialog-title">Eliminar usuario</DialogTitle>*/}
                 <DialogContent>
-                    <DeleteUser id={valueIdUser} onCancel={handleClose} />
+                    <DeleteUser id={valueIdUser} onCancel={handleClose}/>
                 </DialogContent>
             </Dialog>
         </>

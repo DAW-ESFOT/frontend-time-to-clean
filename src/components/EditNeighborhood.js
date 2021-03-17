@@ -15,7 +15,7 @@ import {
     FormGroup,
     FormHelperText,
     FormLabel,
-    Grid,
+    Grid, Icon,
     TextField
 } from "@material-ui/core";
 import {useForm} from "react-hook-form";
@@ -66,8 +66,8 @@ const schema = yup.object().shape({
     end_time: yup
         .string()
         .required("Seleccione la hora de fin")
-        .test("is-greater", "Debe ser posterior a la hora de Inicio", function(value) {
-            const { start_time } = this.parent;
+        .test("is-greater", "Debe ser posterior a la hora de Inicio", function (value) {
+            const {start_time} = this.parent;
             return moment(value, "HH:mm").isSameOrAfter(moment(start_time, "HH:mm"));
         }),
     name: yup
@@ -114,7 +114,7 @@ const EditNeighborhood = (props) => {
             }
         }
         if (check) {
-                setCheckValidate(true);
+            setCheckValidate(true);
         } else {
             setCheckValidate(false);
         }
@@ -197,9 +197,16 @@ const EditNeighborhood = (props) => {
 
     return (
         <>
-            <div>
-                <h3>Editar información del barrio</h3>
-            </div>
+            <Grid
+                container
+                direction="row"
+                justify="space-between"
+                alignItems="center"
+            >
+                <div/>
+                <h2>Edición de barrio y frecuencia</h2>
+                <Icon color="secondary" onClick={props.onHandleCloseModal}>cancel</Icon>
+            </Grid>
 
             <form
                 className={classes.root}
@@ -326,10 +333,10 @@ const EditNeighborhood = (props) => {
                 </Grid>
 
 
-
                 {
                     truck === "" ?
-                        <p>Camión asignado: N° - {neighborhoodData.truck !== null ? neighborhoodData.truck.id : "No tiene" };
+                        <p>Camión asignado: N°
+                            - {neighborhoodData.truck !== null ? neighborhoodData.truck.id : "No tiene"};
                             Placa: {neighborhoodData.truck !== null ? neighborhoodData.truck.license_plate : "---"}</p>
                         :
                         <p>Camión ha asignar: N° - {truck} </p>
@@ -362,8 +369,12 @@ const EditNeighborhood = (props) => {
                     </TextField>
                 </Grid>
 
-                <Box display="flex" justifyContent="center" m={1} p={1}>
-
+                <Grid
+                    container
+                    direction="row"
+                    justify="space-evenly"
+                    alignItems="flex-end"
+                >
                     {
                         checkValidate ?
                             <Button
@@ -372,7 +383,7 @@ const EditNeighborhood = (props) => {
                                 color="primary"
                                 className={classes.submit}
                             >
-                                Actualizar
+                                Guardar cambios
                             </Button>
                             :
                             <Button
@@ -381,7 +392,7 @@ const EditNeighborhood = (props) => {
                                 disabled
                                 className={classes.submit}
                             >
-                                Actualizar
+                                Guardar cambios
                             </Button>
                     }
 
@@ -391,7 +402,7 @@ const EditNeighborhood = (props) => {
                         className={classes.button}>
                         Cancelar
                     </Button>
-                </Box>
+                </Grid>
             </form>
         </>
     );

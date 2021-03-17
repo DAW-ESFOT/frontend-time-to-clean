@@ -47,9 +47,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
-const moment = require("moment");
-
 const schema = yup.object().shape({
     start_time: yup
         .string()
@@ -190,7 +187,7 @@ const AddNeighborhood = (props) => {
         <>
             <div>
                 <div>
-                    <h3>Agregar nuevo barrio </h3>
+                    <h2>Agrega un nuevo barrio </h2>
                 </div>
 
                 <form
