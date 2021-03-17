@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import withAuth from "@/hocs/withAuth";
-import { makeStyles, ThemeProvider} from "@material-ui/core/styles";
+import { makeStyles} from "@material-ui/core/styles";
 import {
     Button,
     Grid,
@@ -10,30 +10,19 @@ import {
     FormHelperText,
     FormLabel,
     TextField,
-    FormControl,
-    createMuiTheme, Divider
+    FormControl
 } from "@material-ui/core";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import api from "@/lib/api";
-import translateMessage from "../constants/messages";
 import Box from "@material-ui/core/Box";
-import { MuiPickersUtilsProvider, TimePicker } from "@material-ui/pickers";
-import DateFnsUtils from '@date-io/date-fns';
 import Typography from "@material-ui/core/Typography";
 import {useSnackbar} from "notistack";
 import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 
-const defaultMaterialTheme = createMuiTheme({
-    palette: {
-        primary: {
-            main: '#19857b',
-        },
-    },
-});
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -51,9 +40,27 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(3, 2, 2),
         backgroundColor: theme.palette.cancel.main,
     },
+    textField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        width: 200,
+    },
 }));
 
+
+const moment = require("moment");
+
 const schema = yup.object().shape({
+    start_time: yup
+        .string()
+        .required("Seleccione la hora de inicio"),
+    end_time: yup
+        .string()
+        .required("Seleccione la hora de fin")
+        .test("is-greater", "Debe ser posterior a la hora de Inicio", function(value) {
+            const { start_time } = this.parent;
+            return moment(value, "HH:mm").isSameOrAfter(moment(start_time, "HH:mm"));
+        }),
     name: yup
         .string()
         .required("Ingrese el nombre del barrio"),
@@ -61,6 +68,7 @@ const schema = yup.object().shape({
         .string()
         .url("Ingrese una dirección URL válida")
         .required("Ingrese la dirección URL de google Maps del barrio"),
+
 });
 
 const AddNeighborhood = (props) => {
@@ -68,8 +76,6 @@ const AddNeighborhood = (props) => {
     const {data: trucksData, error } = useSWR(`/trucks/filter/working`, fetcher);
     const [truck, setTruck] = useState("");
     const [checkValidate, setCheckValidate] = useState(true);
-    const [selectedStartDate, handleStartDateChange] = useState(new Date());
-    const [selectedEndDate, handleEndDateChange] = useState(new Date());
     const [state, setState] = useState({
         Lunes: false,
         Martes: false,
@@ -95,15 +101,11 @@ const AddNeighborhood = (props) => {
             }
         }
         if (check) {
-            if (selectedEndDate.getTime() > selectedStartDate.getTime()) {
-                setCheckValidate(true);
-            } else {
-                setCheckValidate(false);
-            }
+            setCheckValidate(true);
         } else {
             setCheckValidate(false);
         }
-    }, [state, selectedStartDate, selectedEndDate]);
+    }, [state]);
 
 
 
@@ -138,6 +140,7 @@ const AddNeighborhood = (props) => {
     }
 
     const onSubmit = async (data) => {
+        console.log("entrada", data);
         let day = "";
         for (let $i in state) {
             if (state[$i] === true) {
@@ -150,10 +153,10 @@ const AddNeighborhood = (props) => {
         }else{
             id = truck;
         }
+        data.start_time += ":00";
+        data.end_time += ":00";
         const neighborhoodData = {
             ...data,
-            start_time: selectedStartDate.toString().substr(16, 8),
-            end_time: selectedEndDate.toString().substr(16, 8),
             days: day,
             truck_id: id
         };
@@ -166,6 +169,7 @@ const AddNeighborhood = (props) => {
             return response;
         } catch (error) {
             if (error.response) {
+                console.log("Error", error.response.data);
                 Error(error.response.data.errors)
                 return Promise.reject(error.response);
             } else if (error.request) {
@@ -263,44 +267,53 @@ const AddNeighborhood = (props) => {
                             </FormGroup>
 
                             <FormHelperText>Seleccione por lo menos un día</FormHelperText>
-
                             <Box display="flex" justifyContent="center" m={1} p={1}>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils} theme={defaultMaterialTheme}>
-                                    <ThemeProvider theme={defaultMaterialTheme}>
-                                        <TimePicker
-                                            ampm={false}
-                                            openTo="hours"
-                                            views={["hours", "minutes", "seconds"]}
-                                            format="HH:mm:ss"
-                                            label="Hora inicio"
-                                            value={selectedStartDate}
-                                            onChange={handleStartDateChange}
-                                        />
-                                        <TimePicker
-                                            ampm={false}
-                                            openTo="hours"
-                                            views={["hours", "minutes", "seconds"]}
-                                            format="HH:mm:ss"
-                                            label="Hora fin"
-                                            value={selectedEndDate}
-                                            onChange={handleEndDateChange}
-                                        />
-                                    </ThemeProvider>
-                                </MuiPickersUtilsProvider>
+                                <TextField
+                                    id="start_time"
+                                    name="start_time"
+                                    label="Hora de inicio"
+                                    type="time"
+                                    defaultValue="07:30"
+                                    required
+                                    inputRef={register}
+                                    color="secondary"
+                                    margin="normal"
+                                    error={!!errors.start_time}
+                                    helperText={errors.start_time?.message}
+                                    className={classes.textField}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    inputProps={{
+                                        step: 300, // 5 min
+                                    }}
+                                />
+
+                                <TextField
+                                    id="emd_time"
+                                    name="end_time"
+                                    label="Hora de fin"
+                                    type="time"
+                                    defaultValue="15:00"
+                                    required
+                                    inputRef={register}
+                                    color="secondary"
+                                    margin="normal"
+                                    error={!!errors.end_time}
+                                    helperText={errors.end_time?.message}
+                                    className={classes.textField}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    inputProps={{
+                                        step: 300, // 5 min
+                                    }}
+                                />
                             </Box>
+
+
                         </FormControl>
                     </Grid>
-                    {
-                        !checkValidate ?
-                                <Typography component={'span'} color={"secondary"}>
-                                    <Box fontWeight="fontWeightLight" m={1} textAlign="center">
-                                        La hora de fin debe ser posterior la hora de inicio
-                                    </Box>
-                                </Typography>
-                            :
-                                <Divider />
-                    }
-
 
                     <Grid item xs={12} >
                         <TextField

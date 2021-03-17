@@ -57,8 +57,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const moment = require("moment");
 
 const schema = yup.object().shape({
+    start_time: yup
+        .string()
+        .required("Seleccione la hora de inicio"),
+    end_time: yup
+        .string()
+        .required("Seleccione la hora de fin")
+        .test("is-greater", "Debe ser posterior a la hora de Inicio", function(value) {
+            const { start_time } = this.parent;
+            return moment(value, "HH:mm").isSameOrAfter(moment(start_time, "HH:mm"));
+        }),
     name: yup
         .string()
         .required("Ingrese el nombre del barrio"),
@@ -103,15 +114,11 @@ const EditNeighborhood = (props) => {
             }
         }
         if (check) {
-            if (selectedEndDate.getTime() > selectedStartDate.getTime()) {
                 setCheckValidate(true);
-            } else {
-                setCheckValidate(false);
-            }
         } else {
             setCheckValidate(false);
         }
-    }, [state, selectedStartDate, selectedEndDate]);
+    }, [state]);
 
 
     const handleChange = (event) => {
@@ -156,11 +163,10 @@ const EditNeighborhood = (props) => {
         } else {
             user = truck;
         }
-        console.log("enviar", truck);
+        dataNeighborhood.start_time += ":00";
+        dataNeighborhood.end_time += ":00";
         const neighborhood = {
             ...dataNeighborhood,
-            start_time: selectedStartDate.toString().substr(16, 8),
-            end_time: selectedEndDate.toString().substr(16, 8),
             days: day,
             truck_id: user
         };
@@ -273,47 +279,52 @@ const EditNeighborhood = (props) => {
                         <FormHelperText>Seleccione por lo menos un día</FormHelperText>
 
                         <Box display="flex" justifyContent="center" m={1} p={1}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils} theme={defaultMaterialTheme}>
-                                <ThemeProvider theme={defaultMaterialTheme}>
-                                    <TimePicker
-                                        ampm={false}
-                                        openTo="hours"
-                                        views={["hours", "minutes", "seconds"]}
-                                        format="HH:mm:ss"
-                                        label="Hora inicio"
-                                        value={selectedStartDate}
-                                        initialFocusedDate={new Date(Date.parse("01/01/01 " + neighborhoodData.start_time))}
-                                        onChange={handleStartDateChange}
-                                    />
-                                    <TimePicker
-                                        ampm={false}
-                                        openTo="hours"
-                                        views={["hours", "minutes", "seconds"]}
-                                        format="HH:mm:ss"
-                                        label="Hora fin"
-                                        value={selectedEndDate}
-                                        onChange={handleEndDateChange}
-                                    />
-                                </ThemeProvider>
-                            </MuiPickersUtilsProvider>
+                            <TextField
+                                id="start_time"
+                                name="start_time"
+                                label="Hora de inicio"
+                                type="time"
+                                defaultValue={neighborhoodData.start_time.toString().substr(0, 5)}
+                                required
+                                inputRef={register}
+                                color="secondary"
+                                margin="normal"
+                                error={!!errors.start_time}
+                                helperText={errors.start_time?.message}
+                                className={classes.textField}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                inputProps={{
+                                    step: 300, // 5 min
+                                }}
+                            />
+
+                            <TextField
+                                id="emd_time"
+                                name="end_time"
+                                label="Hora de fin"
+                                type="time"
+                                defaultValue={neighborhoodData.end_time.toString().substr(0, 5)}
+                                required
+                                inputRef={register}
+                                color="secondary"
+                                margin="normal"
+                                error={!!errors.end_time}
+                                helperText={errors.end_time?.message}
+                                className={classes.textField}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                inputProps={{
+                                    step: 300, // 5 min
+                                }}
+                            />
                         </Box>
+
                     </FormControl>
                 </Grid>
 
-                {
-                    !checkValidate ?
-                        <div>
-                            <Typography component={'span'} color={"secondary"}>
-                                <Box fontWeight="fontWeightLight" m={1} textAlign="center">
-                                    La hora de fin debe ser posterior la hora de inicio
-                                </Box>
-                            </Typography>
-                        </div>
-                        :
-                        <div>
-                            <Divider/>
-                        </div>
-                }
 
 
                 {
