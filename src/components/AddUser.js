@@ -12,6 +12,7 @@ import Container from '@material-ui/core/Container';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import translateMessage from '../constants/messages';
 import InputLabel from '@material-ui/core/InputLabel';
 import api from "@/lib/api";
 import {useSnackbar} from "notistack";
@@ -36,12 +37,12 @@ const schema = yup.object().shape({
         .required("Campo requerido"),
     birthdate: yup
         .date()
-        .min ("1973-01-01","Ingresar fecha valida")
-        .max ("2002-01-01", "Ingresar fecha valida")
+        .min ("1973-01-01","Ingresar una fecha válida")
+        .max ("2002-01-01", "Ingresar una fecha válida")
         .required("Campo requerido"),
     cellphone: yup
         .number()
-        .min(9,"El telefono debe tener * digitos")
+        .min(9,"El telefono debe tener 10 digitos")
 
 
 });
@@ -84,16 +85,6 @@ const Register = (props)=>{
             },
         });
     }
-    const Error = (errorCode) => {
-        console.log ("ver error", errorCode);
-        if(errorCode){
-            if(errorCode.data === "validation.unique"){
-                handleClick("Ya existe un usuario registrado con ese correo", "error");
-            }
-        }else{
-            handleClick(errorCode, "error");
-        }
-    }
 
     const classes = useStyles();
     const onSubmit=async (data)=>{
@@ -113,7 +104,10 @@ const Register = (props)=>{
                 console.log("errores",error.response);
                 // The request was made and the server responded with a status code
                 // that falls out of the range of 2xx
-                Error(error.response.data.error);
+                enqueueSnackbar(translateMessage(error.response.data), { variant: "error",  anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    },});
                 console.log(error.response.data);
             } else if (error.request) {
                 // The request was made but no response was received

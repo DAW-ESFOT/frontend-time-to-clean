@@ -64,7 +64,7 @@ const login = () => {
 
         } catch (error) {
             if (error.response) {
-                alert(error.response.data.error);
+                //alert(error.response.data.error);
                 console.log(error.response.data);
                 //d
             } else if (error.request) {
