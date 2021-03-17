@@ -52,10 +52,27 @@ const styles = {
 };
 
 const schema = yup.object().shape({
+    name: yup
+        .string()
+        .required("Ingresa el nombre del conductor"),
+    lastname: yup
+        .string()
+        .required("Ingresa el apellido del conductor"),
     email: yup
         .string()
         .email("Ingresa un correo válido")
-        .required("Ingresa tu correo electrónico"),
+        .required("Ingresa el correo electrónico del conductor"),
+    birthdate: yup
+        .date()
+        .min ("1973-01-01","Ingresar una fecha válida")
+        .max ("2002-01-01", "Ingresar una fecha válida")
+        .required("Campo requerido"),
+    cellphone: yup
+        .string()
+        .length(10,'Deben ser 10 dígitos')
+        .required()
+        .matches(/^[0-9]+$/, "Ingrese solo números, exactamente 10 dígitos")
+        .max(10, 'Deben ser 10 dígitos')
 });
 
 const DriverInfoJob = ({user}) => {
@@ -159,7 +176,7 @@ const DriverInfoJob = ({user}) => {
                                             color="secondary"
                                             margin="normal"
                                             error={!!errors.lastname}
-                                            helperText={errors.link?.message}
+                                            helperText={errors.lastname?.message}
                                             disabled={checkValidate ? true : false}
                                         />
                                     </Grid>
@@ -173,6 +190,8 @@ const DriverInfoJob = ({user}) => {
                                             required
                                             fullWidth
                                             inputRef={register}
+                                            error={!!errors.birthdate}
+                                            helperText={errors.birthdate?.message}
                                             margin="normal"
                                             color="secondary"
                                             type="date"
@@ -193,6 +212,8 @@ const DriverInfoJob = ({user}) => {
                                             fullWidth
                                             color="secondary"
                                             inputRef={register}
+                                            error={!!errors.cellphone}
+                                            helperText={errors.cellphone?.message}
                                             disabled={checkValidate ? true : false}
                                         />
                                     </Grid>

@@ -138,7 +138,6 @@ const AddNeighborhood = (props) => {
   };
 
   const onSubmit = async (data) => {
-    console.log("entrada", data);
     let day = "";
     for (let $i in state) {
       if (state[$i] === true) {
