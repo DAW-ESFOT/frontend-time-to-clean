@@ -45,11 +45,8 @@ const styles = {
         color: 'white',
         textShadow: '2px 2px #262626',
     },
-    Paper: {
+    paper: {
         color:'white',
-        backgroundColor:'rgba(0,0,0,0.01)',
-        marginBottom: '15px',
-        paddingLeft: '15px',
     },
 };
 
@@ -94,7 +91,7 @@ const TableComplaints = () => {
             <h1 style={styles.title}> Gestión de quejas</h1>
 
             <FormControl component="fieldset">
-                <Paper style={styles.Paper} elevation={0}>
+                <div style={styles.paper}>
                     <Grid
                         container
                         direction="row"
@@ -111,7 +108,7 @@ const TableComplaints = () => {
                             </Box>
                         </RadioGroup>
                     </Grid>
-                </Paper>
+                </div>
             </FormControl>
 
 
@@ -142,9 +139,16 @@ const TableComplaints = () => {
                                                         {(Complaint.created_at).substr(0, 10)}<br/>
                                                         {(Complaint.created_at).substr(11, 5)}
                                                     </StyledTableCell>
-                                                    <StyledTableCell align="justify">
-                                                        {(Complaint.complaint).substr(0, 135)} [...]
-                                                    </StyledTableCell>
+                                                    {
+                                                        (Complaint.complaint).length>90 ?
+                                                            <StyledTableCell align="justify">
+                                                                {(Complaint.complaint).substr(0, 90)} [...]
+                                                            </StyledTableCell>
+                                                            :
+                                                            <StyledTableCell align="justify">
+                                                                {Complaint.complaint}
+                                                            </StyledTableCell>
+                                                    }
                                                     <StyledTableCell align="left">
                                                         Barrio: {Complaint.neighborhood_name}<br/>
                                                         Camión: {Complaint.truck.license_plate}<br/>
@@ -153,10 +157,10 @@ const TableComplaints = () => {
                                                     <StyledTableCell align="center">
                                                         {Complaint.state}
                                                     </StyledTableCell>
-                                                    <StyledTableCell align="justify">
+                                                    <StyledTableCell align="left">
                                                         {Complaint.observation}
                                                     </StyledTableCell>
-                                                    <StyledTableCell align="center">
+                                                    <StyledTableCell align="left">
                                                         <IconButton
                                                             onClick={() => handleOpenEditComplaint(Complaint.id)}
                                                             color="secondary"
@@ -207,9 +211,16 @@ const TableComplaints = () => {
                                                             {(Complaint.created_at).substr(0, 10)}<br/>
                                                             {(Complaint.created_at).substr(11, 5)}
                                                         </StyledTableCell>
-                                                        <StyledTableCell align="justify">
-                                                            {(Complaint.complaint).substr(0, 135)} [...]
-                                                        </StyledTableCell>
+                                                            {
+                                                                (Complaint.complaint).length>90 ?
+                                                                    <StyledTableCell align="justify">
+                                                                        {(Complaint.complaint).substr(0, 90)} [...]
+                                                                    </StyledTableCell>
+                                                                    :
+                                                                    <StyledTableCell align="justify">
+                                                                        {Complaint.complaint}
+                                                                    </StyledTableCell>
+                                                            }
                                                         <StyledTableCell align="left">
                                                             Barrio: {Complaint.neighborhood_name}<br/>
                                                             Camión: {Complaint.truck.license_plate}<br/>
@@ -218,7 +229,7 @@ const TableComplaints = () => {
                                                         <StyledTableCell align="center">
                                                             {Complaint.state}
                                                         </StyledTableCell>
-                                                        <StyledTableCell align="justify">
+                                                        <StyledTableCell align="left">
                                                             {Complaint.observation}
                                                         </StyledTableCell>
                                                         <StyledTableCell align="center">

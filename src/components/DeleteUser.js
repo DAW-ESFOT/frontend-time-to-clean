@@ -1,11 +1,12 @@
 import React from "react";
 import withAuth from "@/hocs/withAuth";
-import { makeStyles } from "@material-ui/core/styles";
-import { Button, Box, Grid } from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
+import {Button, Box, Grid} from "@material-ui/core";
 import api from "@/lib/api";
-import { useForm } from "react-hook-form";
+import {useForm} from "react-hook-form";
 import translateMessage from "../constants/messages";
 import {useSnackbar} from "notistack";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,8 +39,8 @@ const useStyles = makeStyles((theme) => ({
 
 const DeleteUser = (props) => {
     const classes = useStyles();
-    const { handleSubmit} = useForm();
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const {handleSubmit} = useForm();
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
     const handleClick = (message, variant) => {
         enqueueSnackbar(message, {
             variant: variant,
@@ -81,9 +82,11 @@ const DeleteUser = (props) => {
 
     return (
         <>
-            <div>
-                <h3>¿Está seguro que desea eliminar este usuario?</h3>
-            </div>
+            <Typography component={'span'}>
+                <Box display="flex" justifyContent="center" m={1} p={1}>
+                    <h3>¿Está seguro que desea eliminar este usuario?</h3>
+                </Box>
+            </Typography>
 
             <form
                 className={classes.root}
@@ -91,25 +94,28 @@ const DeleteUser = (props) => {
                 autoComplete="off"
                 onSubmit={handleSubmit(onSubmit)}
             >
-                <Grid container>
-                    <Box display="flex" justifyContent="center" m={1} p={1}>
-                        <Button
+                <Grid
+                    container
+                    direction="row"
+                    justify="space-evenly"
+                    alignItems="flex-end"
+                >
+                    <Button
 
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Sí
-                        </Button>
-                        <Button
-                            onClick={props.onCancel}
-                            variant="contained"
-                            className={classes.button}
-                        >
-                            Cancelar
-                        </Button>
-                    </Box>
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                    >
+                        Sí
+                    </Button>
+                    <Button
+                        onClick={props.onCancel}
+                        variant="contained"
+                        className={classes.button}
+                    >
+                        Cancelar
+                    </Button>
                 </Grid>
             </form>
         </>

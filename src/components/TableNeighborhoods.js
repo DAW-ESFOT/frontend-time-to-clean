@@ -20,7 +20,7 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import AddNeighborhood from "@/components/AddNeighborhood";
 import EditNeighborhood from "@/components/EditNeighborhood";
 import DeleteNeighborhood from "@/components/DeleteNeighborhood";
-import BackspaceIcon from "@material-ui/icons/Backspace";
+import SearchIcon from "@material-ui/icons/Search";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 600,
     },
     margin: {
-        backgroundColor: "#F5F5F5",
+        backgroundColor: "rgba(255,255,255,0.8)",
     },
     root3: {
         padding: "2px 4px",
@@ -62,10 +62,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const styles={
-    title:{
-        textAlign:'center',
-        color:'white',
+const styles = {
+    title: {
+        textAlign: 'center',
+        color: 'white',
         textShadow: '2px 2px #262626',
     }
 };
@@ -75,7 +75,7 @@ const TableNeighborhoods = () => {
     const classes = useStyles();
     const [page, setPage] = useState(0);
     const {data: neighborhoodsPaginated, error, mutate} = useSWR(`/neighborhoods?page=${page + 1}`, fetcher);
-    const { data: neighborhoodsAllData, error: error2, mutate: mutate2 } = useSWR(`/neighborhoods/all`, fetcher);
+    const {data: neighborhoodsAllData, error: error2, mutate: mutate2} = useSWR(`/neighborhoods/all`, fetcher);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [neighborhoodId, setNeighborhoodId] = useState(0);
     const [openAddNeighborhood, setOpenAddNeighborhood] = useState(false);
@@ -92,12 +92,12 @@ const TableNeighborhoods = () => {
     const handleChange = (event) => {
         setWordSearch(event.target.value);
     };
-    const handleClickDeleteSearch = ()=>{
+    const handleClickDeleteSearch = () => {
         setWordSearch("");
     };
 
     useEffect(() => {
-        if(neighborhoodsAllData){
+        if (neighborhoodsAllData) {
             const listNeighborhoods = [];
             neighborhoodsAllData.data.map((neighborhood) => {
                 neighborhood.name.toUpperCase().includes(wordSearch.toUpperCase())
@@ -131,14 +131,13 @@ const TableNeighborhoods = () => {
     };
 
 
-
     if (error || error2) return <div>No se pudo cargar los barrios</div>;
     if (!neighborhoodsPaginated) return <Loading/>;
 
     console.log("dataNeig", neighborhoodsPaginated)
     return (
         <>
-            <h1 style={styles.title} >Gestión y asignación de barrios y frecuencias</h1>
+            <h1 style={styles.title}>Gestión y asignación de barrios y frecuencias</h1>
             <Box display="flex" justifyContent="flex-end" m={1} p={1}>
                 <Button
                     variant="outlined"
@@ -157,16 +156,16 @@ const TableNeighborhoods = () => {
                         name="wordToSearch"
                         value={wordSearch}
                         className={classes.input}
-                        placeholder="Barrio a buscar"
+                        placeholder="Ingrese el nombre del barrio"
                         onChange={handleChange}
                     />
-                    <Divider className={classes.divider} orientation="vertical" />
+                    <Divider className={classes.divider} orientation="vertical"/>
                     <IconButton
                         onClick={handleClickDeleteSearch}
                         className={classes.iconButton}
                         aria-label="search"
                     >
-                        <BackspaceIcon />
+                        <SearchIcon/>
                     </IconButton>
                 </Paper>
             </Box>
@@ -211,8 +210,8 @@ const TableNeighborhoods = () => {
                                                         <StyledTableCell align="center">
                                                             {neighborhood.truck ? neighborhood.truck.license_plate : "No tienen camión"}
                                                         </StyledTableCell>
-                                                        <StyledTableCell align="center">
-                                                            { neighborhood.complaint.data.length > 0 ?
+                                                        <StyledTableCell align="left">
+                                                            {neighborhood.complaint.data.length > 0 ?
                                                                 <IconButton
                                                                     color="secondary"
                                                                     aria-label="upload picture"
@@ -234,7 +233,7 @@ const TableNeighborhoods = () => {
                                                                         aria-label="upload picture"
                                                                         component="span"
                                                                         onClick={() => handleOpenDeleteNeigbhorhood(neighborhood.id)}>
-                                                                        <DeleteIcon />
+                                                                        <DeleteIcon/>
                                                                     </IconButton>
                                                                 </>
                                                             }
@@ -272,11 +271,11 @@ const TableNeighborhoods = () => {
                                                     <StyledTableCell align="center">horario</StyledTableCell>
                                                     <StyledTableCell align="center">Dias asignados</StyledTableCell>
                                                     <StyledTableCell align="center">Camión</StyledTableCell>
-                                                    <StyledTableCell align="center">Opción</StyledTableCell>
+                                                    <StyledTableCell align="center">Opciones</StyledTableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                { dataSearchNeighborhood.map((neighborhood) => (
+                                                {dataSearchNeighborhood.map((neighborhood) => (
                                                     <StyledTableRow key={neighborhood.id}>
                                                         <StyledTableCell align="center">
                                                             {neighborhood.name}
@@ -298,7 +297,7 @@ const TableNeighborhoods = () => {
                                                             {neighborhood.truck ? neighborhood.truck.license_plate : "No tienen camión"}
                                                         </StyledTableCell>
                                                         <StyledTableCell align="center">
-                                                            { neighborhood.complaint.data.length > 0 ?
+                                                            {neighborhood.complaint.data.length > 0 ?
                                                                 <IconButton
                                                                     color="secondary"
                                                                     aria-label="upload picture"
@@ -306,7 +305,7 @@ const TableNeighborhoods = () => {
                                                                     onClick={() => handleOpenEditNeigbhorhood(neighborhood.id)}>
                                                                     <BorderColorIcon/>
                                                                 </IconButton>
-                                                                    :
+                                                                :
                                                                 <>
                                                                     <IconButton
                                                                         color="secondary"
@@ -320,7 +319,7 @@ const TableNeighborhoods = () => {
                                                                         aria-label="upload picture"
                                                                         component="span"
                                                                         onClick={() => handleOpenDeleteNeigbhorhood(neighborhood.id)}>
-                                                                        <DeleteIcon />
+                                                                        <DeleteIcon/>
                                                                     </IconButton>
                                                                 </>
                                                             }

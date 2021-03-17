@@ -1,4 +1,4 @@
-import React  from "react";
+import React from "react";
 import withAuth from "@/hocs/withAuth";
 import {makeStyles} from "@material-ui/core/styles";
 import {Button, Box, Grid} from "@material-ui/core";
@@ -79,7 +79,7 @@ const DeleteNeighborhood = (props) => {
 
     return (
         <>
-            <Typography component={'span'} color={"secondary"}>
+            <Typography component={'span'}>
                 <Box display="flex" justifyContent="center" m={1} p={1}>
                     <h3>¿Está seguro que desea eliminar este barrio?</h3>
                 </Box>
@@ -91,7 +91,12 @@ const DeleteNeighborhood = (props) => {
                 autoComplete="off"
                 onSubmit={handleSubmit(onSubmit)}
             >
-                <Box display="flex" justifyContent="center" m={1} p={1}>
+                <Grid
+                    container
+                    direction="row"
+                    justify="space-evenly"
+                    alignItems="flex-end"
+                >
                     <Button
                         type="submit"
                         variant="contained"
@@ -103,9 +108,9 @@ const DeleteNeighborhood = (props) => {
                         onClick={props.onHandleCloseModal}
                         variant="contained"
                         className={classes.button}>
-                        No
+                        Cancelar
                     </Button>
-                </Box>
+                </Grid>
             </form>
         </>
     );
