@@ -8,7 +8,7 @@ import {
     Grid, Paper,
     TextField
 } from "@material-ui/core";
-import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import api from "@/lib/api";
 import {useSnackbar} from "notistack";
 import {useForm} from "react-hook-form";
