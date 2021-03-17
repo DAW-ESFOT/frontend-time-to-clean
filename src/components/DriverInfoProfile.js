@@ -3,14 +3,13 @@ import withAuth from "@/hocs/withAuth";
 import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
-import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import {
     Button,
     Grid, Paper,
     TextField
 } from "@material-ui/core";
-import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import api from "@/lib/api";
 import {useSnackbar} from "notistack";
 import {useForm} from "react-hook-form";

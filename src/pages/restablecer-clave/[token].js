@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import {Button, Paper, TextField} from "@material-ui/core";
 import * as yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
-import { useAuth } from "../../lib/auth";
+import { useAuth } from "@/lib/auth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
@@ -82,7 +82,7 @@ const ResetPasswordPage = () => {
             setLoading(true);
             await confirmPasswordReset(email, password, password_confirmation, token);
             setLoading(false);
-            handleClick("Tu clave se ha restablecido correctamente, puedes iniciar sesión", "success");
+            handleClick("Tu contraseña se ha restablecido correctamente, puedes iniciar sesión", "success");
             router.push(Routes.LOGIN);
         } catch (error) {
             setLoading(false);

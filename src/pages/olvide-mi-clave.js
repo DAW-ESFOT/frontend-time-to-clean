@@ -64,7 +64,7 @@ const SendPasswordResetEmailPage = () => {
         try {
             await sendPasswordResetEmail(email);
             setLoading(false);
-            handleClick("Te hemos enviado un correo con instrucciones para restablecer tu clave.", "success");
+            handleClick("Te hemos enviado un correo con instrucciones para restablecer tu contraseña.", "success");
         } catch (error) {
             setLoading(false);
             if (error.response) {
