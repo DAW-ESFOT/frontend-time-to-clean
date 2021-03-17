@@ -182,8 +182,8 @@ const TableNeighborhoods = () => {
                                                 <TableRow>
                                                     <StyledTableCell align="center">Barrio</StyledTableCell>
                                                     <StyledTableCell align="center">Ubicación en mapa</StyledTableCell>
-                                                    <StyledTableCell align="center">horario</StyledTableCell>
-                                                    <StyledTableCell align="center">Dias asignados</StyledTableCell>
+                                                    <StyledTableCell align="center">Horario</StyledTableCell>
+                                                    <StyledTableCell align="center">Días asignados</StyledTableCell>
                                                     <StyledTableCell align="center">Camión</StyledTableCell>
                                                     <StyledTableCell align="center">Opción</StyledTableCell>
                                                 </TableRow>
@@ -208,7 +208,7 @@ const TableNeighborhoods = () => {
                                                             {neighborhood.days}
                                                         </StyledTableCell>
                                                         <StyledTableCell align="center">
-                                                            {neighborhood.truck ? neighborhood.truck.license_plate : "No tienen camión"}
+                                                            {neighborhood.truck ? neighborhood.truck.license_plate : "No tiene camión"}
                                                         </StyledTableCell>
                                                         <StyledTableCell align="left">
                                                             {neighborhood.complaint.data.length > 0 ?
@@ -269,9 +269,9 @@ const TableNeighborhoods = () => {
                                                     <StyledTableCell align="center">Barrio</StyledTableCell>
                                                     <StyledTableCell align="center">Ubicación en mapa</StyledTableCell>
                                                     <StyledTableCell align="center">horario</StyledTableCell>
-                                                    <StyledTableCell align="center">Dias asignados</StyledTableCell>
+                                                    <StyledTableCell align="center">Días asignados</StyledTableCell>
                                                     <StyledTableCell align="center">Camión</StyledTableCell>
-                                                    <StyledTableCell align="center">Opciones</StyledTableCell>
+                                                    <StyledTableCell align="center">Opción</StyledTableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
