@@ -52,16 +52,12 @@ const login = () => {
     const onSubmit = async (data) => {
         try {
             const userData = await login(data);
-            console.log('userdata', userData);
-
         } catch (error) {
             if (error.response) {
                 enqueueSnackbar(translateMessage(error.response.data.error), { variant: "error",  anchorOrigin: {
                         vertical: 'top',
                         horizontal: 'center',
                     },});
-                console.log(error.response.data);
-                //d
             } else if (error.request) {
                 console.log(error.request);
             } else {
