@@ -5,14 +5,12 @@ import OptionSection from "@/components/OptionSection";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 export default function Home() {
-
-    return (
-        <>
-            <CssBaseline/>
-            <InfoSection />
-            <OptionSection />
-            <FormSection />
-        </>
-    );
+  return (
+    <>
+      <CssBaseline />
+      <InfoSection />
+      <OptionSection />
+      <FormSection />
+    </>
+  );
 }
-
