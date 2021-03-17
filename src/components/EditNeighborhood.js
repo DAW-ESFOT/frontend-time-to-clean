@@ -96,22 +96,20 @@ const EditNeighborhood = (props) => {
     resolver: yupResolver(schema),
   });
   const [truck, setTruck] = useState("");
-  const [selectedStartDate, handleStartDateChange] = useState(new Date());
-  const [selectedEndDate, handleEndDateChange] = useState(new Date());
   const [checkValidate, setCheckValidate] = useState(true);
   const [state, setState] = useState({
     Lunes: false,
     Martes: false,
-    Miercoles: false,
+    Miércoles: false,
     Jueves: false,
     Viernes: false,
-    Sabado: false,
+    Sábado: false,
     Domingo: false,
   });
 
-  const { Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo } = state;
+  const { Lunes, Martes, Miércoles, Jueves, Viernes, Sábado, Domingo } = state;
   const errorCheck =
-    [Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo].filter(
+    [Lunes, Martes, Miércoles, Jueves, Viernes, Sábado, Domingo].filter(
       (v) => v
     ).length < 1;
 
@@ -151,7 +149,7 @@ const EditNeighborhood = (props) => {
 
   const Error = (errorCode) => {
     if (errorCode) {
-      if (errorCode.name[0] === "validation.unique") {
+      if (errorCode.name && errorCode.name[0] === "validation.unique") {
         handleClick("Ya existe un barrio registrado con este nombre", "error");
       }
     } else {
@@ -267,7 +265,7 @@ const EditNeighborhood = (props) => {
             component="fieldset"
             className={classes.formControl}
           >
-            <FormLabel component="legend">Escoga los días ha asignar</FormLabel>
+            <FormLabel component="legend">Escoja los días ha asignar</FormLabel>
             <FormGroup>
               <Box flexDirection="row-reverse" m={1} p={1}>
                 <FormControlLabel
@@ -293,9 +291,9 @@ const EditNeighborhood = (props) => {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={Miercoles}
+                      checked={Miércoles}
                       onChange={handleChange}
-                      name="Miercoles"
+                      name="Miércoles"
                     />
                   }
                   label="Miércoles"
@@ -323,12 +321,12 @@ const EditNeighborhood = (props) => {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={Sabado}
+                      checked={Sábado}
                       onChange={handleChange}
-                      name="Sabado"
+                      name="Sábado"
                     />
                   }
-                  label="sabado"
+                  label="Sábado"
                 />
                 <FormControlLabel
                   control={
