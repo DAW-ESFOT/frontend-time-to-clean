@@ -45,8 +45,7 @@ const schema = yup.object().shape({
         .string()
         .length(10,'Deben ser 10 dígitos')
         .required()
-        .matches(/^[0-9]+$/, "Ingrese solo numeros, exactaente 10 dígitos")
-        //.min(9, 'Must be exactly 5 digits')
+        .matches(/^[0-9]+$/, "Ingrese solo números, exactamente 10 dígitos")
         .max(10, 'Deben ser 10 dígitos')
 
 });
