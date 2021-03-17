@@ -181,12 +181,10 @@ export default withAuth(NeighborhoodDetails);
 
 export async function getStaticProps(context) {
 
-    console.log('context', context)
     const {barriosId} = context.params
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/neighborhoods/${barriosId}`)
     const data = await res.json()
 
-    console.log("data", data)
     if (!data) {
         return {
             notFound: true,

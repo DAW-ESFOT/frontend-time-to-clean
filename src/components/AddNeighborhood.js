@@ -128,7 +128,6 @@ const AddNeighborhood = (props) => {
   };
 
   const Error = (errorCode) => {
-    console.log(errorCode)
     if (errorCode) {
       if (errorCode.name && errorCode.name[0] === "validation.unique") {
         handleClick("Ya existe un barrio registrado con este nombre", "error");
@@ -159,10 +158,8 @@ const AddNeighborhood = (props) => {
       days: day,
       truck_id: id,
     };
-    console.log("truckData", neighborhoodData);
     try {
       const response = await api.post("/neighborhoods", neighborhoodData);
-      console.log("rersponse post barrio", response);
       handleClick("Se ha registrado con éxito el barrio", "success");
       props.onHandleCloseModal();
       return response;
