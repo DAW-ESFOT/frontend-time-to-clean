@@ -42,9 +42,8 @@ const schema = yup.object().shape({
         .required("Campo requerido"),
     cellphone: yup
         .number()
+        .label("El campo solo debe contener números-exactamente 10")
         .min(9,"El telefono debe tener 10 digitos")
-
-
 });
 const useStyles = makeStyles((theme) => ({
     paper: {

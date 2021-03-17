@@ -7,18 +7,26 @@ import { useAuth } from "../../lib/auth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
+import translateMessage from '../../constants/messages';
 import { useSnackbar } from "notistack";
 import Routes from "../../constants/routes";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
 
 const schema = yup.object().shape({
     email: yup
         .string()
         .email("Ingresa un correo válido")
         .required("Ingresa tu correo electrónico"),
+    password: yup
+        .string()
+        .required("Ingresa la clave")
+        .min(6, "La clave debe tener al menos 6 caracteres"),
+    password_confirmation: yup
+        .string()
+        .oneOf([yup.ref("password"), null], "Las claves no coinciden")
+        .required("Campo requerido")
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -79,11 +87,11 @@ const ResetPasswordPage = () => {
         } catch (error) {
             setLoading(false);
             if (error.response) {
-                console.log(error.response.data);
                 console.log(error.response.status);
-                console.log(error.response.headers);
-                enqueueSnackbar(error.response.data.status, { variant: "error" });
-
+                enqueueSnackbar(translateMessage(error.response.data.status), { variant: "error",anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    } });
                 return error.response;
             } else if (error.request) {
                 // The request was made but no response was received
@@ -91,16 +99,22 @@ const ResetPasswordPage = () => {
                 // http.ClientRequest in node.js
                 console.log(error.request);
                 enqueueSnackbar("Ocurrió un error al realizar la petición.", {
-                    variant: "error",
+                    variant: "error", anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }
                 });
             } else {
                 // Something happened in setting up the request that triggered an Error
                 console.log("Error", error.message);
                 enqueueSnackbar("Ocurrió un error desconocido :(", {
-                    variant: "error",
+                    variant: "error",anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }
                 });
             }
-            console.log(error.config);
+            console.log("p",error.config);
         }
     };
 
