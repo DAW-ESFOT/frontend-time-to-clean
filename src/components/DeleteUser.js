@@ -53,8 +53,6 @@ const DeleteUser = (props) => {
         try {
             const response = await api.delete(`/users/${props.id}`);
             handleClick("Se ha eliminado con éxito el usuario", "success");
-            console.log("rersponse delete user", response);
-            console.log("correcto delete usuario");
             props.onCancel();
             return response;
         } catch (error) {

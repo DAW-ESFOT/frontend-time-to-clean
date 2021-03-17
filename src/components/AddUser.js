@@ -91,26 +91,21 @@ const Register = (props)=>{
 
     const classes = useStyles();
     const onSubmit=async (data)=>{
-        console.log("data enviar", data);
         const userData = {...data,type:valSelect,role:'ROLE_DRIVER'};
-        console.log("userData", userData);
         try {
             const response = await api.post("/register", userData);
             handleClick("Se ha registrado con éxito el usuario", "success");
-            console.log("rersponse post users", response);
-            console.log("correcto post usuarios");
             props.onCancel();
             return response;
         }catch (error) {
             if (error.response) {
-                console.log("errores",error.response);
                 enqueueSnackbar(translateMessage(error.response.data), { variant: "error",  anchorOrigin: {
                         vertical: 'top',
                         horizontal: 'center',
                     },});
-                console.log(error.response.data);
             } else if (error.request) {
                 console.log(error.request);
+
             } else {
                 console.log('Error', error.message);
             }
@@ -119,7 +114,6 @@ const Register = (props)=>{
     };
     const handleChange = (event) => {
         setValSelect(event.target.value);
-        console.log("tipo",event);
     };
 
     return (

@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from "next/link";
-import {useRouter} from "next/router";
 import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "../../components/Loading";
@@ -10,7 +9,6 @@ const Users =()=>{
     const {data,error}=useSWR(`/users`,fetcher);
     if (error) return <div>No se pudo cargar la informacion de los usuarios</div>;
     if(!data) return <Loading />;
-    console.log(user);
     return (
 
         <ul>
