@@ -20,7 +20,7 @@ import Box from "@material-ui/core/Box";
 
 const Management = () => {
     const {user} = useAuth();
-    const [userData, setUserData]= useState("");
+    const [userData, setUserData] = useState("");
     const [showTrucks, setShowTrucks] = useState(false);
     const [showDrivers, setShowDrivers] = useState(true);
     const [showComplaints, setShowComplaints] = useState(false);
@@ -72,10 +72,10 @@ const Management = () => {
 
 
     useEffect(() => {
-        if(user.role){
+        if (user.role) {
             // console.log("entra User directo", user);
             setUserData(user);
-        }else{
+        } else {
             // console.log("entra user modficiado", user.data.user)
             setUserData(user.data.user);
         }
@@ -86,115 +86,120 @@ const Management = () => {
         <>
             {
                 userData.role === "ROLE_SUPERADMIN" ? (
-                <Grid container>
-                    <Grid xs={3} >
-                        <List className={classes.root}>
-                            <ListItem onClick={onVisibleDriver}button divider>
-                                <ListItemAvatar>
-                                    <Image
-                                        src="/volante-de-coche.png"
-                                        alt=""
-                                        width={30}
-                                        height={30}
-                                    />
-                                </ListItemAvatar>
-                                <ListItemText primary="Gestión de Conductores"/>
-                            </ListItem>
-                            <ListItem onClick={onVisibleTruck} button divider>
-                                <ListItemAvatar>
-                                    <Image
-                                        src="/delivery-truck.png"
-                                        alt=""
-                                        width={30}
-                                        height={30}
-                                    />
-                                </ListItemAvatar>
-                                <ListItemText primary="Gestión de Camiones"/>
-                            </ListItem>
-                            <ListItem onClick={onVisibleNeighborhoods} button divider>
-                                <ListItemAvatar>
-                                    <Image
-                                        src="/maps-and-flags.png"
-                                        alt=""
-                                        width={30}
-                                        height={30}
-                                    />
-                                </ListItemAvatar>
-                                <ListItemText primary="Gestión de Barrios y Frecuencias"/>
-                            </ListItem>
-                            <ListItem onClick={onVisibleComplaints} button divider>
-                                <ListItemAvatar>
-                                    <Image
-                                        src="/customer-satisfaction.png"
-                                        alt=""
-                                        width={30}
-                                        height={30}
-                                    />
-                                </ListItemAvatar>
-                                <ListItemText primary="Gestión de Quejas"/>
-                            </ListItem>
-                        </List>
+                    <Grid container>
+                        <Grid xs={3}>
+                            <List className={classes.root}>
+                                <ListItem onClick={onVisibleDriver} button divider>
+                                    <ListItemAvatar>
+                                        <Image
+                                            src="/volante-de-coche.png"
+                                            alt=""
+                                            width={30}
+                                            height={30}
+                                        />
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Gestión de Conductores"/>
+                                </ListItem>
+                                <ListItem onClick={onVisibleTruck} button divider>
+                                    <ListItemAvatar>
+                                        <Image
+                                            src="/delivery-truck.png"
+                                            alt=""
+                                            width={30}
+                                            height={30}
+                                        />
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Gestión de Camiones"/>
+                                </ListItem>
+                                <ListItem onClick={onVisibleNeighborhoods} button divider>
+                                    <ListItemAvatar>
+                                        <Image
+                                            src="/maps-and-flags.png"
+                                            alt=""
+                                            width={30}
+                                            height={30}
+                                        />
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Gestión de Barrios y Frecuencias"/>
+                                </ListItem>
+                                <ListItem onClick={onVisibleComplaints} button divider>
+                                    <ListItemAvatar>
+                                        <Image
+                                            src="/customer-satisfaction.png"
+                                            alt=""
+                                            width={30}
+                                            height={30}
+                                        />
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Gestión de Quejas"/>
+                                </ListItem>
+                            </List>
+                        </Grid>
+                        <Grid xs={9} style={styles.container}>
+                            {showTrucks ? (
+                                <TableTrucks/>
+                            ) : showDrivers ? (
+                                <TableUsers/>
+                            ) : showComplaints ? (
+                                <TableComplaints/>
+                            ) : showTrucks === false &&
+                            showDrivers === false &&
+                            showComplaints === false &&
+                            showNeighborhoods ? (
+                                <TableNeighborhoods/>
+                            ) : (
+                                "Cargando tablas"
+                            )}
+                        </Grid>
                     </Grid>
-                    <Grid xs={9} style={styles.container}>
-                        {showTrucks ? (
-                            <TableTrucks/>
-                        ) : showDrivers ? (
-                            <TableUsers/>
-                        ) : showComplaints ? (
-                            <TableComplaints/>
-                        ) : showTrucks === false &&
-                        showDrivers === false &&
-                        showComplaints === false &&
-                        showNeighborhoods ? (
-                            <TableNeighborhoods/>
-                        ) : (
-                            "Cargando tablas"
-                        )}
+                ) : (
+                    <Grid container>
+                        <Grid xs={3} justify="center">
+                            <List className={classes.root}>
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justify="center"
+                                    alignItems="center"
+                                >
+                                    <ListItemAvatar>
+                                        <Image src="/user.png" alt="" width={150} height={100}/>
+                                    </ListItemAvatar>
+                                </Grid>
+                                <ListItem onClick={onVisibleDriver} button divider>
+                                    <ListItemAvatar>
+                                        <Image
+                                            src="/volante-de-coche.png"
+                                            alt=""
+                                            width={30}
+                                            height={30}
+                                        />
+                                    </ListItemAvatar>
+                                    <ListItemText primary="DATOS DE PERFIL"/>
+                                </ListItem>
+                                <ListItem onClick={onVisibleTruck} button divider>
+                                    <ListItemAvatar>
+                                        <Image
+                                            src="/delivery-truck.png"
+                                            alt=""
+                                            width={30}
+                                            height={30}
+                                        />
+                                    </ListItemAvatar>
+                                    <ListItemText primary="INFORMACIÓN DE TRABAJO"/>
+                                </ListItem>
+                            </List>
+                        </Grid>
+                        <Grid xs={9} style={styles.container}>
+                            {showTrucks ? (
+                                <DriverInfoJob user={userData}/>
+                            ) : showDrivers ? (
+                                <DriverInfoProfile user={userData}/>
+                            ) : (
+                                "Cargando Tablas"
+                            )}
+                        </Grid>
                     </Grid>
-                </Grid>
-            ) : (
-                <Grid container>
-                    <Grid xs={3} justify="center">
-                        <List className={classes.root}>
-                            <Box display="flex" justifyContent={"center"} m={1} p={1}>
-                                <ListItemAvatar >
-                                    <Image src="/user.png" alt="" width={150} height={100}/>
-                                </ListItemAvatar>
-                            </Box>
-                            <ListItem onClick={onVisibleDriver} button divider>
-                                <ListItemAvatar>
-                                    <Image
-                                        src="/volante-de-coche.png"
-                                        alt=""
-                                        width={30}
-                                        height={30}
-                                    />
-                                </ListItemAvatar>
-                                <ListItemText primary="DATOS DE PERFIL"/>
-                            </ListItem>
-                            <ListItem onClick={onVisibleTruck} button divider>
-                                <ListItemAvatar>
-                                    <Image
-                                        src="/delivery-truck.png"
-                                        alt=""
-                                        width={30}
-                                        height={30}
-                                    />
-                                </ListItemAvatar>
-                                <ListItemText primary="INFORMACIÓN DE TRABAJO"/>
-                            </ListItem>
-                        </List>
-                    </Grid>
-                    <Grid xs={9} style={styles.container}>
-                        {showTrucks ? (
-                            <DriverInfoJob user={userData}/>
-                        ) : showDrivers ? (
-                            <DriverInfoProfile user={userData}/>
-                        ) : (
-                            "Cargando Tablas"
-                        )}
-                    </Grid>
-                </Grid>
                 )
             }
         </>
