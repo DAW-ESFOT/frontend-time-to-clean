@@ -20,12 +20,17 @@ import {
     DialogTitle,
     DialogContent,
     Dialog,
+    TextField,
     InputBase,
+    InputAdornment,
+    Grid,
     Divider,
+    Select,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
 import PostAddIcon from "@material-ui/icons/PostAdd";
+import BackspaceIcon from "@material-ui/icons/Backspace";
 import DeleteUser from "@/components/DeleteUser";
 import EditUser from "@/components/EditUser";
 import AddUser from "@/components/AddUser";
@@ -54,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 600,
     },
     margin: {
-        backgroundColor: "rgba(255,255,255,0.8)",
+        backgroundColor: "#F5F5F5",
     },
     paper: {
         height: 140,
@@ -72,8 +77,8 @@ const useStyles = makeStyles((theme) => ({
         transform: "scale(0.8)",
     },
     title: {
-        textAlign:'center',
-        color:'white',
+        textAlign: 'center',
+        color: 'white',
         textShadow: '2px 2px #262626',
 
     },
@@ -111,17 +116,6 @@ const useStyles = makeStyles((theme) => ({
         margin: 4,
     },
 }));
-
-const styles = {
-    title: {
-        textAlign: 'center',
-        color: 'white',
-        textShadow: '2px 2px #262626',
-    },
-    paper: {
-        color: 'white',
-    },
-};
 
 const TableUsers = () => {
     const classes = useStyles();
@@ -198,7 +192,7 @@ const TableUsers = () => {
 
     return (
         <>
-            <h1 style={styles.title}>Gestión de conductores</h1>
+            <h1 className={classes.title}>Gestión de conductores</h1>
             <Box display="flex" justifyContent="flex-end" m={1} p={1}>
                 <Button
                     variant="outlined"
@@ -222,7 +216,6 @@ const TableUsers = () => {
                             inputRef={register}
                             onChange={handleChange}
                         />
-                        <Divider className={classes.divider} orientation="vertical"/>
                         <IconButton
                             onClick={handleClickDeleteSearchUser}
                             className={classes.iconButton}
@@ -267,7 +260,7 @@ const TableUsers = () => {
                                                 <StyledTableCell align="center">
                                                     {user.type}
                                                 </StyledTableCell>
-                                                <StyledTableCell align="left">
+                                                <StyledTableCell align="center">
                                                     {user.role === 'ROLE_DRIVER' ? <>
                                                             <IconButton
                                                                 color="secondary"
@@ -392,7 +385,7 @@ const TableUsers = () => {
                 aria-labelledby="form-dialog-title"
                 disableBackdropClick={true}
             >
-                <DialogTitle id="form-dialog-title">Agrega un nuevo usuario</DialogTitle>
+                <DialogTitle id="form-dialog-title">Agregar nuevo usuario</DialogTitle>
                 <DialogContent>
                     <AddUser onCancel={handleClose}/>
                 </DialogContent>
