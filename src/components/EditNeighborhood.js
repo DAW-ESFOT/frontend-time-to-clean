@@ -177,13 +177,11 @@ const EditNeighborhood = (props) => {
       days: day,
       truck_id: user,
     };
-    console.log("neighborhoodData", neighborhood);
     try {
       const response = await api.put(
         `/neighborhoods/${neighborhoodData.id}`,
         neighborhood
       );
-      console.log("rersponse post barrio", response);
       handleClick(
         "Se ha actualizado los datos del barrio con éxito",
         "success"

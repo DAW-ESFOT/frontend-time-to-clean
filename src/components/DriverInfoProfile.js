@@ -69,15 +69,12 @@ const DriverInfoJob = ({user}) => {
 
 
     const onSubmit = async (data) => {
-        console.log("data enviar", data);
         const userDataSend = {
             name: data.name,
             lastname: data.lastname,
             email: data.email,
             cellphone: data.cellphone,
         };
-        console.log("data a procesar", userDataSend);
-        console.log("userid", userData.id);
         try {
             const response = await api.put(`/users/${userData.id}`, userDataSend);
             handleClick("Se ha actualizado su información correctamente", "success");
@@ -86,7 +83,7 @@ const DriverInfoJob = ({user}) => {
             return response;
         } catch (error) {
             if (error.response) {
-                Error(error.response.data.errors)
+                console.log(error.response.data.errors)
                 return Promise.reject(error.response);
             } else if (error.request) {
                 console.log(error.request);
@@ -115,7 +112,7 @@ const DriverInfoJob = ({user}) => {
 
     if (error) return <div>Algo ha ocurrido</div>;
     if (!userData) return <Loading/>;
-    console.log("user", userData);
+
 
     return (
         <>
