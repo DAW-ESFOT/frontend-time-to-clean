@@ -394,30 +394,17 @@ const TableTrucks = () => {
                             <BorderColorIcon />
                           </IconButton>
                           {truck.working || truck.user !== null ? (
-                            <IconButton
-                              color="dark"
-                              aria-label="upload picture"
-                              component="span"
-                              disabled="false"
-                              onClick={() => handleClickDeleteTruck(truck.id)}
-                            >
-                              <DeleteIcon
-                                style={{
-                                  color: "black",
-                                }}
-                              />
-                            </IconButton>
+                            ""
                           ) : (
                             <IconButton
                               color="dark"
                               aria-label="upload picture"
                               component="span"
-                              disabled="true"
                               onClick={() => handleClickDeleteTruck(truck.id)}
                             >
                               <DeleteIcon
                                 style={{
-                                  color: "red",
+                                  color: "black",
                                 }}
                               />
                             </IconButton>
