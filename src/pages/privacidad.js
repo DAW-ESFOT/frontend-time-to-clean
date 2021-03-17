@@ -19,7 +19,7 @@ const Privacidad = () => {
             <Container fixed>
                 <Typography variant="h4" gutterBottom>POLÍTICA DE PRIVACIDAD</Typography>
                 <Typography variant="body1" gutterBottom>
-                    El presente Política de Privacidad establece los términos en que Time2Clean usa y protege la
+                    El presente Política de Privacidad establece los términos en que Time To Clean usa y protege la
                     información que es proporcionada por sus usuarios al momento de utilizar su sitio web. Esta compañía
                     está comprometida con la seguridad de los datos de sus usuarios. Sin embargo esta Política de
                     Privacidad puede cambiar con el tiempo o ser actualizada por lo que le recomendamos y enfatizamos
@@ -27,8 +27,8 @@ const Privacidad = () => {
                 </Typography>
                 <Typography variant="h5" gutterBottom>Uso de la información</Typography>
                 <Typography variant="body1" gutterBottom>
-                    La plataforma emplea la información con el fin de proporcionar una buena gestion laboral.
-                    Time2Clean está altamente comprometido para cumplir con el compromiso de mantener su información
+                    La plataforma emplea la información con el fin de proporcionar una buena gestión laboral.
+                    Time To Clean está altamente comprometido para cumplir con el compromiso de mantener su información
                     segura. Usamos los sistemas más avanzados y los actualizamos constantemente para asegurarnos que no
                     exista ningún acceso no autorizado.
                 </Typography>
@@ -58,7 +58,7 @@ const Privacidad = () => {
                 <Typography variant="body1" gutterBottom>
                     Esta compañía no venderá, cederá ni distribuirá la información personal que es recopilada sin su
                     consentimiento, salvo que sea requerido por un juez con un orden judicial.
-                    Time2Clean se reserva el derecho de cambiar los términos de la presente Política de Privacidad en
+                    Time To Clean se reserva el derecho de cambiar los términos de la presente Política de Privacidad en
                     cualquier momento.
                 </Typography>
             </Container>

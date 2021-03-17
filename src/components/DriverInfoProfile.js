@@ -3,14 +3,12 @@ import withAuth from "@/hocs/withAuth";
 import useSWR from "swr";
 import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
 import {
     Button,
     Grid, Paper,
     TextField
 } from "@material-ui/core";
-import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import api from "@/lib/api";
 import {useSnackbar} from "notistack";
 import {useForm} from "react-hook-form";
@@ -44,11 +42,11 @@ const styles = {
     Paper: {
         backgroundColor: 'rgba(255,255,255)',
         margin: '10px',
-        padding: '35px',
+        padding: '25px',
     },
-    title:{
-        textAlign:'center',
-        color:'white',
+    title: {
+        textAlign: 'center',
+        color: 'white',
         textShadow: '2px 2px #262626',
     }
 };
@@ -78,8 +76,8 @@ const DriverInfoJob = ({user}) => {
             email: data.email,
             cellphone: data.cellphone,
         };
-    console.log("data a procesar", userDataSend);
-    console.log("userid", userData.id);
+        console.log("data a procesar", userDataSend);
+        console.log("userid", userData.id);
         try {
             const response = await api.put(`/users/${userData.id}`, userDataSend);
             handleClick("Se ha actualizado su información correctamente", "success");
@@ -110,7 +108,7 @@ const DriverInfoJob = ({user}) => {
         });
     }
 
-    const handleChangeCheck =()=>{
+    const handleChangeCheck = () => {
         setCheckValidate(!checkValidate);
         mutate();
     }
@@ -124,125 +122,139 @@ const DriverInfoJob = ({user}) => {
             <div>
                 <h1 style={styles.title}>Información del perfil</h1>
 
-                <Grid container justify="center" >
+                <Grid container justify="center">
 
-                    <Grid xs={12} sm={12} md={8} lg={8} >
+                    <Grid xs={12} sm={12} md={8} lg={8}>
 
-                            <Paper style={styles.Paper} elevation={3} >
-                                <form
-                                    className={classes.root}
-                                    noValidate
-                                    autoComplete="off"
-                                    onSubmit={handleSubmit(onSubmit)}
-                                >
-                                    <Grid container>
-                                        <Grid xs={12}>
-                                            <TextField
-                                                defaultValue={userData.name}
-                                                id="name"
-                                                name="name"
-                                                label="Nombre"
-                                                variant="outlined"
-                                                required
-                                                inputRef={register}
-                                                color="secondary"
-                                                margin="normal"
-                                                error={!!errors.name}
-                                                helperText={errors.name?.message}
-                                                disabled={checkValidate ? true : false}
-                                            />
-                                            <TextField
-                                                defaultValue={userData.lastname}
-                                                id="lastname"
-                                                name="lastname"
-                                                label="Apellido"
-                                                variant="outlined"
-                                                required
-                                                inputRef={register}
-                                                color="secondary"
-                                                margin="normal"
-                                                error={!!errors.lastname}
-                                                helperText={errors.link?.message}
-                                                disabled={checkValidate ? true : false}
-                                            />
-                                            <TextField
-                                                defaultValue={userData.birthdate}
-                                                id="birthdate"
-                                                name="birthdate"
-                                                label="Fecha de nacimiento"
-                                                variant="outlined"
-                                                required
-                                                fullWidth
-                                                inputRef={register}
-                                                margin="normal"
-                                                color="secondary"
-                                                type="date"
-                                                disabled={checkValidate ? true : false}
-
-                                            />
-                                            <TextField
-                                                defaultValue={userData.cellphone}
-                                                id="cellphone"
-                                                label="Celular"
-                                                name="cellphone"
-                                                variant="outlined"
-                                                margin="normal"
-                                                required
-                                                fullWidth
-                                                color="secondary"
-                                                inputRef={register}
-                                                disabled={checkValidate ? true : false}
-                                            />
-                                            <TextField
-                                                defaultValue={userData.email}
-                                                id="email"
-                                                name="email"
-                                                label="Correo electrónico"
-                                                variant="outlined"
-                                                required
-                                                inputRef={register}
-                                                color="secondary"
-                                                margin="normal"
-                                                error={!!errors.email}
-                                                helperText={errors.email?.message}
-                                                disabled={checkValidate ? true : false}
-                                            />
-                                        </Grid>
-
+                        <Paper style={styles.Paper} elevation={3}>
+                            <form
+                                className={classes.root}
+                                noValidate
+                                autoComplete="off"
+                                onSubmit={handleSubmit(onSubmit)}
+                            >
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            defaultValue={userData.name}
+                                            id="name"
+                                            name="name"
+                                            label="Nombre"
+                                            variant="outlined"
+                                            required
+                                            inputRef={register}
+                                            color="secondary"
+                                            margin="normal"
+                                            error={!!errors.name}
+                                            helperText={errors.name?.message}
+                                            disabled={checkValidate ? true : false}
+                                        />
                                     </Grid>
-                                    <Box display="flex" justifyContent="center" m={1} p={1}>
-                                        {
-                                            checkValidate ?
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            defaultValue={userData.lastname}
+                                            id="lastname"
+                                            name="lastname"
+                                            label="Apellido"
+                                            variant="outlined"
+                                            required
+                                            inputRef={register}
+                                            color="secondary"
+                                            margin="normal"
+                                            error={!!errors.lastname}
+                                            helperText={errors.link?.message}
+                                            disabled={checkValidate ? true : false}
+                                        />
+                                    </Grid>
+                                    <Grid itm xs={12} sm={6}>
+                                        <TextField
+                                            defaultValue={userData.birthdate}
+                                            id="birthdate"
+                                            name="birthdate"
+                                            label="Fecha de nacimiento"
+                                            variant="outlined"
+                                            required
+                                            fullWidth
+                                            inputRef={register}
+                                            margin="normal"
+                                            color="secondary"
+                                            type="date"
+                                            disabled={checkValidate ? true : false}
+
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}/>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            defaultValue={userData.cellphone}
+                                            id="cellphone"
+                                            label="Celular"
+                                            name="cellphone"
+                                            variant="outlined"
+                                            margin="normal"
+                                            required
+                                            fullWidth
+                                            color="secondary"
+                                            inputRef={register}
+                                            disabled={checkValidate ? true : false}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            defaultValue={userData.email}
+                                            id="email"
+                                            name="email"
+                                            label="Correo electrónico"
+                                            variant="outlined"
+                                            required
+                                            inputRef={register}
+                                            color="secondary"
+                                            margin="normal"
+                                            error={!!errors.email}
+                                            helperText={errors.email?.message}
+                                            disabled={checkValidate ? true : false}
+                                        />
+                                    </Grid>
+
+                                </Grid>
+                                <Grid
+                                    container
+                                    direction="row"
+                                    justify="flex-end"
+                                    alignItems="flex-end"
+                                >
+                                    {
+                                        checkValidate ?
+                                            <Button
+                                                onClick={handleChangeCheck}
+                                                variant="contained"
+                                                color="primary"
+                                                className={classes.submit}
+                                            >
+                                                Cambiar información
+                                            </Button>
+                                            :
+                                            <div>
                                                 <Button
-                                                    onClick={handleChangeCheck}
+                                                    type="submit"
                                                     variant="contained"
                                                     color="primary"
                                                     className={classes.submit}
                                                 >
-                                                    Cambiar información
+                                                    Actualizar datos
                                                 </Button>
-                                                :
-                                                <div>
-                                                    <Button
-                                                        type="submit"
-                                                        variant="contained"
-                                                        color="primary"
-                                                        className={classes.submit}
-                                                    >
-                                                        Actualizar datos
-                                                    </Button>
-                                                    <Button
-                                                        onClick={handleChangeCheck}
-                                                        variant="contained"
-                                                        className={classes.button}>
-                                                        Cancelar
-                                                    </Button>
-                                                </div>
-                                        }
-                                    </Box>
-                                </form>
+                                                <Button
+                                                    onClick={handleChangeCheck}
+                                                    variant="contained"
+                                                    className={classes.button}>
+                                                    Cancelar
+                                                </Button>
+                                            </div>
+                                    }
+                                </Grid>
+                            </form>
 
-                            </Paper>
+                        </Paper>
 
                     </Grid>
 
