@@ -4,7 +4,7 @@ import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
 import {makeStyles, withStyles} from "@material-ui/core/styles";
-import {Box, Dialog, DialogContent, FormControlLabel, Grid, Radio, RadioGroup} from '@material-ui/core';
+import {Box, Dialog, DialogContent, FormControlLabel, Grid, Radio, RadioGroup, Tooltip} from '@material-ui/core';
 import {
     Paper,
     TableRow,
@@ -174,13 +174,15 @@ const TableComplaints = () => {
                                                         {Complaint.observation}
                                                     </StyledTableCell>
                                                     <StyledTableCell align="left">
-                                                        <IconButton
-                                                            onClick={() => handleOpenEditComplaint(Complaint.id)}
-                                                            color="secondary"
-                                                            aria-label="upload picture"
-                                                            component="span">
-                                                            <BorderColorIcon/>
-                                                        </IconButton>
+                                                        <Tooltip title="Editar" placement="bottom">
+                                                            <IconButton
+                                                                onClick={() => handleOpenEditComplaint(Complaint.id)}
+                                                                color="secondary"
+                                                                aria-label="upload picture"
+                                                                component="span">
+                                                                <BorderColorIcon/>
+                                                            </IconButton>
+                                                        </Tooltip>
                                                     </StyledTableCell>
                                                 </StyledTableRow>
                                             ))}
@@ -247,13 +249,15 @@ const TableComplaints = () => {
                                                             {Complaint.observation}
                                                         </StyledTableCell>
                                                         <StyledTableCell align="center">
-                                                            <IconButton
-                                                                onClick={() => handleOpenEditComplaint(Complaint.id)}
-                                                                color="secondary"
-                                                                aria-label="upload picture"
-                                                                component="span">
-                                                                <BorderColorIcon/>
-                                                            </IconButton>
+                                                            <Tooltip title="Editar" placement="bottom">
+                                                                <IconButton
+                                                                    onClick={() => handleOpenEditComplaint(Complaint.id)}
+                                                                    color="secondary"
+                                                                    aria-label="upload picture"
+                                                                    component="span">
+                                                                    <BorderColorIcon/>
+                                                                </IconButton>
+                                                            </Tooltip>
                                                         </StyledTableCell>
                                                     </StyledTableRow>
                                                     : ""
