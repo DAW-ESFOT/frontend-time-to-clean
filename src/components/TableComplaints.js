@@ -97,7 +97,7 @@ const TableComplaints = () => {
                     <Grid
                         container
                         direction="row"
-                        justify="flex-end"
+                        justify="center"
                         alignItems="center"
                     >
                         <Typography><strong>Buscar por:</strong></Typography>
