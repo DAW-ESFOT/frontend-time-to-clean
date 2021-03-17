@@ -30,6 +30,15 @@ const styles = {
         margin: '10px',
         padding: '35px',
     },
+    title:{
+        textAlign:'center',
+        color:'white',
+        textShadow: '2px 2px #262626',
+    },
+    responsive : {
+        width: "100%",
+        height: "auto",
+    }
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -59,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
         minWidth: 120,
-    },
+    }
 }));
 
 
@@ -110,7 +119,7 @@ const Neighborhoods = () => {
                 <Grid style={styles.container} justify={"center"}>
                     <div>
                         <Box display="flex" justifyContent="center" m={1} p={1}>
-                            <h1>Encuentra Datos Sobre tu Sector de Manera Fácil y Sencilla</h1>
+                            <h1 style={styles.title} >Encuentra Datos Sobre tu Sector de Manera Fácil y Sencilla</h1>
                         </Box>
                     </div>
 
@@ -123,7 +132,8 @@ const Neighborhoods = () => {
                                     id="outlined-select-currency-native"
                                     select
                                     label="Barrio"
-                                    fullWidth
+                                    color="secondary"
+                                    margin="normal"
                                     value={name.id}
                                     onChange={handleChange}
                                     SelectProps={{
@@ -212,15 +222,18 @@ const Neighborhoods = () => {
                                                     />
                                                 </ListItem>
                                             </List>
-                                            <Button className={classes.button2} href={neighborhoodID.link}
-                                                    target={"_blank"}>
-                                                Ir a Google Maps
-                                            </Button>
+                                            <Box display="flex" justifyContent="center" m={1} p={1}>
+                                                <Button className={classes.button2} href={neighborhoodID.link}
+                                                        target={"_blank"}>
+                                                    Ir a Google Maps
+                                                </Button>
+                                            </Box>
+
                                         </div>
                                         :
                                         <div>
                                             <Box display="flex" justifyContent="center" m={1} p={1}>
-                                                <img src="recoleccion.jpg" alt="recolector"/>
+                                                <img style={styles.responsive} src="recoleccion.jpg" alt="recolector"/>
                                             </Box>
                                         </div>
                                 }
@@ -231,7 +244,7 @@ const Neighborhoods = () => {
                     <Grid>
                         <Box display="flex" justifyContent="center" m={1} p={1}>
                             <Link href={Routes.HOME}>
-                                <Button variant="contained" color="secondary" className={classes.button}>
+                                <Button variant="contained" color="secondary" className={classes.button2}>
                                     Menú Principal
                                 </Button>
                             </Link>
