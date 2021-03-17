@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Routes from "../../constants/routes";
-import {Box, Divider, List, ListItem, ListItemAvatar, ListItemText, makeStyles} from "@material-ui/core";
+import {Box, Divider, Grid, List, ListItem, ListItemAvatar, ListItemText, makeStyles, Paper} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import PlaceIcon from "@material-ui/icons/Place";
@@ -9,6 +9,24 @@ import WatchLaterIcon from "@material-ui/icons/WatchLater";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import withAuth from "@/hocs/withAuth";
 
+
+const styles = {
+    Container: {
+        padding: '40px',
+        background: 'linear-gradient(0deg, rgba(168,254,216,1) 0%, rgba(96,149,176,1) 100%)',
+        textAlign: 'center'
+    },
+    Paper: {
+        backgroundColor: 'rgba(255,255,255)',
+        margin: '10px',
+        padding: '35px',
+    },
+    Title: {
+        fontWeight: 'bold',
+        color: 'white',
+        textShadow: '2px 2px #262626',
+    }
+};
 
 const classes= makeStyles((theme) => ({
     button: {
@@ -51,96 +69,102 @@ const NeighborhoodDetails = ({neighborhood}) => {
             <div>
                 {
                     neighborhood ?
-                        <div>
-                            <div>
-                                <Typography component={'span'} color={"secondary"}>
-                                    <Box display="flex" justifyContent="center" m={1} p={1}>
-                                        <h1>
-                                            Barrio {neighborhood.name}
-                                        </h1>
-                                    </Box>
-                                </Typography>
-                                <div>
-                                    <List className={classes.root2}>
-                                        <ListItem alignItems="flex-start">
-                                            <ListItemAvatar>
-                                                <PlaceIcon/>
-                                            </ListItemAvatar>
-                                            <ListItemText
-                                                primary="Barrio"
-                                                secondary={
-                                                    <React.Fragment>
-                                                        <Typography
-                                                            component="span"
-                                                            variant="body2"
-                                                            className={classes.inline}
-                                                            color="textPrimary"
-                                                        >
-                                                            {neighborhood.name}
-                                                        </Typography>
-                                                    </React.Fragment>
-                                                }
-                                            />
-                                        </ListItem>
-                                        <Divider variant="inset" component="li"/>
-                                        <ListItem alignItems="flex-start">
-                                            <ListItemAvatar>
-                                                <WatchLaterIcon/>
-                                            </ListItemAvatar>
-                                            <ListItemText
-                                                primary="Horario de recoleción"
-                                                secondary={
-                                                    <React.Fragment>
-                                                        <Typography
-                                                            component="span"
-                                                            variant="body2"
-                                                            className={classes.inline}
-                                                            color="textPrimary"
-                                                        >
-                                                            {neighborhood.start_time} - {neighborhood.end_time}
-                                                        </Typography>
-                                                    </React.Fragment>
-                                                }
-                                            />
-                                        </ListItem>
-                                        <Divider variant="inset" component="li"/>
-                                        <ListItem alignItems="flex-start">
-                                            <ListItemAvatar>
-                                                <CalendarTodayIcon/>
-                                            </ListItemAvatar>
-                                            <ListItemText
-                                                primary="Días de recoleción"
-                                                secondary={
-                                                    <React.Fragment>
-                                                        <Typography
-                                                            component="span"
-                                                            variant="body2"
-                                                            className={classes.inline}
-                                                            color="textPrimary"
-                                                        >
-                                                            {neighborhood.days}
-                                                        </Typography>
-                                                    </React.Fragment>
-                                                }
-                                            />
-                                        </ListItem>
-                                    </List>
-                                    <Button variant="contained" color="secondary" className={classes.button} href={neighborhood.link} target={"_blank"}>
-                                        Ir a Google Maps
-                                    </Button>
-                                </div>
-                            </div>
-                            <div>
-                                <Box display="flex" justifyContent="center" m={1} p={1}>
-                                    <Link href={Routes.NEIGHBORHOODS}>
-                                        <Button variant="contained" color="secondary" className={classes.button2}>
-                                            Regresar a buscar barrios
-                                        </Button>
-                                    </Link>
+                        <Grid style={styles.Container}>
+                            <Grid>
+                                    <Paper style={styles.Paper}>
+                                        <div>
+                                            <Typography component={'span'} color={"secondary"}>
+                                                <Box display="flex" justifyContent="center" m={1} p={1}>
+                                                    <h1>
+                                                        Barrio {neighborhood.name}
+                                                    </h1>
+                                                </Box>
+                                            </Typography>
+                                            <div>
+                                                <List className={classes.root2}>
+                                                    <ListItem alignItems="flex-start">
+                                                        <ListItemAvatar>
+                                                            <PlaceIcon/>
+                                                        </ListItemAvatar>
+                                                        <ListItemText
+                                                            primary="Barrio"
+                                                            secondary={
+                                                                <React.Fragment>
+                                                                    <Typography
+                                                                        component="span"
+                                                                        variant="body2"
+                                                                        className={classes.inline}
+                                                                        color="textPrimary"
+                                                                    >
+                                                                        {neighborhood.name}
+                                                                    </Typography>
+                                                                </React.Fragment>
+                                                            }
+                                                        />
+                                                    </ListItem>
+                                                    <Divider variant="inset" component="li"/>
+                                                    <ListItem alignItems="flex-start">
+                                                        <ListItemAvatar>
+                                                            <WatchLaterIcon/>
+                                                        </ListItemAvatar>
+                                                        <ListItemText
+                                                            primary="Horario de recoleción"
+                                                            secondary={
+                                                                <React.Fragment>
+                                                                    <Typography
+                                                                        component="span"
+                                                                        variant="body2"
+                                                                        className={classes.inline}
+                                                                        color="textPrimary"
+                                                                    >
+                                                                        {neighborhood.start_time} - {neighborhood.end_time}
+                                                                    </Typography>
+                                                                </React.Fragment>
+                                                            }
+                                                        />
+                                                    </ListItem>
+                                                    <Divider variant="inset" component="li"/>
+                                                    <ListItem alignItems="flex-start">
+                                                        <ListItemAvatar>
+                                                            <CalendarTodayIcon/>
+                                                        </ListItemAvatar>
+                                                        <ListItemText
+                                                            primary="Días de recoleción"
+                                                            secondary={
+                                                                <React.Fragment>
+                                                                    <Typography
+                                                                        component="span"
+                                                                        variant="body2"
+                                                                        className={classes.inline}
+                                                                        color="textPrimary"
+                                                                    >
+                                                                        {neighborhood.days}
+                                                                    </Typography>
+                                                                </React.Fragment>
+                                                            }
+                                                        />
+                                                    </ListItem>
+                                                </List>
+                                                <Button variant="contained" color="secondary" className={classes.button} href={neighborhood.link} target={"_blank"}>
+                                                    Ir a Google Maps
+                                                </Button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <Box display="flex" justifyContent="center" m={1} p={1}>
+                                                <Link href={Routes.NEIGHBORHOODS}>
+                                                    <Button variant="contained" color="secondary" className={classes.button2}>
+                                                        Regresar a buscar barrios
+                                                    </Button>
+                                                </Link>
 
-                                </Box>
-                            </div>
-                        </div>
+                                            </Box>
+                                        </div>
+                                    </Paper>
+
+                            </Grid>
+                        </Grid>
+
 
                         :
                     <div>

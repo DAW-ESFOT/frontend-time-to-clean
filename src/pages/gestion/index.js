@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import withAuth from "@/hocs/withAuth";
 import {
     Grid,
@@ -17,10 +17,11 @@ import Image from "next/image";
 import {useAuth} from "@/lib/auth";
 import DriverInfoProfile from "@/components/DriverInfoProfile";
 import DriverInfoJob from "@/components/DriverInfoJob";
+import PersonIcon from '@material-ui/icons/Person';
 
 const Management = () => {
     const {user} = useAuth();
-
+    const [userData, setUserData]= useState("");
     const [showTrucks, setShowTrucks] = useState(false);
     const [showDrivers, setShowDrivers] = useState(true);
     const [showComplaints, setShowComplaints] = useState(false);
@@ -70,13 +71,24 @@ const Management = () => {
     };
     const classes = useStyles();
 
-    // console.log("este  user entra", user);
+
+    useEffect(() => {
+        if(user.role){
+            // console.log("entra User directo", user);
+            setUserData(user);
+        }else{
+            // console.log("entra user modficiado", user.data.user)
+            setUserData(user.data.user);
+        }
+    }, []);
+
 
     return (
         <>
-            {user.role === "ROLE_SUPERADMIN" || user.data.user.role === "ROLE_SUPERADMIN" ? (
+            {
+                userData.role === "ROLE_SUPERADMIN" ? (
                 <Grid container>
-                    <Grid xs={3}>
+                    <Grid xs={3} >
                         <List className={classes.root}>
                             <ListItem onClick={onVisibleDriver}button divider>
                                 <ListItemAvatar>
@@ -143,11 +155,13 @@ const Management = () => {
                 </Grid>
             ) : (
                 <Grid container>
-                    <Grid xs={3}>
+                    <Grid xs={3} justify="center">
                         <List className={classes.root}>
-                            <ListItemAvatar>
-                                <Image src="/reuse.png" alt="" width={100} height={100}/>
-                            </ListItemAvatar>
+                            <Box display="flex" justifyContent={"center"} m={1} p={1}>
+                                <ListItemAvatar >
+                                    <Image src="/user.png" alt="" width={150} height={100}/>
+                                </ListItemAvatar>
+                            </Box>
                             <ListItem onClick={onVisibleDriver} button divider>
                                 <ListItemAvatar>
                                     <Image
@@ -172,18 +186,17 @@ const Management = () => {
                             </ListItem>
                         </List>
                     </Grid>
-                    <Grid xs={9}>
+                    <Grid xs={9} style={styles.container}>
                         {showTrucks ? (
-                            <DriverInfoProfile user={user}/>
+                            <DriverInfoJob user={userData}/>
                         ) : showDrivers ? (
-                            <DriverInfoJob user={user}/>
+                            <DriverInfoProfile user={userData}/>
                         ) : (
-                            <DriverInfoProfile user={user}/>
+                            "Cargando Tablas"
                         )}
                     </Grid>
                 </Grid>
-            )
-
+                )
             }
         </>
     );

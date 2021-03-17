@@ -166,8 +166,6 @@ const AddNeighborhood = (props) => {
             return response;
         } catch (error) {
             if (error.response) {
-                alert(translateMessage(error.response.data.errors));
-                console.log("error", error.response.data.errors);
                 Error(error.response.data.errors)
                 return Promise.reject(error.response);
             } else if (error.request) {

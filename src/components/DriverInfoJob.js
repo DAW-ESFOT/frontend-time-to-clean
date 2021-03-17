@@ -7,7 +7,7 @@ import {
     Link as MuiLink, List, ListItem, ListItemAvatar, ListItemText, makeStyles,
     Paper,
     Table,
-    TableBody,
+    TableBody, TableCell,
     TableContainer,
     TableHead, TablePagination,
     TableRow
@@ -17,16 +17,47 @@ import {fetcher} from "@/lib/utils";
 import Loading from "@/components/Loading";
 import PlaceIcon from "@material-ui/icons/Place";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
+import DriverInfoNotFound from "@/components/DriverInfoNotFound";
+import {withStyles} from "@material-ui/core/styles";
+import Link from "@material-ui/core/Link";
+
+const StyledTableCell = withStyles((theme) => ({
+    head: {
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
+    },
+    body: {
+        fontSize: 14,
+    }
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+    root: {
+        "&:nth-of-type(odd)": {
+            backgroundColor: theme.palette.action.hover,
+        },
+    },
+}))(TableRow);
+
+const styles = {
+    Container: {
+        padding: '40px',
+        background: 'linear-gradient(0deg, rgba(168,254,216,1) 0%, rgba(96,149,176,1) 100%)',
+        textAlign: 'center'
+    },
+    Paper: {
+        backgroundColor: 'rgba(255,255,255)',
+        margin: '10px',
+        padding: '35px',
+    },
+    Title: {
+        fontWeight: 'bold',
+        color: 'white',
+        textShadow: '2px 2px #262626',
+    }
+};
 
 const useStyles = makeStyles((theme) => ({
-    button: {
-        margin: theme.spacing(3, 2, 2),
-        backgroundColor: theme.palette.cancel.main,
-    },
-    button2: {
-        margin: theme.spacing(3, 2, 2),
-        backgroundColor: theme.palette.secondary.main,
-    },
     root: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -41,105 +72,143 @@ const useStyles = makeStyles((theme) => ({
     },
     inline: {
         display: 'inline',
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-    },
+    }
 }));
 
 const DriverInfoJob = ({user}) => {
 
     const classes = useStyles();
-    //deberia ser con prop pero no tenia user pra probar
-    // const {data: truckUser, error} = useSWR(`/users/${user.id}/truck`, fetcher);
-    const {data: truckUser, error} = useSWR(`/users/2/truck`, fetcher);
-
-    if (error) return <div>algo ha ocurrido</div>;
+    const {data: truckUser, error} = useSWR(`/users/${user.id}/truck`, fetcher);
+    const {data: neighborhoodData, error: error1} = useSWR(`/neighborhoods/all`, fetcher);
+    if (error) {
+        return <div><DriverInfoNotFound/></div>;
+    }
     if (!truckUser) return <Loading/>;
-    console.log(truckUser);
 
+    console.log("user", truckUser);
+    console.log("neighborhoods", neighborhoodData);
     return (
         <>
             <div>
-                <Typography component={'span'} color={"secondary"}>
+                <Typography component={'span'} color={"black"}>
                     <Box display="flex" justifyContent="center" m={1} p={1}>
                         <h1> Bienvenido {user.name} </h1>
                     </Box>
                 </Typography>
                 <Grid container>
-                    <Grid>
-                        <Typography component={'span'} color={"textPrimary"}>
-                            <Box display="flex" justifyContent="start" m={1} p={1}>
-                                <h2> Información del camión </h2>
-                            </Box>
-                        </Typography>
-                        {
-                            truckUser ?
-                                <List className={classes.root2}>
-                                    <ListItem alignItems="flex-start">
-                                        <ListItemAvatar>
-                                            <PlaceIcon/>
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            primary="Placa"
-                                            secondary={
-                                                <React.Fragment>
-                                                    <Typography
-                                                        component="span"
-                                                        variant="body2"
-                                                        className={classes.inline}
-                                                        color="textPrimary"
-                                                    >
-                                                        {truckUser.license_plate}
-                                                    </Typography>
-                                                </React.Fragment>
-                                            }
-                                        />
-                                    </ListItem>
-                                    <Divider variant="inset" component="li"/>
-                                    <ListItem alignItems="flex-start">
-                                        <ListItemAvatar>
-                                            <CalendarTodayIcon/>
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            primary="Tipo de camión"
-                                            secondary={
-                                                <React.Fragment>
-                                                    <Typography
-                                                        component="span"
-                                                        variant="body2"
-                                                        className={classes.inline}
-                                                        color="textPrimary"
-                                                    >
-                                                        {truckUser.type}
-                                                    </Typography>
-                                                </React.Fragment>
-                                            }
-                                        />
-                                    </ListItem>
-                                </List>
-                                :
-                                <div>
-                                    No tienen camión asignado
-                                </div>
-                        }
-
+                    <Grid item xs={12} md={6} sm={12} lg={6}>
+                        <Paper style={styles.Paper} elevation={3}>
+                            <Typography component={'span'} color={"Secondary"}>
+                                <Box display="flex" justifyContent="center" m={1} p={1}>
+                                    <h2> Información del camión </h2>
+                                </Box>
+                            </Typography>
+                            {
+                                truckUser ?
+                                    <List className={classes.root2}>
+                                        <ListItem alignItems="flex-start">
+                                            <ListItemAvatar>
+                                                <PlaceIcon/>
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                                primary="Placa"
+                                                secondary={
+                                                    <React.Fragment>
+                                                        <Typography
+                                                            component="span"
+                                                            variant="body2"
+                                                            className={classes.inline}
+                                                            color="textPrimary"
+                                                        >
+                                                            {truckUser.license_plate}
+                                                        </Typography>
+                                                    </React.Fragment>
+                                                }
+                                            />
+                                        </ListItem>
+                                        <Divider variant="inset" component="li"/>
+                                        <ListItem alignItems="flex-start">
+                                            <ListItemAvatar>
+                                                <CalendarTodayIcon/>
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                                primary="Tipo de camión"
+                                                secondary={
+                                                    <React.Fragment>
+                                                        <Typography
+                                                            component="span"
+                                                            variant="body2"
+                                                            className={classes.inline}
+                                                            color="textPrimary"
+                                                        >
+                                                            {truckUser.type}
+                                                        </Typography>
+                                                    </React.Fragment>
+                                                }
+                                            />
+                                        </ListItem>
+                                    </List>
+                                    :
+                                    <div>
+                                        No tienen camión asignado
+                                    </div>
+                            }
+                        </Paper>
                     </Grid>
 
-                </Grid>
+                    <Grid item xs={12} md={6} sm={12} lg={6}>
+                        <Paper style={styles.Paper} elevation={3} >
+                            <Typography component={'span'} color={"Secondary"}>
+                                <Box display="flex" justifyContent="center" m={1} p={1}>
+                                    <h2> Información de rutas </h2>
+                                </Box>
+                            </Typography>
 
+                            {
+                                neighborhoodData ?
+                                    <TableContainer component={Paper}>
+                                        <Table aria-label="customized table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <StyledTableCell align="center">Barrio</StyledTableCell>
+                                                    <StyledTableCell align="center">horario</StyledTableCell>
+                                                    <StyledTableCell align="center">Dias asignados</StyledTableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {neighborhoodData.data.map((neighborhood) => (
+                                                    <>
+                                                        {
+                                                            truckUser.id === neighborhood.truck ?
+                                                                <StyledTableRow key={neighborhood.id}>
+                                                                    <StyledTableCell align="center">
+                                                                        <Link
+                                                                            href={neighborhood.link}
+                                                                            color="secondary"
+                                                                            target={"_blank"}>
+                                                                            {neighborhood.name}
+                                                                        </Link>
+                                                                    </StyledTableCell>
+                                                                    <StyledTableCell align="center">
+                                                                        {neighborhood.start_time} - {neighborhood.end_time}
+                                                                    </StyledTableCell>
+                                                                    <StyledTableCell align="center">
+                                                                        {neighborhood.days}
+                                                                    </StyledTableCell>
+                                                                </StyledTableRow>
+                                                                : ""
+                                                        }
+                                                    </>
 
-                <Grid container>
-                    <Grid>
-                        <Typography component={'span'} color={"textPrimary"}>
-                            <Box display="flex" justifyContent="start" m={1} p={1}>
-                                <h2> Información de rutas </h2>
-                            </Box>
-                        </Typography>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                    :
+                                    <div> No se ha asignado un barrio al camión</div>
+                            }
+                        </Paper>
                     </Grid>
-
-
                 </Grid>
 
 

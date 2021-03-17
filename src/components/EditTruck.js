@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import useSWR from "swr";
 import clsx from "clsx";
 import { fetcher } from "@/lib/utils";
 import Loading from "@/components/Loading";
 import withAuth from "@/hocs/withAuth";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   FormControl,
-  InputBase,
-  MenuItem,
-  Select,
   Button,
   Box,
   Grid,
   RadioGroup,
   FormControlLabel,
-  FormLabel,
   Radio,
 } from "@material-ui/core";
 import api from "@/lib/api";
@@ -118,18 +114,17 @@ function StyledRadio(props) {
 const EditTruck = (props) => {
   const classes = useStyles();
 
-  const [name, setName] = useState("");
   const { register, handleSubmit } = useForm();
-  const { data: truckData, error: error1 } = useSWR(
+  const { data: truckData, error: error1, mutate: mutate1 } = useSWR(
     `/trucks/${props.id}`,
     fetcher
   );
-  const { data: neighborhoodData, error: error2 } = useSWR(
+  const { data: neighborhoodData, error: error2, mutate: mutate2 } = useSWR(
     `/trucks/${props.id}/neighborhoods`,
     fetcher
   );
 
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const handleClick = (message, variant) => {
     enqueueSnackbar(message, {
       variant: variant,
@@ -144,7 +139,7 @@ const EditTruck = (props) => {
   if (!truckData) return <Loading />;
 
   const onSubmit = async (data) => {
-    console.log("data enviar", data);
+    //console.log("data enviar", data);
 
     data.working === "Disponible"
       ? console.log("tiene valor positivo. Mo s elimina ningun barrio")
@@ -164,23 +159,19 @@ const EditTruck = (props) => {
       //console.log("rersponse put camion", response);
       //console.log("correcto put camion");
       handleClick("Se ha editado los datos del camión con éxito.", "success");
+      mutate1();
+      mutate2();
       props.onCancel();
       return response;
     } catch (error) {
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        alert(translateMessage(error.response.data.error));
+        handleClick("No se pudo editar el camión.", "error");
+        props.onCancel();
         console.log(error.response.data);
         return Promise.reject(error.response);
-        // return error.response;
       } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
         console.log(error.request);
       } else {
-        // Something happened in setting up the request that triggered an Error
         console.log("Error", error.message);
       }
       console.log(error.config);
@@ -197,33 +188,27 @@ const EditTruck = (props) => {
       start_time: data.start_time,
       truck_id: null,
     };
-    console.log(
-      "neighborhoodData a actualizar a borra barrio",
-      neighborhoodData
-    );
+    //console.log(
+    //"neighborhoodData a actualizar a borra barrio",
+    //neighborhoodData
+    //);
     try {
       const response = await api.put(
         `/neighborhoods/${data.id}`,
         neighborhoodData
       );
       console.log("rersponse put barrio", response);
-      console.log("correcto put camion");
+      //console.log("correcto put camion");
       return response;
     } catch (error) {
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
         alert(translateMessage(error.response.data.error));
+        props.onCancel();
         console.log(error.response.data);
         return Promise.reject(error.response);
-        // return error.response;
       } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
         console.log(error.request);
       } else {
-        // Something happened in setting up the request that triggered an Error
         console.log("Error", error.message);
       }
       console.log(error.config);
@@ -324,8 +309,6 @@ const EditTruck = (props) => {
 
           <Box display="flex" justifyContent="center" m={1} p={1}>
             <Button
-              //onSubmit={handleSubmit(onSubmit)}
-              //onClick={props.onCancel}
               type="submit"
               variant="contained"
               color="primary"

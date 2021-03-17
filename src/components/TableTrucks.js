@@ -54,6 +54,14 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
+const styles = {
+  title: {
+    textAlign: "center",
+    color: "white",
+    textShadow: "2px 2px #262626",
+  },
+};
+
 const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 600,
@@ -174,12 +182,11 @@ const TableTrucks = () => {
     setIsDialogsVisibleDeleteTruck(false);
     mutate1();
     mutate2();
+    mutate3();
   };
 
   const handleClickDeleteSearchTruck = () => {
     setWordSearch("");
-
-    //console.log("handleClickDeleteSearchTruck", wordSearch);
   };
 
   const handleChange = (event) => {
@@ -205,7 +212,7 @@ const TableTrucks = () => {
 
   return (
     <>
-      <h1 align="center">Gestión de camiones</h1>
+      <h1 style={styles.title}>Gestión de camiones</h1>
       <Box display="flex" justifyContent="flex-end" m={1} p={1}>
         <Button
           variant="outlined"
@@ -386,18 +393,22 @@ const TableTrucks = () => {
                           >
                             <BorderColorIcon />
                           </IconButton>
-
-                          <IconButton
-                            color="dark"
-                            aria-label="upload picture"
-                            component="span"
-                            disabled={truck.working}
-                            onClick={() => handleClickDeleteTruck(truck.id)}
-                          >
-                            <DeleteIcon
-                              style={{ color: truck.working ? "black" : "red" }}
-                            />
-                          </IconButton>
+                          {truck.working || truck.user !== null ? (
+                            ""
+                          ) : (
+                            <IconButton
+                              color="dark"
+                              aria-label="upload picture"
+                              component="span"
+                              onClick={() => handleClickDeleteTruck(truck.id)}
+                            >
+                              <DeleteIcon
+                                style={{
+                                  color: "black",
+                                }}
+                              />
+                            </IconButton>
+                          )}
                         </StyledTableCell>
                       </StyledTableRow>
                     ))}
