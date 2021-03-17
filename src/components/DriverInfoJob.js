@@ -50,9 +50,9 @@ const styles = {
         margin: '10px',
         padding: '35px',
     },
-    Title: {
-        fontWeight: 'bold',
-        color: 'white',
+    title:{
+        textAlign:'center',
+        color:'white',
         textShadow: '2px 2px #262626',
     }
 };
@@ -90,19 +90,12 @@ const DriverInfoJob = ({user}) => {
     return (
         <>
             <div>
-                <Typography component={'span'} color={"black"}>
-                    <Box display="flex" justifyContent="center" m={1} p={1}>
-                        <h1> Bienvenido {user.name} </h1>
-                    </Box>
-                </Typography>
+                <h1 style={styles.title}> Bienvenido {user.name} </h1>
+
                 <Grid container>
                     <Grid item xs={12} md={6} sm={12} lg={6}>
                         <Paper style={styles.Paper} elevation={3}>
-                            <Typography component={'span'} color={"Secondary"}>
-                                <Box display="flex" justifyContent="center" m={1} p={1}>
-                                    <h2> Información del camión </h2>
-                                </Box>
-                            </Typography>
+                            <h2> Información del camión </h2>
                             {
                                 truckUser ?
                                     <List className={classes.root2}>
@@ -158,12 +151,7 @@ const DriverInfoJob = ({user}) => {
 
                     <Grid item xs={12} md={6} sm={12} lg={6}>
                         <Paper style={styles.Paper} elevation={3} >
-                            <Typography component={'span'} color={"Secondary"}>
-                                <Box display="flex" justifyContent="center" m={1} p={1}>
-                                    <h2> Información de rutas </h2>
-                                </Box>
-                            </Typography>
-
+                               <h2> Información de rutas </h2>
                             {
                                 neighborhoodData ?
                                     <TableContainer component={Paper}>
@@ -205,7 +193,7 @@ const DriverInfoJob = ({user}) => {
                                         </Table>
                                     </TableContainer>
                                     :
-                                    <div> No se ha asignado un barrio al camión</div>
+                                    <div> No se ha podido cargar la información de los barrios</div>
                             }
                         </Paper>
                     </Grid>

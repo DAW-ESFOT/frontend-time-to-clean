@@ -191,13 +191,9 @@ const EditNeighborhood = (props) => {
 
     return (
         <>
-            <Typography component={'span'} color={"secondary"}>
-                <Box display="flex" justifyContent="center" m={1} p={1}>
-                    <h1>
-                        Edición del barrio {neighborhoodData.name}
-                    </h1>
-                </Box>
-            </Typography>
+            <div>
+                <h3>Editar información del barrio</h3>
+            </div>
 
             <form
                 className={classes.root}
@@ -332,6 +328,8 @@ const EditNeighborhood = (props) => {
                         id="outlined-select-currency-native"
                         select
                         label="Camion"
+                        color="secondary"
+                        margin="normal"
                         value={truck}
                         onChange={handleChangeSelect}
                         SelectProps={{
