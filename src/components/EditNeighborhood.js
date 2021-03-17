@@ -166,7 +166,9 @@ const EditNeighborhood = (props) => {
     }
     let user = "";
     if (truck === "") {
-      user = neighborhoodData.truck.id;
+      user = neighborhoodData.truck !== null
+          ? neighborhoodData.truck.id
+          : null;
     } else {
       user = truck;
     }
