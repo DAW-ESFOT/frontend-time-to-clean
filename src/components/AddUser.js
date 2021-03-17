@@ -42,9 +42,12 @@ const schema = yup.object().shape({
         .max ("2002-01-01", "Ingresar una fecha válida")
         .required("Campo requerido"),
     cellphone: yup
-        .number()
-        .label("El campo solo debe contener números, exactamente 10")
-        .min(9,"El teléfono debe tener 10 digitos")
+        .string()
+        .length(10,'Deben ser 10 dígitos')
+        .required()
+        .matches(/^[0-9]+$/, "Ingrese solo números, exactamente 10 dígitos")
+        .max(10, 'Deben ser 10 dígitos')
+
 });
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -88,26 +91,21 @@ const Register = (props)=>{
 
     const classes = useStyles();
     const onSubmit=async (data)=>{
-        console.log("data enviar", data);
         const userData = {...data,type:valSelect,role:'ROLE_DRIVER'};
-        console.log("userData", userData);
         try {
             const response = await api.post("/register", userData);
             handleClick("Se ha registrado con éxito el usuario", "success");
-            console.log("rersponse post users", response);
-            console.log("correcto post usuarios");
             props.onCancel();
             return response;
         }catch (error) {
             if (error.response) {
-                console.log("errores",error.response);
                 enqueueSnackbar(translateMessage(error.response.data), { variant: "error",  anchorOrigin: {
                         vertical: 'top',
                         horizontal: 'center',
                     },});
-                console.log(error.response.data);
             } else if (error.request) {
                 console.log(error.request);
+
             } else {
                 console.log('Error', error.message);
             }
@@ -116,7 +114,6 @@ const Register = (props)=>{
     };
     const handleChange = (event) => {
         setValSelect(event.target.value);
-        console.log("tipo",event);
     };
 
     return (

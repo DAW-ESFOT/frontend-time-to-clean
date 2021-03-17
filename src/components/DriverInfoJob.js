@@ -85,8 +85,6 @@ const DriverInfoJob = ({user}) => {
     }
     if (!truckUser) return <Loading/>;
 
-    console.log("user", truckUser);
-    console.log("neighborhoods", neighborhoodData);
     return (
         <>
             <div>

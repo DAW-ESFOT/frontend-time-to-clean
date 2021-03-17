@@ -46,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const moment = require("moment");
+
 const schema = yup.object().shape({
   start_time: yup.string().required("Seleccione la hora de inicio"),
   end_time: yup
@@ -76,18 +78,18 @@ const AddNeighborhood = (props) => {
   const [state, setState] = useState({
     Lunes: false,
     Martes: false,
-    Miercoles: false,
+    Miércoles: false,
     Jueves: false,
     Viernes: false,
-    Sabado: false,
+    Sábado: false,
     Domingo: false,
   });
   const { register, handleSubmit, control, errors } = useForm({
     resolver: yupResolver(schema),
   });
-  const { Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo } = state;
+  const { Lunes, Martes, Miércoles, Jueves, Viernes, Sábado, Domingo } = state;
   const errorCheck =
-    [Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo].filter(
+    [Lunes, Martes, Miércoles, Jueves, Viernes, Sábado, Domingo].filter(
       (v) => v
     ).length < 1;
 
@@ -127,7 +129,7 @@ const AddNeighborhood = (props) => {
 
   const Error = (errorCode) => {
     if (errorCode) {
-      if (errorCode.name[0] === "validation.unique") {
+      if (errorCode.name && errorCode.name[0] === "validation.unique") {
         handleClick("Ya existe un barrio registrado con este nombre", "error");
       }
     } else {
@@ -156,10 +158,8 @@ const AddNeighborhood = (props) => {
       days: day,
       truck_id: id,
     };
-    console.log("truckData", neighborhoodData);
     try {
       const response = await api.post("/neighborhoods", neighborhoodData);
-      console.log("rersponse post barrio", response);
       handleClick("Se ha registrado con éxito el barrio", "success");
       props.onHandleCloseModal();
       return response;
@@ -228,7 +228,7 @@ const AddNeighborhood = (props) => {
               className={classes.formControl}
             >
               <FormLabel component="legend">
-                Escoga los días ha asignar
+                Escoja los días ha asignar
               </FormLabel>
               <FormGroup>
                 <Box flexDirection="row-reverse" m={1} p={1}>
@@ -255,9 +255,9 @@ const AddNeighborhood = (props) => {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={Miercoles}
+                        checked={Miércoles}
                         onChange={handleChange}
-                        name="Miercoles"
+                        name="Miércoles"
                       />
                     }
                     label="Miércoles"
@@ -285,12 +285,12 @@ const AddNeighborhood = (props) => {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={Sabado}
+                        checked={Sábado}
                         onChange={handleChange}
-                        name="Sabado"
+                        name="Sábado"
                       />
                     }
-                    label="sabado"
+                    label="Sábado"
                   />
                   <FormControlLabel
                     control={

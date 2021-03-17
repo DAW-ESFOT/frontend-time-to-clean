@@ -32,7 +32,6 @@ const BootstrapInput = withStyles((theme) => ({
     width: 200,
     padding: "10px 26px 10px 12px",
     transition: theme.transitions.create(["border-color", "box-shadow"]),
-    // Use the system font instead of the default Roboto font.
     fontFamily: [
       "-apple-system",
       "BlinkMacSystemFont",
@@ -107,7 +106,7 @@ const AddTruck = (props) => {
   });
   const [name, setName] = useState("Automático");
 
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const handleClick = (message, variant) => {
     enqueueSnackbar(message, {
       variant: variant,
@@ -129,18 +128,14 @@ const AddTruck = (props) => {
   };
 
   const onSubmit = async (data) => {
-    //console.log("data enviar", data);
     const truckData = {
       license_plate: data.license_plate.toUpperCase(),
       working: true,
       user_id: null,
       type: name,
     };
-    //console.log("truckData", truckData);
     try {
       const response = await api.post("/trucks", truckData);
-      //console.log("rersponse post truck", response);
-      //console.log("correcto post camion");
       handleClick("Se ha registrado con éxito el camión", "success");
       props.onCancel();
       return response;

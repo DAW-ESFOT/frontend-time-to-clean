@@ -182,7 +182,6 @@ const TableUsers = () => {
     };
     if (error) return <div>No se pudo cargar los conductores</div>;
     if (!data) return <Loading/>;
-    console.log("data usuarios", data);
 
 
     return (

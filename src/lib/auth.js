@@ -40,7 +40,6 @@ function useAuthProvider() {
         try {
             const response = await api.post("/register", data);
             console.log("rersponse", response);
-           //handleUser(response.data);
             return response;
         } catch (error) {
             if (error.response) {
@@ -50,11 +49,9 @@ function useAuthProvider() {
                     },});
                 console.log(error.response.data);
                 return Promise.reject(error.response);
-                // return error.response;
             } else if (error.request) {
                 console.log(error.request);
             } else {
-                // Something happened in setting up the request that triggered an Error
                 console.log("Error", error.message);
             }
             console.log(error.config);
@@ -121,7 +118,6 @@ function useAuthProvider() {
     async function getAuthenticatedUser() {
         try {
             const response = await api.get("/user");
-            console.log("response user", response);
             handleUser(response.data);
             return response;
         } catch (error) {
@@ -130,8 +126,6 @@ function useAuthProvider() {
                 // The request was made and the server responded with a status code
                 // that falls out of the range of 2xx
                 console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
                 return error.response;
             } else if (error.request) {
                 // The request was made but no response was received
@@ -147,7 +141,6 @@ function useAuthProvider() {
     }
 
     useEffect(() => {
-        console.log("RENDER AUTH");
         try {
             getAuthenticatedUser();
         } catch (error) {
