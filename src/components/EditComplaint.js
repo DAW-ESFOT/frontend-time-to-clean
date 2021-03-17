@@ -72,8 +72,8 @@ const EditComplaint = (props) => {
         try {
             const response = await api.put(`/complaints/${props.id}`, complaintData);
             console.log("Response:", response);
+            props.onHandleCloseModal();
             handleClick("Cambios guardados.", "success");
-            props.onCancel();
             return response;
         } catch (error) {
             if (error.response) {
