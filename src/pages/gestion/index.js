@@ -163,7 +163,7 @@ const Management = () => {
                                     alignItems="center"
                                 >
                                     <ListItemAvatar>
-                                        <Image src="/user.png" alt="" width={150} height={100}/>
+                                        <Image src="/driver.png" alt="" width={100} height={100}/>
                                     </ListItemAvatar>
                                 </Grid>
                                 <ListItem onClick={onVisibleDriver} button divider>
